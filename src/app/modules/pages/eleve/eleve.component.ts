@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EleveService } from 'app/services/eleve.service';
 import * as alertFunctions from 'app/config/sweet-alerts';
 import { FuseDrawerService } from '@fuse/components/drawer';
 import { EleveActionComponent } from './eleve-actions/eleveAction.component';
-import { OnInit } from '../../../../../wsgsth delet it/@angular/core';
 import { Eleve } from 'app/model/eleve';
 
 @Component({
