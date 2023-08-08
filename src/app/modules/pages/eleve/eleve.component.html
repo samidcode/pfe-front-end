@@ -12,6 +12,9 @@
                     <div class="mr-4 text-lg font-medium tracking-tight leading-6 truncate">Élève</div>
                 </div>
                 <div class="overflow-x-auto mx-6">
+                    <a class="success p-0" data-original-title="" title=""   (click)=" addEleve()" style="margin: 0 8px 0 0;">
+                        <mat-icon  style="color: #58c164;" class="hoverable-icon icon-size-5" svgIcon="heroicons_outline:pencil"></mat-icon>
+                    </a>
                     <table
                         class="w-full bg-transparent"
                         mat-table
@@ -145,7 +148,7 @@
             mat-cell
             *matCellDef="let eleves">
             <a class="info p-0 " data-original-title="" title="" style="margin: 0 8px 0 0;">
-                <mat-icon style="color: #975bf9;"  class="hoverable-icon icon-size-5" (click)=" addEleve()" svgIcon="heroicons_outline:user"></mat-icon>
+                <mat-icon style="color: #975bf9;"  class="hoverable-icon icon-size-5"  svgIcon="heroicons_outline:user"></mat-icon>
             </a>
               <a class="success p-0" data-original-title="" title=""  (click)=" editEleve(eleves)" style="margin: 0 8px 0 0;">
                 <mat-icon  style="color: #58c164;" class="hoverable-icon icon-size-5" svgIcon="heroicons_outline:pencil"></mat-icon>
