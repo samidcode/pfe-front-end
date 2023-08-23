@@ -11,6 +11,8 @@ import { MatTableModule } from '@angular/material/table';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { EleveActionComponent } from './eleve-actions/eleveAction.component';
 import { EleveActionsModule } from './eleve-actions/eleveAction.module';
+import { MatInputModule } from '@angular/material/input';
+import { SharedModule } from 'app/shared/shared.module';
 
 const eleveRoutes: Route[] = [
   {
@@ -31,7 +33,10 @@ const eleveRoutes: Route[] = [
     MatProgressBarModule,
     MatTableModule,
     NgApexchartsModule,
-    EleveActionsModule
+    EleveActionsModule,
+    MatInputModule,
+    SharedModule,
+
     
   ]
 })
