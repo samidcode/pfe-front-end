@@ -10,15 +10,15 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link : '/example'
     },
     {
-        id   : 'eleve',
-        title: 'Élève',
+        id   : 'class',
+        title: 'class',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/eleve'
     },
     {
-        id   : 'contact',
-        title: 'eleve',
+        id   : 'eleve',
+        title: 'Élève',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/contact'
@@ -38,6 +38,13 @@ export const compactNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/eleve'
+    },
+    {
+        id   : 'eleve',
+        title: 'Élève',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/contact'
     }
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
@@ -54,6 +61,13 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/eleve'
+    },
+    {
+        id   : 'eleve',
+        title: 'Élève',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/contact'
     }
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
@@ -70,5 +84,12 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/eleve'
+    },
+    {
+        id   : 'eleve',
+        title: 'Élève',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/contact'
     }
 ];

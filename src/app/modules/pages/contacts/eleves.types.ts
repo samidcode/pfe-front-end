@@ -1,6 +1,6 @@
 import { Payeur } from "app/model/payeur";
 
-export interface Contact
+export interface Eleve
 {
     id: string;
     idMassar: number;
@@ -12,6 +12,16 @@ export interface Contact
     image:string;
     imageType:string;
 }
+
+export interface PaginatedData<T>
+{
+    content: T[];
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+}
+
 
 export interface Country
 {

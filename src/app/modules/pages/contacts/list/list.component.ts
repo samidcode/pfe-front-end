@@ -6,44 +6,48 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Contact, Country } from '../contacts.types';
-import { ContactsService } from '../contacts.service';
+import { Eleve, Country, PaginatedData } from '../eleves.types';
+import { ElevesService } from '../eleves.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 
 @Component({
-    selector       : 'contacts-list',
+    selector       : 'eleves-list',
     templateUrl    : './list.component.html',
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ContactsListComponent implements OnInit, OnDestroy
+export class ElevesListComponent implements OnInit, OnDestroy
 {
     @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    dataSource = new MatTableDataSource<Eleve>();
 
-    contacts$: Observable<Contact[]>;
+    eleves$: Observable<Eleve[]>;
 
-    contactsCount: number = 0;
+    elevesCount: number = 0;
     countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
-    selectedContact: Contact;
+    selectedEleve: Eleve;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     recentTransactionsTableColumns: string[] = [
         'image',
-        'transactionId',
         'amount',
         'date',
         'name',
         'status',
         'action',
     ];
+    eleves: Eleve[];
     /**
      * Constructor
      */
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _contactsService: ContactsService,
+        private _elevesService: ElevesService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
@@ -60,42 +64,39 @@ export class ContactsListComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        // Get the contacts
-        this.contacts$ = this._contactsService.contacts$;
-        this._contactsService.contacts$
+
+    
+
+        // Get the eleves
+        this.eleves$ = this._elevesService.eleves$;
+        this._elevesService.eleves$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contacts: Contact[]) => {
+            .subscribe((eleves: Eleve[]) => {
 
                 // Update the counts
-                this.contactsCount = contacts.length;
-
+                this.elevesCount = eleves.length;
+                    this.eleves = eleves;
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
 
-        // Get the contact
-        this._contactsService.contact$
+
+            // Connect the paginator to the data source
+            this.dataSource.paginator = this.paginator;
+            this.loadData(0,5);
+        // Get the eleve
+        this._elevesService.eleve$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contact: Contact) => {
+            .subscribe((eleve: Eleve) => {
 
-                // Update the selected contact
-                this.selectedContact = contact;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-
-        // Get the countries
-        this._contactsService.countries$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((countries: Country[]) => {
-
-                // Update the countries
-                this.countries = countries;
+                // Update the selected eleve
+                this.selectedEleve = eleve;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+     
 
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
@@ -104,7 +105,7 @@ export class ContactsListComponent implements OnInit, OnDestroy
                 switchMap(query =>
 
                     // Search
-                    this._contactsService.searchContacts(query)
+                    this._elevesService.searchEleves(query)
                 )
             )
             .subscribe();
@@ -113,8 +114,8 @@ export class ContactsListComponent implements OnInit, OnDestroy
         this.matDrawer.openedChange.subscribe((opened) => {
             if ( !opened )
             {
-                // Remove the selected contact when drawer closed
-                this.selectedContact = null;
+                // Remove the selected eleve when drawer closed
+                this.selectedEleve = null;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -150,7 +151,7 @@ export class ContactsListComponent implements OnInit, OnDestroy
                 )
             )
             .subscribe(() => {
-                this.createContact();
+                this.createEleve();
             });
     }
 
@@ -182,14 +183,14 @@ export class ContactsListComponent implements OnInit, OnDestroy
     }
 
     /**
-     * Create contact
+     * Create eleve
      */
-    createContact(): void
+    createEleve(): void
     {
-        // Create the contact
+        // Create the eleve
                    
 
-            // Go to the new contact
+            // Go to the new eleve
             this._router.navigate(['./', "NewEleve"], {relativeTo: this._activatedRoute});
 
             // Mark for check
@@ -206,4 +207,23 @@ export class ContactsListComponent implements OnInit, OnDestroy
     {
         return item.id || index;
     }
+
+    pEleve;
+      
+      
+      
+      onPageChange(event: PageEvent) {
+    this.loadData(event.pageIndex, event.pageSize);
+  }
+
+  loadData(pageIndex: number, pageSize: number) {
+    this._elevesService.elevePagination(pageIndex, pageSize).subscribe((elevesPagination:PaginatedData<Eleve>)=>{
+
+            this.pEleve = elevesPagination.totalElements ; 
+            console.log(this.pEleve);
+            
+
+
+    });
+  }
 }

@@ -7,20 +7,20 @@ import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Contact, Country, Tag } from '../contacts.types';
-import { ContactsListComponent } from '../list/list.component';
-import { ContactsService } from '../contacts.service';
+import { Eleve, Country, Tag } from '../eleves.types';
+import { ElevesListComponent } from '../list/list.component';
+import { ElevesService } from '../eleves.service';
 import { EleveService } from 'app/services/eleve.service';
 import * as alertFunctions from 'app/config/sweet-alerts';
 
 
 @Component({
-    selector       : 'contacts-details',
+    selector       : 'eleves-details',
     templateUrl    : './details.component.html',
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ContactsDetailsComponent implements OnInit, OnDestroy
+export class ElevesDetailsComponent implements OnInit, OnDestroy
 {
     @ViewChild('tagsPanel') private _tagsPanel: TemplateRef<any>;
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
@@ -29,9 +29,9 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy
     tags: Tag[];
     tagsEditMode: boolean = false;
     filteredTags: Tag[];
-    contact: Contact;
-    contactForm: FormGroup;
-    contacts: Contact[];
+    eleve: Eleve;
+    eleveForm: FormGroup;
+    eleves: Eleve[];
     countries: Country[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -47,8 +47,8 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _contactsListComponent: ContactsListComponent,
-        private _contactsService: ContactsService,
+        private _elevesListComponent: ElevesListComponent,
+        private _elevesService: ElevesService,
         private _formBuilder: FormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
@@ -73,10 +73,10 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy
     {
         
         // Open the drawer
-        this._contactsListComponent.matDrawer.open();
+        this._elevesListComponent.matDrawer.open();
 
-        // Create the contact form
-        this.contactForm = this._formBuilder.group({
+        // Create the eleve form
+        this.eleveForm = this._formBuilder.group({
             id          : [''],
             image      : [null],
             nom        : ['', [Validators.required]],
@@ -90,25 +90,28 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy
 
     
 
-        // Get the contact
-        this._contactsService.contact$
+        // Get the eleve
+        this._elevesService.eleve$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contact: Contact) => {
+            .subscribe((eleve: Eleve) => {
 
                 // Open the drawer in case it is closed
-                this._contactsListComponent.matDrawer.open();
+                this._elevesListComponent.matDrawer.open();
 
-                // Get the contact
-                this.contact = contact;
-                    console.log("d5al",this.contact);
+                // Get the eleve
+                this.eleve = eleve;
+                    console.log("d5al",this.eleve);
                 // Patch values to the form
-                this.contactForm.patchValue(contact);
+                this.eleveForm.patchValue(eleve);
 
 
              
 
                 // Toggle the edit mode on creat eleve
-                this.toggleEditMode(this.contact.id=="NewEleve"?true:false);
+            
+                
+                
+                this.toggleEditMode(  this.eleve?.id === "NewEleve");
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -141,7 +144,7 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy
      */
     closeDrawer(): Promise<MatDrawerToggleResult>
     {
-        return this._contactsListComponent.matDrawer.close();
+        return this._elevesListComponent.matDrawer.close();
     }
 
     /**
@@ -165,19 +168,19 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy
     }
 
     /**
-     * Update the contact
+     * Update the eleve
      */
     addOrupdate(): void
     {
-        // Get the contact object
-        const contact = this.contactForm.getRawValue();
-        contact.image = this.contact.image;
-        // Update the contact on the server
-        this._contactsService.updateContact(contact.id, contact,this.selectedFile).subscribe((newContact:Contact) => {
+        // Get the eleve object
+        const eleve = this.eleveForm.getRawValue();
+        eleve.image = this.eleve.image;
+        // Update the eleve on the server
+        this._elevesService.updateEleve(eleve.id, eleve,this.selectedFile).subscribe((newEleve:Eleve) => {
 
-            console.log("neweleve",newContact);
+         
 
-            this._router.navigate(['../', newContact.id], {relativeTo: this._activatedRoute});
+            this._router.navigate(['../', newEleve.id], {relativeTo: this._activatedRoute});
 
             // Toggle the edit mode off
             this.toggleEditMode(false);
@@ -189,37 +192,37 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy
     }
 
     /**
-     * Delete the contact
+     * Delete the eleve
      */
     deleteEleve(): void
     {
-        const id = this.contact.id;
+        const id = this.eleve.id;
         // Open the confirmation dialog
         alertFunctions.confirmText().then((result) => {
             if (result['isConfirmed']) {
 
 
-                // Get the current contact's id
-                 const id = this.contact.id;
-                 // Get the next/previous contact's id
+                // Get the current eleve's id
+                 const id = this.eleve.id;
+                 // Get the next/previous eleve's id
 
               
-                this._contactsService.deleteContact(id)
+                this._elevesService.deleteEleve(id)
                 .subscribe((isDeleted) => {
 
 
-                    const currentContactIndex = this.contacts.findIndex(item => item.id == id);
-                    const nextContactIndex = currentContactIndex + ((currentContactIndex === (this.contacts.length - 1)) ? -1 : 1);
-                    const nextContactId = (this.contacts.length === 1 && this.contacts[0].id === id) ? null : this.contacts[nextContactIndex].id;
+                    const currentEleveIndex = this.eleves.findIndex(item => item.id == id);
+                    const nextEleveIndex = currentEleveIndex + ((currentEleveIndex === (this.eleves.length - 1)) ? -1 : 1);
+                    const nextEleveId = (this.eleves.length === 1 && this.eleves[0].id === id) ? null : this.eleves[nextEleveIndex].id;
 
-                    // Return if the contact wasn't deleted...
+                    // Return if the eleve wasn't deleted...
                 
-                    // Navigate to the next contact if available
+                    // Navigate to the next eleve if available
                     
-                    if ( nextContactId )
+                    if ( nextEleveId )
                     {
 
-                        this._router.navigate(['../', nextContactId], {relativeTo: this._activatedRoute});
+                        this._router.navigate(['../', nextEleveId], {relativeTo: this._activatedRoute});
                     }
                     // Otherwise, navigate to the parent
                     else
@@ -251,10 +254,10 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy
         if (event.target.files && event.target.files[0]) {
             var reader = new FileReader();
             this.selectedFile = event.target.files[0];
-            this.contact.imageType =  this.selectedFile.type;
+            this.eleve.imageType =  this.selectedFile.type;
 
             reader.onload = (event: any) => { // Move the onload assignment before readAsDataURL
-                this.contact.image = event.target.result;
+                this.eleve.image = event.target.result;
 
                
                 
@@ -272,7 +275,7 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy
      */
     removeAvatar(): void
     {
-        this.contact.image = null ;
+        this.eleve.image = null ;
         this.url = null ;
       
     }
@@ -287,7 +290,7 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy
 
     public payeurChange(value: string) {
                 
-        this._contactsService.payeurAutoComplet(value).subscribe(data=>{
+        this._elevesService.payeurAutoComplet(value).subscribe(data=>{
             
             this.payeurOptions = data;
         });
@@ -295,7 +298,7 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy
 
 public classChange(value: string) {
 
-this._contactsService.classAutoComplet(value).subscribe(data=>{
+this._elevesService.classAutoComplet(value).subscribe(data=>{
     console.log("dataclass",data);
     
     this.classOptions = data;

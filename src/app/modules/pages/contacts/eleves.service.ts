@@ -2,18 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
-import { Contact, Country, Tag } from './contacts.types';
+import { Eleve, Country, Tag, PaginatedData } from './eleves.types';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ContactsService
+export class ElevesService
 {
-  eleve : Contact ;
+   
+  eleve : Eleve ;
     private baseUrl = 'http://localhost:8080/api/'; 
     // Private
-    private _contact: BehaviorSubject<Contact | null> = new BehaviorSubject(null);
-    private _contacts: BehaviorSubject<Contact[] | null> = new BehaviorSubject(null);
+    private _eleve: BehaviorSubject<Eleve | null> = new BehaviorSubject(null);
+    private _eleves: BehaviorSubject<Eleve[] | null> = new BehaviorSubject(null);
     private _countries: BehaviorSubject<Country[] | null> = new BehaviorSubject(null);
     private _tags: BehaviorSubject<Tag[] | null> = new BehaviorSubject(null);
 
@@ -22,7 +23,7 @@ export class ContactsService
      */
     constructor(private _httpClient: HttpClient)
     {
-        this.getContacts()
+        this.getEleves()
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -30,29 +31,23 @@ export class ContactsService
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Getter for contact
+     * Getter for eleve
      */
-    get contact$(): Observable<Contact>
+    get eleve$(): Observable<Eleve>
     {
-        return this._contact.asObservable();
+        return this._eleve.asObservable();
     }
 
     /**
-     * Getter for contacts
+     * Getter for eleves
      */
-    get contacts$(): Observable<Contact[]>
+    get eleves$(): Observable<Eleve[]>
     {
        
-        return this._contacts.asObservable();
+        return this._eleves.asObservable();
     }
 
-    /**
-     * Getter for countries
-     */
-    get countries$(): Observable<Country[]>
-    {
-        return this._countries.asObservable();
-    }
+    
 
     /**
      * Getter for tags
@@ -67,41 +62,55 @@ export class ContactsService
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Get contacts
+     * Get eleves
      */
-    getContacts(): Observable<Contact[]>
+    getEleves(): Observable<Eleve[]>
     {
-        return this._httpClient.get<Contact[]>(this.baseUrl+'eleves').pipe(
-            tap((contacts) => {
-                this._contacts.next(contacts);
+        return this._httpClient.get<Eleve[]>(this.baseUrl+'eleves').pipe(
+            tap((eleves) => {
+                this._eleves.next(eleves);
             })
         );
     }
 
+
+    elevePagination(pageIndex: number, pageSize: number): Observable<PaginatedData<Eleve>> {
+        const url = `${this.baseUrl}eleves/elevePagination?page=${pageIndex}&size=${pageSize}`;
+        return this._httpClient.get<PaginatedData<Eleve>>(url).pipe(
+            tap((eleves) => {
+                console.log("pag eleve",eleves);
+                
+                 this._eleves.next(eleves["content"]);
+                 return eleves;
+
+            })
+        ); 
+       }
+
     /**
-     * Search contacts with given query
+     * Search eleves with given query
      *
      * @param query
      */
-    searchContacts(query: string): Observable<Contact[]>
+    searchEleves(keyword: string): Observable<Eleve[]>
     {
-        return this._httpClient.get<Contact[]>('api/apps/contacts/search', {
-            params: {query}
+        return this._httpClient.get<Eleve[]>(this.baseUrl+'eleves/eleveSearch', {
+            params: {keyword}
         }).pipe(
-            tap((contacts) => {
-                this._contacts.next(contacts);
+            tap((eleves) => {
+                this._eleves.next(eleves);
             })
         );
     }
 
     /**
-     * Get contact by id
+     * Get eleve by id
      */
-    getContactById(id: string): Observable<Contact>
+    getEleveById(id: string): Observable<Eleve>
     {
-        return this._contacts.pipe(
+        return this._eleves.pipe(
             take(1),
-            map((contacts) => {
+            map((eleves) => {
 
                 if (id=="NewEleve") {
                      this.eleve = {
@@ -118,114 +127,115 @@ export class ContactsService
                     } ;
                 } else {
 
-                     this.eleve = contacts.find(item => item.id == id) || null;
+                     this.eleve = eleves.find(item => item.id == id) || null;
 
                 }
 
-                // Find the contact
+                // Find the eleve
                    
                     
-                // Update the contact
-                this._contact.next(this.eleve);
+                // Update the eleve
+                this._eleve.next(this.eleve);
 
-                // Return the contact
+                // Return the eleve
                 return this.eleve;
             }),
-            switchMap((contact) => {
+            switchMap((eleve) => {
 
-                if ( !contact )
+                if ( !eleve )
                 {
-                    return throwError('Could not found contact with id of ' + id + '!');
+                    return throwError('Could not found eleve with id of ' + id + '!');
                 }
 
-                return of(contact);
+                return of(eleve);
             })
         );
     }
 
     /**
-     * Create contact
+     * Create eleve
      */
-    createContact(): Observable<Contact>
+    createEleve(): Observable<Eleve>
     {
-        return this.contacts$.pipe(
+        return this.eleves$.pipe(
             take(1),
-            switchMap(contacts => this._httpClient.post<Contact>('api/apps/contacts/contact', {}).pipe(
-                map((newContact: Contact) => {
+            switchMap(eleves => this._httpClient.post<Eleve>('api/apps/eleves/eleve', {}).pipe(
+                map((newEleve: Eleve) => {
                  
-                    contacts.push(newContact);
-                    // Update the contacts with the new contact
-                    this._contacts.next(contacts);
+                    eleves.push(newEleve);
+                    // Update the eleves with the new eleve
+                    this._eleves.next(eleves);
 
-                    // Return the new contact
-                    return newContact;
+                    // Return the new eleve
+                    return newEleve;
                 })
             ))
         );
     }
 
     /**
-     * Update contact
+     * Update eleve
      *
      * @param id
-     * @param contact
+     * @param eleve
      */
-    updateContact(id: string, contact: Contact,image)
+    updateEleve(id: string, eleve: Eleve,image)
     {
-        if (contact.id == "NewEleve") {
-            contact.id = null ;
+        if (eleve.id == "NewEleve") {
+            eleve.id = null ;
         }
         
         const formData = new FormData() ;
-        formData.append('eleve', JSON.stringify(contact));
+        formData.append('eleve', JSON.stringify(eleve));
         
       const url = `${this.baseUrl}eleves`; 
       return this._httpClient.post(url,formData).pipe(
-        tap((newContact:Contact) => {
-            if (contact.id == "NewEleve") {
-                this._contacts.next([newContact, ...this._contacts.getValue()]);
-            }else{
-                let contacts = this._contacts.getValue()
+        tap((newEleve:Eleve) => {
 
-                 // Find the index of the updated contact
-                    const index = contacts.findIndex(item => item.id === id);
+            let eleves = this._eleves.getValue()
 
-                    // Update the contact
-                    contacts[index] = newContact;
+            if (eleve.id != "NewEleve") {
+                let eleves = this._eleves.getValue()
 
-                    // Update the contacts
-                 
-                   
+                // Find the index of the updated eleve
+                   const index = eleves.findIndex(item => item.id === id);
+
+                   // Update the eleve
+                   eleves[index] = newEleve;
+
+                   // Update the eleves
+                
             }
-            this._contact.next(newContact);
+            this._eleves.next([newEleve, ...eleves]);
+            this._eleve.next(newEleve);
 
-              return newContact;
+              return newEleve;
         })
     );
     }
 
     /**
-     * Delete the contact
+     * Delete the eleve
      *
      * @param id
      */
-    deleteContact(id: string): Observable<boolean>
+    deleteEleve(id: string): Observable<boolean>
     {
         const url = `${this.baseUrl}eleves/${id}`; 
     
-        return this.contacts$.pipe(
+        return this.eleves$.pipe(
             take(1),
-            switchMap(contacts => this._httpClient.delete(url).pipe(
+            switchMap(eleves => this._httpClient.delete(url).pipe(
                 map((isDeleted: boolean) => {
 
-                    // Find the index of the deleted contact
-                    const index = contacts.findIndex(item => item.id === id);
+                    // Find the index of the deleted eleve
+                    const index = eleves.findIndex(item => item.id === id);
 
-                    // Delete the contact
-                    contacts.splice(index, 1);
+                    // Delete the eleve
+                    eleves.splice(index, 1);
 
-                    // Update the contacts
-                    this._contacts.next(contacts);
+                    // Update the eleves
+                    this._eleves.next(eleves);
 
                     // Return the deleted status
                     return isDeleted;
@@ -234,29 +244,12 @@ export class ContactsService
         );
     }
 
-    /**
-     * Get countries
-     */
-    getCountries(): Observable<Country[]>
-    {
-        return this._httpClient.get<Country[]>('api/apps/contacts/countries').pipe(
-            tap((countries) => {
-                this._countries.next(countries);
-            })
-        );
-    }
+    
 
     /**
      * Get tags
      */
-    getTags(): Observable<Tag[]>
-    {
-        return this._httpClient.get<Tag[]>('api/apps/contacts/tags').pipe(
-            tap((tags) => {
-                this._tags.next(tags);
-            })
-        );
-    }
+   
 
     /**
      * Create tag
@@ -267,7 +260,7 @@ export class ContactsService
     {
         return this.tags$.pipe(
             take(1),
-            switchMap(tags => this._httpClient.post<Tag>('api/apps/contacts/tag', {tag}).pipe(
+            switchMap(tags => this._httpClient.post<Tag>('api/apps/eleves/tag', {tag}).pipe(
                 map((newTag) => {
 
                     // Update the tags with the new tag
@@ -290,7 +283,7 @@ export class ContactsService
     {
         return this.tags$.pipe(
             take(1),
-            switchMap(tags => this._httpClient.patch<Tag>('api/apps/contacts/tag', {
+            switchMap(tags => this._httpClient.patch<Tag>('api/apps/eleves/tag', {
                 id,
                 tag
             }).pipe(
@@ -321,7 +314,7 @@ export class ContactsService
     {
         return this.tags$.pipe(
             take(1),
-            switchMap(tags => this._httpClient.delete('api/apps/contacts/tag', {params: {id}}).pipe(
+            switchMap(tags => this._httpClient.delete('api/apps/eleves/tag', {params: {id}}).pipe(
                 map((isDeleted: boolean) => {
 
                     // Find the index of the deleted tag
@@ -337,19 +330,19 @@ export class ContactsService
                     return isDeleted;
                 }),
                 filter(isDeleted => isDeleted),
-                switchMap(isDeleted => this.contacts$.pipe(
+                switchMap(isDeleted => this.eleves$.pipe(
                     take(1),
-                    map((contacts) => {
+                    map((eleves) => {
 
-                        // Iterate through the contacts
-                        contacts.forEach((contact) => {
+                        // Iterate through the eleves
+                        eleves.forEach((eleve) => {
 
-                          //  const tagIndex = contact.tags.findIndex(tag => tag === id);
+                          //  const tagIndex = eleve.tags.findIndex(tag => tag === id);
 
-                            // If the contact has the tag, remove it
+                            // If the eleve has the tag, remove it
                            /*  if ( tagIndex > -1 )
                             {
-                                contact.tags.splice(tagIndex, 1);
+                                eleve.tags.splice(tagIndex, 1);
                             } */
                         });
 
@@ -362,16 +355,16 @@ export class ContactsService
     }
 
     /**
-     * Update the avatar of the given contact
+     * Update the avatar of the given eleve
      *
      * @param id
      * @param avatar
      */
-    uploadAvatar(id: string, avatar: File): Observable<Contact>
+    uploadAvatar(id: string, avatar: File): Observable<Eleve>
     {
-        return this.contacts$.pipe(
+        return this.eleves$.pipe(
             take(1),
-            switchMap(contacts => this._httpClient.post<Contact>('api/apps/contacts/avatar', {
+            switchMap(eleves => this._httpClient.post<Eleve>('api/apps/eleves/avatar', {
                 id,
                 avatar
             }, {
@@ -380,30 +373,30 @@ export class ContactsService
                     'Content-Type': avatar.type
                 }
             }).pipe(
-                map((updatedContact) => {
+                map((updatedEleve) => {
 
-                    // Find the index of the updated contact
-                    const index = contacts.findIndex(item => item.id === id);
+                    // Find the index of the updated eleve
+                    const index = eleves.findIndex(item => item.id === id);
 
-                    // Update the contact
-                    contacts[index] = updatedContact;
+                    // Update the eleve
+                    eleves[index] = updatedEleve;
 
-                    // Update the contacts
-                    this._contacts.next(contacts);
+                    // Update the eleves
+                    this._eleves.next(eleves);
 
-                    // Return the updated contact
-                    return updatedContact;
+                    // Return the updated eleve
+                    return updatedEleve;
                 }),
-                switchMap(updatedContact => this.contact$.pipe(
+                switchMap(updatedEleve => this.eleve$.pipe(
                     take(1),
                     filter(item => item && item.id === id),
                     tap(() => {
 
-                        // Update the contact if it's selected
-                        this._contact.next(updatedContact);
+                        // Update the eleve if it's selected
+                        this._eleve.next(updatedEleve);
 
-                        // Return the updated contact
-                        return updatedContact;
+                        // Return the updated eleve
+                        return updatedEleve;
                     })
                 ))
             ))

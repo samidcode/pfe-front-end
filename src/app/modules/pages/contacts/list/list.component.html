@@ -27,10 +27,10 @@
                     <div>
                         <div class="text-4xl font-extrabold tracking-tight leading-none">Élèves </div>
                         <div class="ml-0.5 font-medium text-secondary">
-                            <ng-container *ngIf="contactsCount > 0">
-                                {{contactsCount}}
+                            <ng-container *ngIf="elevesCount > 0">
+                                {{elevesCount}}
                             </ng-container>
-                            {{contactsCount | i18nPlural: {
+                            {{elevesCount | i18nPlural: {
                             '=0'   : 'No Élève',
                             '=1'   : ' Élève',
                             'other': ' Élèves'
@@ -51,23 +51,23 @@
                                     matInput
                                     [formControl]="searchInputControl"
                                     [autocomplete]="'off'"
-                                    [placeholder]="'Search contacts'">
+                                    [placeholder]="'Search eleves'">
                             </mat-form-field>
                         </div>
-                        <!-- Add contact button -->
+                        <!-- Add eleve button -->
                         <button
                         style="    margin-bottom: 21px;"
                             class="ml-4"
                             mat-flat-button
                             [color]="'primary'"
-                            (click)="createContact()">
+                            (click)="createEleve()">
                             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                             <span class="ml-2 mr-1">Add</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Contacts list -->
+                <!-- Eleves list -->
                 <div class="relative">
                
 
@@ -84,11 +84,12 @@
                     class="w-full bg-transparent"
                     mat-table
                     matSort
-                    [dataSource]="contacts$"
+                    [dataSource]="eleves$"
                     #recentTransactionsTable>
 
-                    <!-- Transaction ID -->
                     
+         
+            
                     <ng-container matColumnDef="transactionId">
                         <th
                             mat-header-cell
@@ -137,12 +138,12 @@
                             *matCellDef="let eleves">
                             <img
                             *ngIf="eleves.image"
-                            class="w-14 h-14 rounded-full "
+                            class="w-10 h-10 rounded ring-2 ring-gray-300 dark:ring-gray-300"
                             [src]= "eleves.image"
-                            [alt]="'Contact avatar'">
+                            [alt]="'Eleve avatar'">
 
                             <!-- <div  *ngIf="!eleves.image" class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
-                                {{contact.nom.charAt(0)}}
+                                {{eleve.nom.charAt(0)}}
                             </div> -->
                         </td>
                        
@@ -248,17 +249,21 @@
                         class="order-row h-16"
                         mat-row
                         *matRowDef="let row; columns: recentTransactionsTableColumns;"></tr>
-                    <tr
-                        class="h-16 border-0"
-                        mat-footer-row
-                        *matFooterRowDef="['recentOrdersTableFooter']"></tr>
+                  
                 </table>
+                <mat-paginator
+  [pageSize]="5"              
+  [pageSizeOptions]="[5, 10, 25]" 
+  [showFirstLastButtons]="true" 
+  [length]="pEleve"     
+  (page)="onPageChange($event)"> 
+</mat-paginator>
                             </div>
                         </div>
                     </div>
 
-                    <!-- No contacts -->
-                    <ng-template #noContacts>
+                    <!-- No eleves -->
+                    <ng-template #noEleves>
                         <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no eleves !</div>
                     </ng-template>
 

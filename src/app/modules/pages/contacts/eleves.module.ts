@@ -17,23 +17,25 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
-import { ContactsComponent } from './contacts.component';
-import { ContactsListComponent } from './list/list.component';
-import { ContactsDetailsComponent } from './details/details.component';
-import { contactsRoutes } from './contacts.routing';
+
+import { elevesRoutes } from './eleves.routing';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import moment from 'moment';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ElevesComponent } from './eleves.component';
+import { ElevesListComponent } from './list/list.component';
+import { ElevesDetailsComponent } from './details/details.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 @NgModule({
     declarations: [
-        ContactsComponent,
-        ContactsListComponent,
-        ContactsDetailsComponent
+        ElevesComponent,
+        ElevesListComponent,
+        ElevesDetailsComponent
     ],
     imports     : [
-        RouterModule.forChild(contactsRoutes),
+        RouterModule.forChild(elevesRoutes),
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -52,7 +54,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
         MatTooltipModule,
         FuseFindByKeyPipeModule,
         SharedModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatPaginatorModule
     ],
     providers   : [
         {
@@ -71,6 +74,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
         }
     ]
 })
-export class ContactsModule
+export class ElevesModule
 {
 }

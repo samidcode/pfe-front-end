@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <!-- Contact -->
+        <!-- Eleve -->
         <div class="relative flex flex-col flex-auto items-center p-6 pt-0 sm:p-12 sm:pt-0">
             <div class="w-full max-w-3xl">
 
@@ -35,13 +35,13 @@
                     <div class="flex items-center justify-center w-32 h-32 rounded-full overflow-hidden ring-4 ring-bg-card">
                         <img
                             class="object-cover w-full h-full"
-                            *ngIf="contact.image"
-                            [src]= "contact.image"
+                            *ngIf="eleve.image"
+                            [src]= "eleve.image"
                             >
                         <div
                             class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
-                            *ngIf="!contact.image">
-                            {{contact.nom.charAt(0)}}
+                            *ngIf="!eleve.image">
+                            {{eleve.nom.charAt(0)}}
                         </div>
                     </div>
                     <!-- Actions -->
@@ -58,90 +58,41 @@
                 </div>
 
                 <!-- Name -->
-                <div class="mt-3 text-4xl font-bold truncate">{{contact.prenom |titlecase}} {{contact.nom}}</div>
+                <div class="mt-3 text-4xl font-bold truncate">{{eleve.prenom |titlecase}} {{eleve.nom}}</div>
 
        
                 <div class="flex flex-col mt-4 pt-6 border-t space-y-8">
           
 
-                    <!-- Company -->
-                        <div class="flex sm:items-center">
-                            <mat-icon [svgIcon]="'heroicons_outline:office-building'"></mat-icon>
-                            <div class="ml-6 leading-6">{{contact.idMassar}}</div>
-                        </div>
+                <!-- Code massare -->
+                        <div class="relative">
 
-                    <!-- Emails -->
-                        <div class="flex">
-                            <mat-icon [svgIcon]="'heroicons_outline:mail'"></mat-icon>
-                            <div class="min-w-0 ml-6 space-y-1">
-                                    <div class="flex items-center leading-6">
-                                        <a
-                                            class="hover:underline text-primary-500"
-                                            target="_blank">
-                                            {{contact.email}}
-                                        </a>
-                                        <div
-                                            class="text-md truncate text-secondary"
-                                            >
-                                            <span class="mx-2">&bull;</span>
-                                            <span class="font-medium">{{contactemail}}</span>
-                                        </div>
-                                    </div>
-                            </div>
-                        </div>
+                             <input disabled  [value]="eleve.idMassar" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                            <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Code Massare</label>
 
-                    <!-- Phone -->
-                 <!--    <ng-container *ngIf="contact.phoneNumbers.length">
-                        <div class="flex">
-                            <mat-icon [svgIcon]="'heroicons_outline:phone'"></mat-icon>
-                            <div class="min-w-0 ml-6 space-y-1">
-                                <ng-container *ngFor="let phoneNumber of contact.phoneNumbers; trackBy: trackByFn">
-                                    <div class="flex items-center leading-6">
-                                        <div
-                                            class="hidden sm:flex w-6 h-4 overflow-hidden"
-                                            [matTooltip]="getCountryByIso(phoneNumber.country).nom"
-                                            [style.background]="'url(\'/assets/images/apps/contacts/flags.png\') no-repeat 0 0'"
-                                            [style.backgroundSize]="'24px 3876px'"
-                                            [style.backgroundPosition]="getCountryByIso(phoneNumber.country).flagImagePos"></div>
-                                        <div class="sm:ml-3 font-mono">{{getCountryByIso(phoneNumber.country).code}}</div>
-                                        <div class="ml-2.5 font-mono">{{phoneNumber.phoneNumber}}</div>
-                                        <div
-                                            class="text-md truncate text-secondary"
-                                            *ngIf="phoneNumber.label">
-                                            <span class="mx-2">&bull;</span>
-                                            <span class="font-medium">{{phoneNumber.label}}</span>
-                                        </div>
-                                    </div>
-                                </ng-container>
-                            </div>
                         </div>
-                    </ng-container> -->
+                    <!-- Payeur Cin -->
+                        <div class="relative">
 
-                    <!-- Address -->
-                  <!--   <ng-container *ngIf="contact.address">
-                        <div class="flex sm:items-center">
-                            <mat-icon [svgIcon]="'heroicons_outline:location-marker'"></mat-icon>
-                            <div class="ml-6 leading-6">{{contact.address}}</div>
-                        </div>
-                    </ng-container> -->
+                            <input disabled  value="{{eleve.payeur.cin }}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                           <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Payeur CIN</label>
 
-                    <!-- Birthday -->
-                    <ng-container *ngIf="contact.dateNaissance">
-                        <div class="flex sm:items-center">
-                            <mat-icon [svgIcon]="'heroicons_outline:cake'"></mat-icon>
-                            <div class="ml-6 leading-6">{{contact.dateNaissance | date:'longDate'}}</div>
-                        </div>
-                    </ng-container>
+                       </div>
+                       <!-- Date de naissance -->
+                        <div class="relative">
 
-                    <!-- Notes -->
-                   <!--  <ng-container *ngIf="contact.notes">
-                        <div class="flex">
-                            <mat-icon [svgIcon]="'heroicons_outline:menu-alt-2'"></mat-icon>
-                            <div
-                                class="max-w-none ml-6 prose prose-sm"
-                                [innerHTML]="contact.notes"></div>
-                        </div>
-                    </ng-container> -->
+                            <input disabled  value="{{eleve.dateNaissance| date: 'MM/dd/yyyy'}}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                           <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Date de naissance</label>
+
+                       </div>
+                  <!-- Classe -->
+                  <div class="relative">
+
+                    <input disabled  value="{{eleve.classe.nom}}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                   <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Classe</label>
+
+               </div>
+
                 </div>
 
             </div>
@@ -173,10 +124,10 @@
             </div>
         </div>
 
-        <!-- Contact form -->
+        <!-- Eleve form -->
         <div class="relative flex flex-col flex-auto items-center px-6 sm:px-12">
             <div class="w-full max-w-3xl">
-                <form [formGroup]="contactForm">
+                <form [formGroup]="eleveForm">
 
                     <!-- Avatar -->
                     <div class="flex flex-auto items-end -mt-16">
@@ -216,32 +167,36 @@
                             <!-- Image/Letter -->
                             <img
                                 class="object-cover w-full h-full"
-                                *ngIf="contact.image "
-                                [src]= "contact.image"
+                                *ngIf="eleve.image "
+                                [src]= "eleve.image"
                                 >
                             <div
                                 class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
-                                *ngIf="!contact.image">
-                                {{contact.nom?contact.nom.charAt(0):"N"}}
+                                *ngIf="!eleve.image">
+                                {{eleve.nom?eleve.nom.charAt(0):"N"}}
                             </div>
                         </div>
                     </div>
 
                     <!-- Name -->
-                    <div class="flex">
+                    <div class="mt-8">
                         <mat-form-field class="fuse-mat-no-subscript w-full">
-                            <mat-label>nom</mat-label>
+                            <mat-label id="floating_filled">nom</mat-label>
                             <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
                                 [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
                             <input
+                            for="floating_filled"
                                 matInput
                                 [formControlName]="'nom'"
                                 [placeholder]="'Nom'"
                                 [spellcheck]="false">
                         </mat-form-field>
                     </div>
+
+
+                    
 
 
                   
@@ -369,7 +324,7 @@
                             class="ml-2"
                             mat-flat-button
                             [color]="'primary'"
-                            [disabled]="contactForm.invalid"
+                            [disabled]="eleveForm.invalid"
                             [matTooltip]="'Save'"
                             (click)="addOrupdate()">
                             Save
