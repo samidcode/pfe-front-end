@@ -8,6 +8,7 @@ export class Eleve {
     dateNaissance: string;
     payeur:Payeur;
     classe:any;
-
+    image:string;
+    imageType:string;
   }
   

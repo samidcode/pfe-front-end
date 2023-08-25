@@ -1,0 +1,273 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <mat-drawer-container
+        class="flex-auto h-full bg-card dark:bg-transparent"
+        (backdropClick)="onBackdropClicked()">
+
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-full md:w-160 dark:bg-gray-900"
+            [mode]="drawerMode"
+            [opened]="false"
+            [position]="'end'"
+            [disableClose]="true"
+            #matDrawer>
+            <router-outlet></router-outlet>
+        </mat-drawer>
+
+        <mat-drawer-content class="flex flex-col">
+
+            <!-- Main -->
+            <div class="flex-auto">
+
+                <!-- Header -->
+                <div class="flex flex-col sm:flex-row md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b">
+
+                    <!-- Title -->
+                    <div>
+                        <div class="text-4xl font-extrabold tracking-tight leading-none">Élèves </div>
+                        <div class="ml-0.5 font-medium text-secondary">
+                            <ng-container *ngIf="contactsCount > 0">
+                                {{contactsCount}}
+                            </ng-container>
+                            {{contactsCount | i18nPlural: {
+                            '=0'   : 'No Élève',
+                            '=1'   : ' Élève',
+                            'other': ' Élèves'
+                        } }}
+                        </div>
+                    </div>
+
+                    <!-- Main actions -->
+                    <div class="flex items-center mt-4 sm:mt-0 md:mt-4">
+                        <!-- Search -->
+                        <div class="flex-auto">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded w-full min-w-50">
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                                <input
+                                    matInput
+                                    [formControl]="searchInputControl"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'Search contacts'">
+                            </mat-form-field>
+                        </div>
+                        <!-- Add contact button -->
+                        <button
+                        style="    margin-bottom: 21px;"
+                            class="ml-4"
+                            mat-flat-button
+                            [color]="'primary'"
+                            (click)="createContact()">
+                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                            <span class="ml-2 mr-1">Add</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Contacts list -->
+                <div class="relative">
+               
+
+
+
+                    <div class="h-400 min-h-400 max-h-400   border-gray-300 rounded-2xl">
+
+            
+                        <div class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+                      
+                     
+                            <div class="overflow-x-auto mx-6">
+                    <table
+                    class="w-full bg-transparent"
+                    mat-table
+                    matSort
+                    [dataSource]="contacts$"
+                    #recentTransactionsTable>
+
+                    <!-- Transaction ID -->
+                    
+                    <ng-container matColumnDef="transactionId">
+                        <th
+                            mat-header-cell
+                            mat-sort-header
+                            *matHeaderCellDef>
+                             ID
+                        </th>
+                        <td
+                            mat-cell
+                            *matCellDef="let eleves">
+                            <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
+                                {{eleves.id}}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                
+                    <!-- Date -->
+                    <ng-container matColumnDef="date">
+                        <th
+                            mat-header-cell
+                            mat-sort-header
+                            *matHeaderCellDef>
+                            Nom
+                        </th>
+                        <td
+                            mat-cell
+                            *matCellDef="let eleves">
+                            <span class="pr-6 whitespace-nowrap">
+                                {{eleves.nom }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="image">
+                        <th
+                        style="visibility: hidden;"
+                            mat-header-cell
+                            mat-sort-header
+                            *matHeaderCellDef>
+                            Image
+                        </th>
+                        <td
+                            mat-cell
+                            *matCellDef="let eleves">
+                            <img
+                            *ngIf="eleves.image"
+                            class="w-14 h-14 rounded-full "
+                            [src]= "eleves.image"
+                            [alt]="'Contact avatar'">
+
+                            <!-- <div  *ngIf="!eleves.image" class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                                {{contact.nom.charAt(0)}}
+                            </div> -->
+                        </td>
+                       
+                    </ng-container>
+
+                 
+
+                    <!-- Name -->
+                    <ng-container matColumnDef="name">
+                        <th
+                            mat-header-cell
+                            mat-sort-header
+                            *matHeaderCellDef>
+                            Prenom
+                        </th>
+                        <td
+                            mat-cell
+                            *matCellDef="let eleves">
+                            <span class="pr-6 whitespace-nowrap">
+                                {{eleves.prenom}}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Amount -->
+                    <ng-container matColumnDef="amount">
+                        <th
+                            mat-header-cell
+                            mat-sort-header
+                            *matHeaderCellDef>
+                            Code massare
+                        </th>
+                        <td
+                            mat-cell
+                            *matCellDef="let eleves">
+                            <span class="pr-6 font-medium whitespace-nowrap">
+                                {{eleves.idMassar }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Status -->
+                    <ng-container matColumnDef="status">
+                        <th
+                            mat-header-cell
+                            mat-sort-header
+                            *matHeaderCellDef>
+                            Date de Naissance
+                        </th>
+                        <td
+                            mat-cell
+                            *matCellDef="let eleves">
+                        <!--     <span
+                                class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
+                                [ngClass]="{'bg-red-200 text-red-800 dark:bg-red-600 dark:text-red-50': transaction.status === 'pending',
+                                            'bg-green-200 text-green-800 dark:bg-green-600 dark:text-green-50': transaction.status === 'completed'}">
+                                <span class="leading-relaxed whitespace-nowrap">pending</span>
+                            </span> -->  
+                             <span class="pr-6 font-medium whitespace-nowrap">
+                                {{eleves.dateNaissance | date: 'dd/MM/yyyy'}}
+                            </span>
+                            
+                        </td>
+                    </ng-container>
+
+
+
+                    <!-- Status -->
+  <ng-container matColumnDef="action">
+    <th
+        mat-header-cell
+        mat-sort-header
+        *matHeaderCellDef>
+        Actions
+    </th>
+    <td
+        mat-cell
+        *matCellDef="let eleves">
+        <a [routerLink]="['./', eleves.id]" class="info p-0 " data-original-title="" title="" style="margin: 0 8px 0 0;">
+            <mat-icon style="color: #975bf9;"    class="hoverable-icon icon-size-7"  svgIcon="heroicons_outline:eye"></mat-icon>
+        </a>
+     
+    
+        
+    </td>
+</ng-container>
+
+                    
+                    <!-- Footer -->
+                    <ng-container matColumnDef="recentOrdersTableFooter">
+                        <td
+                            class="py-6 px-0 border-0"
+                            mat-footer-cell
+                            *matFooterCellDef
+                            colspan="6">
+                        </td>
+                    </ng-container>
+
+                    <tr
+                        mat-header-row
+                        *matHeaderRowDef="recentTransactionsTableColumns"></tr>
+                    <tr
+                        class="order-row h-16"
+                        mat-row
+                        *matRowDef="let row; columns: recentTransactionsTableColumns;"></tr>
+                    <tr
+                        class="h-16 border-0"
+                        mat-footer-row
+                        *matFooterRowDef="['recentOrdersTableFooter']"></tr>
+                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- No contacts -->
+                    <ng-template #noContacts>
+                        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no eleves !</div>
+                    </ng-template>
+
+                </div>
+
+            </div>
+
+        </mat-drawer-content>
+
+    </mat-drawer-container>
+
+</div>
