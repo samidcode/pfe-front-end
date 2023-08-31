@@ -18,24 +18,24 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
 
-import { elevesRoutes } from './eleves.routing';
+import { payeursRoutes } from './payeurs.routing';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import moment from 'moment';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { ElevesComponent } from './eleves.component';
-import { ElevesListComponent } from './list/list.component';
-import { ElevesDetailsComponent } from './details/details.component';
+import { PayeursComponent } from './payeurs.component';
+import { PayeursListComponent } from './list/list.component';
+import { PayeursDetailsComponent } from './details/details.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 @NgModule({
     declarations: [
-        ElevesComponent,
-        ElevesListComponent,
-        ElevesDetailsComponent
+        PayeursComponent,
+        PayeursListComponent,
+        PayeursDetailsComponent
     ],
     imports     : [
-        RouterModule.forChild(elevesRoutes),
+        RouterModule.forChild(payeursRoutes),
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -74,6 +74,6 @@ import {MatPaginatorModule} from '@angular/material/paginator';
         }
     ]
 })
-export class ElevesModule
+export class PayeursModule
 {
 }

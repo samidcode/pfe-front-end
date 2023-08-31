@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@a
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ElevesService } from './eleves.service';
-import { Eleve, Country, Tag } from './eleves.types';
+import { Eleve } from './eleves.types';
 
 
 @Injectable({

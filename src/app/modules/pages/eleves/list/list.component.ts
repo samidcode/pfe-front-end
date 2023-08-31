@@ -6,7 +6,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Eleve, Country, PaginatedData } from '../eleves.types';
+import { Eleve, PaginatedData } from '../eleves.types';
 import { ElevesService } from '../eleves.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -27,7 +27,6 @@ export class ElevesListComponent implements OnInit, OnDestroy
     eleves$: Observable<Eleve[]>;
 
     elevesCount: number = 0;
-    countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
     selectedEleve: Eleve;
@@ -65,8 +64,6 @@ export class ElevesListComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
 
-    
-
         // Get the eleves
         this.eleves$ = this._elevesService.eleves$;
         this._elevesService.eleves$
@@ -88,7 +85,6 @@ export class ElevesListComponent implements OnInit, OnDestroy
         this._elevesService.eleve$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((eleve: Eleve) => {
-
                 // Update the selected eleve
                 this.selectedEleve = eleve;
 
@@ -98,17 +94,6 @@ export class ElevesListComponent implements OnInit, OnDestroy
 
      
 
-        // Subscribe to search input field value changes
-        this.searchInputControl.valueChanges
-            .pipe(
-                takeUntil(this._unsubscribeAll),
-                switchMap(query =>
-
-                    // Search
-                    this._elevesService.searchEleves(query)
-                )
-            )
-            .subscribe();
 
         // Subscribe to MatDrawer opened change
         this.matDrawer.openedChange.subscribe((opened) => {
@@ -121,25 +106,6 @@ export class ElevesListComponent implements OnInit, OnDestroy
                 this._changeDetectorRef.markForCheck();
             }
         });
-
-        // Subscribe to media changes
-        this._fuseMediaWatcherService.onMediaChange$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(({matchingAliases}) => {
-
-                // Set the drawerMode if the given breakpoint is active
-                if ( matchingAliases.includes('lg') )
-                {
-                    this.drawerMode = 'side';
-                }
-                else
-                {
-                    this.drawerMode = 'over';
-                }
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
 
         // Listen for shortcuts
         fromEvent(this._document, 'keydown')
@@ -220,10 +186,16 @@ export class ElevesListComponent implements OnInit, OnDestroy
     this._elevesService.elevePagination(pageIndex, pageSize).subscribe((elevesPagination:PaginatedData<Eleve>)=>{
 
             this.pEleve = elevesPagination.totalElements ; 
-            console.log(this.pEleve);
             
 
 
     });
   }
+
+    paymentMode(){
+
+            this._elevesService.paymentMode$.next(true);
+
+    }
+
 }

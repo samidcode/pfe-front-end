@@ -87,7 +87,6 @@ export class EleveActionComponent implements OnInit, OnDestroy
 
       reader.readAsDataURL(event.target.files[0]); // read file as data url
       this.selectedFile = event.target.files[0];  
-      console.log("image", this.selectedFile);
       
       reader.onload = (event:any) => { // called once readAsDataURL is completed
         this.url = event.target.result;
@@ -117,7 +116,6 @@ export class EleveActionComponent implements OnInit, OnDestroy
       public classChange(value: string) {
         
         this._eleveService.classAutoComplet(value).subscribe(data=>{
-            console.log("dataclass",data);
             
             this.classOptions = data;
         });
@@ -146,7 +144,6 @@ export class EleveActionComponent implements OnInit, OnDestroy
 
   this._eleveService.addData({eleve:eleve,image:this.selectedFile}).subscribe(data =>{
 
-    console.log("dataclass",data);
 
 
   })

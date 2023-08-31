@@ -1,0 +1,41 @@
+
+
+        <div class="calenda">
+            <div class="year-header">
+              <button   (click)="changeYear(-1)" mat-icon-button><mat-icon svgIcon="heroicons_outline:chevron-left"></mat-icon>
+              </button>
+              <h1 class="text-black font-extrabold rounded-lg  text-lg">{{ currentYear }}</h1>
+             
+              <button (click)="changeYear(1)" mat-icon-button>
+                <mat-icon [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+            </button>
+            </div>
+            <div class="months">
+              <div *ngFor="let month of months; let i = index" class="calendar-month" >
+               
+                <button mat-raised-button
+                [matTooltip]="getDate(currentYear, i + 1)| date: 'dd/MM/yyyy'" matTooltipPosition="above" data-toggle="tooltip" data-placement="top"  type="button" class="w-full h-full" [ngClass]="isMonthPaid(currentYear, i + 1)? 'outline-none text-white bg-green-700 hover:bg-green-800 ring-4 ring-green-300 font-medium rounded-lg text-lg px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800':'text-white bg-[#24292F]/50 hover:bg-[#4285F4]/55  focus:outline-none focus:ring-[#4285F4]/55 font-medium rounded-lg  dark:focus:ring-[#4285F4]/55 font-medium  text-lg px-5 py-2.5 mr-2 mb-2'">{{ month }}
+
+
+                
+
+                </button>
+    
+    
+    
+              </div>
+            </div>
+          </div>
+          
+    
+    
+
+
+
+
+
+
+
+  
+
+

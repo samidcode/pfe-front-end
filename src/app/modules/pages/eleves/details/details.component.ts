@@ -7,7 +7,7 @@ import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Eleve, Country, Tag } from '../eleves.types';
+import { Eleve} from '../eleves.types';
 import { ElevesListComponent } from '../list/list.component';
 import { ElevesService } from '../eleves.service';
 import { EleveService } from 'app/services/eleve.service';
@@ -26,20 +26,16 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
 
     editMode: boolean = false;
-    tags: Tag[];
     tagsEditMode: boolean = false;
-    filteredTags: Tag[];
     eleve: Eleve;
     eleveForm: FormGroup;
     eleves: Eleve[];
-    countries: Country[];
-    private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     payeurOptions: Object;
     classOptions: Object;
     selectedFile: File;
     url = null;
-  
+    paymentMode ;
 
     /**
      * Constructor
@@ -56,6 +52,7 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
         private _overlay: Overlay,
         private _viewContainerRef: ViewContainerRef,
         private eleveService: EleveService,
+        
     )
     {
     }
@@ -74,7 +71,7 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
         
         // Open the drawer
         this._elevesListComponent.matDrawer.open();
-
+            this.paymentMode = this._elevesService.paymentMode$.getValue();
         // Create the eleve form
         this.eleveForm = this._formBuilder.group({
             id          : [''],
@@ -100,7 +97,6 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
 
                 // Get the eleve
                 this.eleve = eleve;
-                    console.log("d5al",this.eleve);
                 // Patch values to the form
                 this.eleveForm.patchValue(eleve);
 
@@ -126,13 +122,12 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
     {
         // Unsubscribe from all subscriptions
        // this._unsubscribeAll.next();
+       this._elevesService.paymentMode$.next(false);
+
         this._unsubscribeAll.complete();
 
         // Dispose the overlays if they are still on the DOM
-        if ( this._tagsPanelOverlayRef )
-        {
-            this._tagsPanelOverlayRef.dispose();
-        }
+     
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -261,7 +256,7 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
 
                
                 
-                this._changeDetectorRef.markForCheck()
+                this._changeDetectorRef.markForCheck();
             };
             reader.readAsDataURL(event.target.files[0]); // read file as data URL
             
@@ -299,7 +294,6 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
 public classChange(value: string) {
 
 this._elevesService.classAutoComplet(value).subscribe(data=>{
-    console.log("dataclass",data);
     
     this.classOptions = data;
 });

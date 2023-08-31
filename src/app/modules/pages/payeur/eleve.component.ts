@@ -44,7 +44,6 @@ export class EleveComponent implements OnInit {
     }
     getEleve() {
         this.eleveService.getData().subscribe((eleves) => {
-            console.log(eleves);
 
             this.eleves = eleves;
         });

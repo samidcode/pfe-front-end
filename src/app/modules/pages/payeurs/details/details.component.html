@@ -1,0 +1,334 @@
+<div class="flex flex-col w-full"   >
+
+    <!-- View mode -->
+    <ng-container *ngIf="!editMode">
+
+        <!-- Header -->
+        <div class="relative w-full h-40 sm:h-15 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700">
+            <!-- Background -->
+            <ng-container >
+                <img
+                    class="absolute inset-0 object-cover w-full h-full"
+                    src="\assets\images\background.jpg">
+            </ng-container>
+            <!-- Close button -->
+            <div class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6">
+                <button
+                (click)="closeDrawer()"
+                    mat-icon-button
+                    [matTooltip]="'Close'"
+                    [routerLink]="['../']">
+                    <mat-icon
+                        class="text-black"
+                        [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <!-- Eleve -->
+        <div class="relative flex flex-col flex-auto items-center p-6 pt-0 sm:p-12 sm:pt-0">
+            <div class="w-full max-w-3xl">
+
+                <!-- Avatar and actions -->
+                <div class="flex flex-auto items-end -mt-16 mt-7	">
+                
+                    <!-- Actions -->
+                    <div class="flex items-center ml-auto mb-1">
+                        <button
+                            mat-stroked-button
+                            (click)="showEleves()">
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:user-group'"></mat-icon>
+                            <span class="ml-2">{{ !showPayeurEleves ? 'Show Eleves' : 'Hide Eleves' }}</span>
+                        </button>
+                        <button
+                        *ngIf="!showPayeurEleves"
+                        class="ml-2"
+                        mat-stroked-button
+                        (click)="toggleEditMode(true)">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+                        <span class="ml-2">Edit</span>
+                    </button>
+                    </div>
+                </div>
+                <!-- Name -->
+                <div class=" text-4xl font-bold truncate">{{payeur.prenom |titlecase}} {{payeur.nom}}</div>
+
+       
+                <div class="flex flex-col mt-4 pt-6 border-t space-y-8" *ngIf=" !showPayeurEleves else matTabContent" >
+          
+
+                <!-- Code massare -->
+                        <div class="relative">
+
+                             <input disabled  [value]="payeur.cin" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                            <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >CIN</label>
+
+                        </div>
+                    <!-- Payeur Cin -->
+                        <div class="relative">
+
+                            <input disabled  value="{{payeur.tele }}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                           <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Telephone</label>
+
+                       </div>
+                       <!-- Date de naissance -->
+                        <div class="relative">
+
+                            <input disabled  value="{{payeur.mail}}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                           <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >E-mail</label>
+
+                       </div>
+                  <!-- Classe -->
+                  <div class="relative">
+
+                    <input disabled  value="{{payeur.adresse}}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                   <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Adresse</label>
+
+               </div>
+
+                </div>
+
+            </div>
+        </div>
+<!-- 
+        <div class="grid gap-4 grid-cols-6 grid-rows-3 relative ml-auto mb-1 ml-5">
+            <div class="month  rounded-full	"><input class="monthButton"  type="checkbox" name="button1" id="button1">
+                <label class="bevel" for="button">January</label>
+                    </div>
+                    <div class="month"><input class="monthButton"  type="checkbox" name="button2" id="button2">
+                        <label class="bevel" for="button">February</label>
+                            </div>
+                            <div class="month"><input class="monthButton"  type="checkbox" name="button3" id="button3">
+                                <label class="bevel" for="button">Mars</label>
+                                    </div>
+                                    <div class="month"><input class="monthButton"  type="checkbox" name="button4" id="button">
+                                        <label class="bevel" for="button">April</label>
+                                    </div>
+                                            <div class="month"><input class="monthButton"  type="checkbox" name="button" id="button">
+                                                <label class="bevel" for="button">May</label>
+                                            </div>
+                                            <div class="month"><input class="monthButton"  type="checkbox" name="button" id="button">
+                                                <label class="bevel" for="button">June</label>
+                                            </div>
+          </div> -->
+
+
+        
+
+                
+    </ng-container>
+
+    <!-- Edit mode -->
+    <ng-container *ngIf="editMode">
+
+        <!-- Header -->
+        <div class="relative w-full h-40 sm:h-30 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700">
+            <!-- Background -->
+            <ng-container >
+                <img
+                    class="absolute inset-0 object-cover w-full h-full"
+                    src="\assets\images\background.jpg">
+            </ng-container>
+            <!-- Close button -->
+            <div class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6">
+                <button
+                (click)="closeDrawer()"
+                    mat-icon-button
+                    [matTooltip]="'Close'"
+                    [routerLink]="['../']">
+                    <mat-icon
+                        class="text-black"
+                        [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <!-- Payeur form -->
+        <div class="relative flex flex-col flex-auto items-center px-6 sm:px-12">
+            <div class="w-full max-w-3xl">
+                <form [formGroup]="payeurForm">
+
+                  
+
+                    <!-- Name -->
+                    <div class="mt-8">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label id="floating_filled">nom</mat-label>
+                            <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                            <input
+                            for="floating_filled"
+                                matInput
+                                [formControlName]="'nom'"
+                                [placeholder]="'Nom'"
+                                [spellcheck]="false">
+                        </mat-form-field>
+                    </div>
+
+
+                    
+
+
+                  
+
+                    <div class="flex">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Prenom</mat-label>
+                            <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:location-marker'"></mat-icon>
+                            <input
+                                matInput
+                                [formControlName]="'prenom'"
+                                [placeholder]="'Prenom'">
+                        </mat-form-field>
+                    </div>
+
+                  
+                    <div class="flex">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>CIN</mat-label>
+                            <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:cake'"></mat-icon>
+                            <input
+                                matInput
+                                [formControlName]="'cin'"
+                                [placeholder]="'CIN du payeur'">
+                          
+                            <mat-datepicker #birthdayDatepicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Telephone</mat-label>
+                            <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_outline:newspaper'"></mat-icon>
+                            <input
+                                matInput
+                                [formControlName]="'tele'"
+                                [placeholder]="'Telephone'">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Adresse</mat-label>
+                            <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_outline:newspaper'"></mat-icon>
+                            <input
+                                matInput
+                                [formControlName]="'adresse'"
+                                [placeholder]="'Adresse'">
+                        </mat-form-field>
+                    </div>
+
+
+                    
+                    <div class="flex">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>E-mail</mat-label>
+                            <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_outline:newspaper'"></mat-icon>
+                            <input
+                                matInput
+                                [formControlName]="'mail'"
+                                [placeholder]="'E-mail'">
+                        </mat-form-field>
+                    </div>
+              
+                        
+             
+
+                    <!-- Actions -->
+                    <div class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
+                        <!-- Delete -->
+                        <button
+                            mat-button
+                            [color]="'warn'"
+                            [matTooltip]="'Delete'"
+                            (click)="deletePayeur()">
+                            <mat-icon style="color: #f4585e;" class="hoverable-icon icon-size-5" svgIcon="heroicons_outline:trash"></mat-icon>
+
+                        </button>
+
+                     
+                        <!-- Cancel -->
+                        <button
+                            class="ml-auto"
+                            mat-button
+                            [matTooltip]="'Cancel'"
+                            (click)="closeDrawer()">
+                            Cancel
+                        </button>
+                        <!-- Save -->
+                        <button
+                            class="ml-2"
+                            mat-flat-button
+                            [color]="'primary'"
+                            [disabled]="payeurForm.invalid"
+                            [matTooltip]="'Save'"
+                            (click)="addOrupdate()">
+                            Save
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+
+<ng-template #matTabContent>
+
+
+
+   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-5 w-full min-w-0 mt-3">
+        <ng-container *ngIf="PayeurEleves; else noContacts">
+
+        <ng-container *ngFor="let eleve of PayeurEleves">
+            <div class="  w-60 h-50 flex flex-col flex-auto items-center bg-card shadow rounded-2xl overflow-hidden  hover:bg-hover">
+            
+                <div class="flex flex-col flex-auto w-full p-8 text-center">
+                    <div class="w-24 h-24 mx-auto rounded-full overflow-hidden">
+                        <img
+                            class="w-full h-full object-cover"
+                            [src]="eleve.image">
+                    </div >
+                    <div class="mt-4 ">{{eleve.nom}}{{eleve.prenom}}</div>
+                    <div class="text-secondary ">{{eleve.idMassar}}</div>
+                </div>
+        
+            </div>
+        </ng-container>
+    </ng-container>
+
+        <ng-template #noContacts>
+            <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no Eleves!</div>
+        </ng-template>
+    </div> 
+
+   
+      
+
+
+
+
+
+</ng-template>

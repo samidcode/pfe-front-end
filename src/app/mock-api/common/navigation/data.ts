@@ -18,10 +18,17 @@ export const defaultNavigation: FuseNavigationItem[] = [
     },
     {
         id   : 'eleve',
-        title: 'Élève',
+        title: 'Élèves',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
-        link : '/contact'
+        link : '/eleves'
+    },
+     {
+        id   : 'payeurs',
+        title: 'Payeurs',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/payeurs'
     }
 ];
 export const compactNavigation: FuseNavigationItem[] = [
@@ -41,11 +48,18 @@ export const compactNavigation: FuseNavigationItem[] = [
     },
     {
         id   : 'eleve',
-        title: 'Élève',
+        title: 'Élèves',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
-        link : '/contact'
-    }
+        link : '/eleves'
+    },
+    {
+       id   : 'payeurs',
+       title: 'Payeurs',
+       type : 'basic',
+       icon : 'heroicons_outline:chart-pie',
+       link : '/payeurs'
+   }
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
     {
@@ -64,11 +78,18 @@ export const futuristicNavigation: FuseNavigationItem[] = [
     },
     {
         id   : 'eleve',
-        title: 'Élève',
+        title: 'Élèves',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
-        link : '/contact'
-    }
+        link : '/eleves'
+    },
+    {
+       id   : 'payeurs',
+       title: 'Payeurs',
+       type : 'basic',
+       icon : 'heroicons_outline:chart-pie',
+       link : '/payeurs'
+   }
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
     {
@@ -87,9 +108,16 @@ export const horizontalNavigation: FuseNavigationItem[] = [
     },
     {
         id   : 'eleve',
-        title: 'Élève',
+        title: 'Élèves',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
-        link : '/contact'
-    }
+        link : '/eleves'
+    },
+    {
+       id   : 'payeurs',
+       title: 'Payeurs',
+       type : 'basic',
+       icon : 'heroicons_outline:chart-pie',
+       link : '/payeurs'
+   }
 ];

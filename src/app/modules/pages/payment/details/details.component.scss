@@ -1,0 +1,58 @@
+
+
+
+
+
+
+
+
+
+
+
+  
+  .year-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px;
+  }
+  
+  .months {
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: 10px;
+  }
+  
+  .calendar-month {
+	width: calc(100% / 3);
+	padding: 10px;
+	text-align: center;
+  }
+  
+  .paid {
+	background-color: green;
+	color: white;
+  }
+  
+
+
+
+
+
+
+.calenda{
+    margin-top: 4px;
+  display:inline-grid;
+  justify-content:center;
+  align-items:center;
+  background:#fff;
+  padding:20px;
+  border-radius:1px;
+ box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.3);
+  
+}
+
+
+  
+
+
