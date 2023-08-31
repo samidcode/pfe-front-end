@@ -10,7 +10,6 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Eleve} from '../eleves.types';
 import { ElevesListComponent } from '../list/list.component';
 import { ElevesService } from '../eleves.service';
-import { EleveService } from 'app/services/eleve.service';
 import * as alertFunctions from 'app/config/sweet-alerts';
 
 
@@ -51,7 +50,7 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
         private _router: Router,
         private _overlay: Overlay,
         private _viewContainerRef: ViewContainerRef,
-        private eleveService: EleveService,
+        private location: Location,
         
     )
     {
@@ -139,6 +138,7 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
      */
     closeDrawer(): Promise<MatDrawerToggleResult>
     {
+    
         return this._elevesListComponent.matDrawer.close();
     }
 

@@ -302,10 +302,10 @@
    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-5 w-full min-w-0 mt-3">
         <ng-container *ngIf="PayeurEleves; else noContacts">
 
-        <ng-container *ngFor="let eleve of PayeurEleves">
-            <div class="  w-60 h-50 flex flex-col flex-auto items-center bg-card shadow rounded-2xl overflow-hidden  hover:bg-hover">
+        <ng-container  *ngFor="let eleve of PayeurEleves">
+            <div  class="  w-60 h-50 flex flex-col flex-auto items-center bg-card shadow rounded-2xl overflow-hidden  hover:bg-hover">
             
-                <div class="flex flex-col flex-auto w-full p-8 text-center">
+                <div (click)="etatDePayment(eleve.id)" class="flex flex-col flex-auto w-full p-8 text-center">
                     <div class="w-24 h-24 mx-auto rounded-full overflow-hidden">
                         <img
                             class="w-full h-full object-cover"

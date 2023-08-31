@@ -93,7 +93,16 @@ export class ElevesListComponent implements OnInit, OnDestroy
             });
 
      
+            this.searchInputControl.valueChanges
+            .pipe(
+                takeUntil(this._unsubscribeAll),
+                switchMap(query =>
 
+                    // Search
+                    this._elevesService.searchEleves(query)
+                )
+            )
+            .subscribe();
 
         // Subscribe to MatDrawer opened change
         this.matDrawer.openedChange.subscribe((opened) => {

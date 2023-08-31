@@ -8,7 +8,6 @@ import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 
-import { EleveService } from 'app/services/eleve.service';
 import * as alertFunctions from 'app/config/sweet-alerts';
 import { ElevesService } from '../../eleves/eleves.service';
 import { Eleve } from '../../eleves/eleves.types';
@@ -57,7 +56,6 @@ export class PaymentDetailsComponent implements OnInit, OnDestroy
         private _router: Router,
         private _overlay: Overlay,
         private _viewContainerRef: ViewContainerRef,
-        private eleveService: EleveService,
     )
     {
     }

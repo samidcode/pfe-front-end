@@ -12,6 +12,7 @@ import { PayeursListComponent } from '../list/list.component';
 import { PayeursService } from '../payeurs.service';
 import * as alertFunctions from 'app/config/sweet-alerts';
 import { Eleve } from 'app/model/eleve';
+import { ElevesService } from '../../eleves/eleves.service';
 
 
 @Component({
@@ -51,6 +52,7 @@ export class PayeursDetailsComponent implements OnInit, OnDestroy
         private _changeDetectorRef: ChangeDetectorRef,
         private _payeursListComponent: PayeursListComponent,
         private _payeursService: PayeursService,
+        private _elevesService: ElevesService,
         private _formBuilder: FormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
@@ -279,20 +281,19 @@ displayP(option) {
 
   showEleves(){
 
-   
-    
         this.showPayeurEleves = !this.showPayeurEleves;
     
-    
-
     // Mark for check
     this._changeDetectorRef.markForCheck();
 
-        
-        
-
   }
+  etatDePayment(id){
 
+    this._elevesService.paymentMode$.next(true);
+
+this._router.navigate(['../eleves/',id]);
+                    
+}
 
 
 }

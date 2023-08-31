@@ -109,7 +109,6 @@
                     [(ngModel)]="pCin"
                     placeholder="CIN du payeur"
                     matInput
-                    (input)="payeurChange($event.target.value)"
                     [matAutocomplete]="payeur">
              <mat-autocomplete  #payeur="matAutocomplete" [displayWith]="displayP.bind(this)">
                <mat-option *ngFor="let option of payeurOptions " [value]="option">
@@ -128,7 +127,6 @@
                     <input type="text"
                     [(ngModel)]="eClass"
                     placeholder="classe"
-                    (input)="classChange($event.target.value)"
                     matInput
                     [matAutocomplete]="class">
              <mat-autocomplete autoActiveFirstOption #class="matAutocomplete" [displayWith]="displayC.bind(this)">

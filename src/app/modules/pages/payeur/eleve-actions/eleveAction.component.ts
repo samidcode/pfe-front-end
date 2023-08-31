@@ -4,7 +4,6 @@ import { Observable, Subject, map, startWith, takeUntil } from 'rxjs';
 import { FuseConfigService } from '@fuse/services/config';
 import { AppConfig, Scheme, Theme, Themes } from 'app/core/config/app.config';
 import { Layout } from 'app/layout/layout.types';
-import { EleveService } from 'app/services/eleve.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -66,7 +65,6 @@ export class EleveActionComponent implements OnInit, OnDestroy
     constructor(
         private _router: Router,
         private _fuseConfigService: FuseConfigService,
-        private _eleveService : EleveService,
         private fb: FormBuilder
     )
     {
@@ -105,21 +103,9 @@ export class EleveActionComponent implements OnInit, OnDestroy
      
 
     }
-    public payeurChange(value: string) {
-                
-                this._eleveService.payeurAutoComplet(value).subscribe(data=>{
-                    
-                    this.payeurOptions = data;
-                });
-      }
 
-      public classChange(value: string) {
-        
-        this._eleveService.classAutoComplet(value).subscribe(data=>{
-            
-            this.classOptions = data;
-        });
-}
+
+
     /**
      * On destroy
      */
@@ -142,11 +128,7 @@ export class EleveActionComponent implements OnInit, OnDestroy
         payeur : this.pCin
   }
 
-  this._eleveService.addData({eleve:eleve,image:this.selectedFile}).subscribe(data =>{
 
-
-
-  })
 
 
     }
