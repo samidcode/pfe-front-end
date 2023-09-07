@@ -10,6 +10,7 @@ import { Eleve, PaginatedData } from './eleves.types';
 export class ElevesService
 {
    
+   
   eleve : Eleve ;
     private baseUrl = 'http://localhost:8080/api/'; 
     // Private
@@ -21,7 +22,7 @@ export class ElevesService
      */
     constructor(private _httpClient: HttpClient)
     {
-        this.getEleves()
+        
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -53,26 +54,8 @@ export class ElevesService
     
 
     /**
-     * Getter for tags
-
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
      * Get eleves
      */
-    getEleves(): Observable<Eleve[]>
-    {
-        return this._httpClient.get<Eleve[]>(this.baseUrl+'eleves').pipe(
-            tap((eleves) => {
-                this._eleves.next(eleves);
-            })
-        );
-    }
-
-
     elevePagination(pageIndex: number, pageSize: number): Observable<PaginatedData<Eleve>> {
         const url = `${this.baseUrl}eleves/elevePagination?page=${pageIndex}&size=${pageSize}`;
         return this._httpClient.get<PaginatedData<Eleve>>(url).pipe(
@@ -121,6 +104,7 @@ export class ElevesService
                         classe:null,
                         image:null,
                         imageType:null,
+                        statue:null,
     
                     } ;
                 } else {
@@ -162,16 +146,13 @@ export class ElevesService
             eleve.id = null ;
         }
         
-        const formData = new FormData() ;
-        formData.append('eleve', JSON.stringify(eleve));
-        
       const url = `${this.baseUrl}eleves`; 
-      return this._httpClient.post(url,formData).pipe(
+      return this._httpClient.post(url,eleve).pipe(
         tap((newEleve:Eleve) => {
 
             let eleves = this._eleves.getValue()
 
-            if (eleve.id != "NewEleve") {
+            if (eleve.id != null) {
                 let eleves = this._eleves.getValue()
 
                 // Find the index of the updated eleve
@@ -183,6 +164,8 @@ export class ElevesService
                    // Update the eleves
                 
             }else{
+                console.log("newEleve",newEleve);
+                
                 this._eleves.next([newEleve, ...eleves]);
 
 

@@ -33,6 +33,7 @@
                 <div class="flex flex-auto items-end -mt-16">
                     <!-- Avatar -->
                     <div class="flex items-center justify-center w-32 h-32 rounded-full overflow-hidden ring-4 ring-bg-card">
+                        
                         <img
                             class="object-cover w-full h-full"
                             *ngIf="eleve.image"
@@ -54,7 +55,18 @@
                                 [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
                             <span class="ml-2">Edit</span>
                         </button>
-                    </div>
+                   
+                        <button
+                        mat-stroked-button
+                        class="ml-2"
+                        (click)="makePayment()">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+                        <span class="ml-2">pay</span>
+                    </button>
+                </div>
+
                 </div>
 
                 <!-- Name -->
@@ -165,11 +177,14 @@
                                 </div>
                             </div>
                             <!-- Image/Letter -->
+                          
                             <img
                                 class="object-cover w-full h-full"
-                                *ngIf="eleve.image "
+                                *ngIf="eleve?.image "
                                 [src]= "eleve.image"
-                                >
+                                > 
+                                
+                          
                             <div
                                 class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
                                 *ngIf="!eleve.image">
@@ -343,7 +358,7 @@
 
    
 
-    <payment-details></payment-details>
+    <payment-details [eleve]="eleve"></payment-details>
    
    
    </ng-template>

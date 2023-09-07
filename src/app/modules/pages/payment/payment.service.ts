@@ -207,4 +207,99 @@ export class PaymentsService
         const url = `${this.baseUrl}classes/autocomplet`; 
         return this._httpClient.post(url,name);
       }
+
+
+
+      transformData(inputData: any[]): { year: number; months: { month: number; date: string }[] }[] {
+        const transformedData: { [year: string]: { [month: string]: string } } = {};
+      
+        inputData.forEach(payment => {
+          const year = parseInt(payment.yearP);
+          const month = new Date(`${payment.moisP} 1, ${year}`).getMonth() + 1;
+      
+          if (!transformedData[year]) {
+            transformedData[year] = {};
+          }
+      
+          transformedData[year][month] = payment.date;
+        });
+      
+        return Object.keys(transformedData).map(year => ({
+          year: parseInt(year),
+          months: Object.keys(transformedData[year]).map(month => ({
+            month: parseInt(month),
+            date: transformedData[year][month],
+          })),
+        }));
+      }
+
+
+
+      isMonthPaid(year: number, monthNumber: number, paidMonths): boolean {
+        const paidYear = paidMonths.find(paid => paid.year === year);
+    
+        if (paidYear) {
+            const isMonthIncluded = paidYear.months.some(p => p.month === monthNumber);
+            return isMonthIncluded;
+        }
+    
+        return false;
+    }
+
+
+ 
+    /**
+     * Get payment by id
+     */
+    getPaymentById(id: string): Observable<Payment>
+    {
+        return this._payments.pipe(
+            take(1),
+            map((payments) => {
+
+                if (id=="NewEleve") {
+                     this.payment = {
+                        id: null,
+  
+                        date: null,
+                         montant: null,
+                         moisP:null,
+                    
+                         yearP:null,
+                      objet:null,
+                    
+                       
+                        payeur :null,
+                    
+                      eleve: null,
+    
+                    } ;
+                } else {
+
+                     this.payment = payments.find(item => item.id == id) || null;
+
+                }
+
+                // Find the payment
+                   
+                    
+                // Update the payment
+                this._payment.next(this.payment);
+
+                // Return the payment
+                return this.payment;
+            }),
+            switchMap((payment) => {
+
+                if ( !payment )
+                {
+                    return throwError('Could not found payment with id of ' + id + '!');
+                }
+
+                return of(payment);
+            })
+        );
+    }
+
+
 }

@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ElevesService } from './eleves.service';
-import { Eleve } from './eleves.types';
+import { PaymentsService } from './payment.service';
+import { Payment } from './payment.types';
 
 
 @Injectable({
     providedIn: 'root'
 })
-export class ElevesResolver implements Resolve<any>
+export class PaymentsResolver implements Resolve<any>
 {
     /**
      * Constructor
      */
-    constructor(private _elevesService: ElevesService)
+    constructor(private _paymentsService: PaymentsService)
     {
     }
 
@@ -30,20 +30,20 @@ export class ElevesResolver implements Resolve<any>
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
     {
-        return this._elevesService.elevePagination(0,10);
+        return this._paymentsService.paymentPagination(0,10);
     }
 }
 
 @Injectable({
     providedIn: 'root'
 })
-export class ElevesEleveResolver implements Resolve<any>
+export class PaymentsPaymentResolver implements Resolve<any>
 {
     /**
      * Constructor
      */
     constructor(
-        private _elevesService: ElevesService,
+        private _paymentsService: PaymentsService,
         private _router: Router
     )
     {
@@ -59,11 +59,11 @@ export class ElevesEleveResolver implements Resolve<any>
      * @param route
      * @param state
      */
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Eleve>
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Payment>
     {
-        return this._elevesService.getEleveById(route.paramMap.get('id'))
+        return this._paymentsService.getPaymentById(route.paramMap.get('id'))
                    .pipe(
-                       // Error here means the requested eleve is not available
+                       // Error here means the requested payment is not available
                        catchError((error) => {
 
                            // Log the error

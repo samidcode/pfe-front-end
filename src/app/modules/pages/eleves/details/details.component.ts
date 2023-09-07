@@ -11,11 +11,14 @@ import { Eleve} from '../eleves.types';
 import { ElevesListComponent } from '../list/list.component';
 import { ElevesService } from '../eleves.service';
 import * as alertFunctions from 'app/config/sweet-alerts';
+import { MatDialog } from '@angular/material/dialog';
+import { PaymentDetailsComponent } from '../../payment/details/details.component';
 
 
 @Component({
     selector       : 'eleves-details',
     templateUrl    : './details.component.html',
+    styles:['.backdropBackground{    backdrop-filter: blur(9px); }'],
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -50,7 +53,7 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
         private _router: Router,
         private _overlay: Overlay,
         private _viewContainerRef: ViewContainerRef,
-        private location: Location,
+        public dialog: MatDialog,
         
     )
     {
@@ -306,4 +309,16 @@ displayP(option) {
   displayC(option) {
     return option ? `${option.nom}` : '';
   }
+
+
+  makePayment(){
+
+     this.dialog.open(PaymentDetailsComponent, {
+      
+        data:this.eleve,
+        backdropClass: 'backdropBackground',
+      });
+       // this._elevesService.paymentMode$.next(true);
+
+}
 }

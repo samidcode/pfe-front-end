@@ -23,12 +23,13 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { PaymentDetailsComponent } from './details/details.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 
 @NgModule({
     declarations: [
-       
-        PaymentDetailsComponent
+        PaymentDetailsComponent,
     ],
     imports     : [
         MatButtonModule,
@@ -50,7 +51,9 @@ import { MatIconModule } from '@angular/material/icon';
         FuseFindByKeyPipeModule,
         SharedModule,
         MatAutocompleteModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+        MatDialogModule,
+
     ],
     providers   : []
 })

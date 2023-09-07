@@ -34,7 +34,6 @@ import { PaymentDetailsComponent } from '../payment/details/details.component';
         ElevesComponent,
         ElevesListComponent,
         ElevesDetailsComponent,
-        PaymentDetailsComponent,
     ],
     imports     : [
         RouterModule.forChild(elevesRoutes),

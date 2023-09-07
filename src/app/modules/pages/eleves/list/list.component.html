@@ -136,11 +136,17 @@
                         <td
                             mat-cell
                             *matCellDef="let eleves">
+                            <div class="relative">
+
                             <img
                             *ngIf="eleves.image"
                             class="w-10 h-10 rounded-full ring-2 ring-gray-300 dark:ring-gray-300"
                             [src]= "eleves.image"
                             [alt]="'Eleve avatar'">
+                            <span class="bottom-0 left-7 absolute  w-3.5 h-3.5  border-2 border-white dark:border-gray-800 rounded-full"     [ngClass]="eleves.statue ? 'bg-green-700':'bg-red-700'"
+                            ></span>
+                            
+                        </div>
 
                             <!-- <div  *ngIf="!eleves.image" class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
                                 {{eleve.nom.charAt(0)}}
@@ -225,10 +231,7 @@
         <a [routerLink]="['./', eleves.id]" class="info p-0 " data-original-title="" title="" style="margin: 0 8px 0 0;">
             <mat-icon style="color: #975bf9;"    class="hoverable-icon icon-size-7"  svgIcon="heroicons_outline:eye"></mat-icon>
         </a>
-        <a [routerLink]="['./', eleves.id]" (click)="paymentMode()" class="info p-0 " data-original-title="" title="" style="margin: 0 8px 0 0;">
-            <mat-icon svgIcon="heroicons_outline:cash" class="hoverable-icon icon-size-7" ></mat-icon>
-
-        </a>
+   
     
 
     </td>
@@ -255,7 +258,7 @@
                   
                 </table>
                 <mat-paginator
-  [pageSize]="5"              
+  [pageSize]="10"              
   [pageSizeOptions]="[5, 10, 25]" 
   [showFirstLastButtons]="true" 
   [length]="pEleve"     

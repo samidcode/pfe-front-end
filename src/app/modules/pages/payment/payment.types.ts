@@ -17,3 +17,11 @@ export interface Payment
 
   eleve: Eleve;
 }
+export interface PaginatedData<T>
+{
+    content: T[];
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+}

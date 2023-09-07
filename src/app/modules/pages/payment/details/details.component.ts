@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, Input, OnDestroy, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -13,6 +13,8 @@ import { ElevesService } from '../../eleves/eleves.service';
 import { Eleve } from '../../eleves/eleves.types';
 import { PaymentsService } from '../payment.service';
 import { Payment } from '../payment.types';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PaymentObject } from '../payment-object.enum';
 
 
 @Component({
@@ -27,7 +29,6 @@ export class PaymentDetailsComponent implements OnInit, OnDestroy
 {
     editMode: boolean = false;
     tagsEditMode: boolean = false;
-    eleve: Eleve;
     eleveForm: FormGroup;
     payments: Payment[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -40,7 +41,9 @@ export class PaymentDetailsComponent implements OnInit, OnDestroy
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
       ];
-    
+    paymentMode:boolean =false;
+    selectedPaymentObject: PaymentObject;
+
 
     /**
      * Constructor
@@ -49,6 +52,7 @@ export class PaymentDetailsComponent implements OnInit, OnDestroy
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private _elevesService: ElevesService,
+
         private _paymentsService :PaymentsService,
         private _formBuilder: FormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
@@ -56,6 +60,8 @@ export class PaymentDetailsComponent implements OnInit, OnDestroy
         private _router: Router,
         private _overlay: Overlay,
         private _viewContainerRef: ViewContainerRef,
+        @Inject(MAT_DIALOG_DATA) public eleve: Eleve,
+
     )
     {
     }
@@ -64,14 +70,14 @@ export class PaymentDetailsComponent implements OnInit, OnDestroy
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
 
-
     
     /**
      * On init
      */
     ngOnInit(): void
     {
-       this.getpayment()
+     
+       this.getpayment(this.eleve.id);
     }
 
     /**
@@ -87,14 +93,14 @@ export class PaymentDetailsComponent implements OnInit, OnDestroy
      
     }
     
-getpayment(){
+getpayment(id){
     
-    this._paymentsService.getPaymentByEleve(51).subscribe(
+    this._paymentsService.getPaymentByEleve(id).subscribe(
         (payments:Payment[])=>{
 
              this.payments = payments;   
-            this.paidMonths =this.transformData(payments)
-            this._changeDetectorRef.markForCheck();
+            this.paidMonths =this._paymentsService.transformData(payments)
+           this._changeDetectorRef.markForCheck();
 
         }, error => {
             console.error('Error:', error);
@@ -147,14 +153,9 @@ displayP(option) {
   }
 
   isMonthPaid(year: number, monthNumber: number): boolean {
-    const paidYear = this.paidMonths.find(paid => paid.year === year);
+ 
 
-    if (paidYear) {
-        const isMonthIncluded = paidYear.months.some(p => p.month === monthNumber);
-        return isMonthIncluded;
-    }
-
-    return false;
+    return this._paymentsService.isMonthPaid(year,monthNumber,this.paidMonths);
 }
 
 getDate (year: number, monthNumber: number) : string | null {
@@ -171,29 +172,10 @@ getDate (year: number, monthNumber: number) : string | null {
 }
 
 
-   transformData(inputData: any[]): { year: number; months: { month: number; date: string }[] }[] {
-    const transformedData: { [year: string]: { [month: string]: string } } = {};
-  
-    inputData.forEach(payment => {
-      const year = parseInt(payment.yearP);
-      const month = new Date(`${payment.moisP} 1, ${year}`).getMonth() + 1;
-  
-      if (!transformedData[year]) {
-        transformedData[year] = {};
-      }
-  
-      transformedData[year][month] = payment.date;
-    });
-  
-    return Object.keys(transformedData).map(year => ({
-      year: parseInt(year),
-      months: Object.keys(transformedData[year]).map(month => ({
-        month: parseInt(month),
-        date: transformedData[year][month],
-      })),
-    }));
-  }
-  
+
+
+
+
 }
   
 

@@ -13,6 +13,8 @@ import { PayeursService } from '../payeurs.service';
 import * as alertFunctions from 'app/config/sweet-alerts';
 import { Eleve } from 'app/model/eleve';
 import { ElevesService } from '../../eleves/eleves.service';
+import { MatDialog } from '@angular/material/dialog';
+import { PaymentDetailsComponent } from '../../payment/details/details.component';
 
 
 @Component({
@@ -60,6 +62,7 @@ export class PayeursDetailsComponent implements OnInit, OnDestroy
         private _overlay: Overlay,
         private _viewContainerRef: ViewContainerRef,
         private payeurService: PayeursService,
+        public dialog: MatDialog,
     )
     {
     }
@@ -287,11 +290,16 @@ displayP(option) {
     this._changeDetectorRef.markForCheck();
 
   }
-  etatDePayment(id){
+  etatDePayment(eleve){
 
-    this._elevesService.paymentMode$.next(true);
+    //this._elevesService.paymentMode$.next(true);
+    this.dialog.open(PaymentDetailsComponent, {
+      
+        data:eleve,
+        backdropClass: 'backdropBackground',
+      });
 
-this._router.navigate(['../eleves/',id]);
+
                     
 }
 

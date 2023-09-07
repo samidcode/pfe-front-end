@@ -1,3 +1,4 @@
+import { Payment } from "../payment/payment.types";
 
 export interface Payeur
 {
@@ -8,7 +9,7 @@ export interface Payeur
     tele:string;
     mail:string;
     adresse:string;
-    payments :any;
+    payments :Payment;
 }
 
 export interface PaginatedData<T>

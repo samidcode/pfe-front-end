@@ -4,12 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 import { fromEvent, Observable, Subject } from 'rxjs';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { Eleve, PaginatedData } from '../eleves.types';
 import { ElevesService } from '../eleves.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { PaymentDetailsComponent } from '../../payment/details/details.component';
+import { PaymentsService } from '../../payment/payment.service';
 
 
 @Component({
@@ -47,9 +50,11 @@ export class ElevesListComponent implements OnInit, OnDestroy
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private _elevesService: ElevesService,
+        private _paymentService: PaymentsService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
-        private _fuseMediaWatcherService: FuseMediaWatcherService
+        private _fuseMediaWatcherService: FuseMediaWatcherService,
+   
     )
     {
     }
@@ -63,7 +68,7 @@ export class ElevesListComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-
+        this.loadData(0,10);
         // Get the eleves
         this.eleves$ = this._elevesService.eleves$;
         this._elevesService.eleves$
@@ -73,6 +78,8 @@ export class ElevesListComponent implements OnInit, OnDestroy
                 // Update the counts
                 this.elevesCount = eleves.length;
                     this.eleves = eleves;
+
+                    
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
@@ -80,7 +87,7 @@ export class ElevesListComponent implements OnInit, OnDestroy
 
             // Connect the paginator to the data source
             this.dataSource.paginator = this.paginator;
-            this.loadData(0,5);
+            this.loadData(0,10);
         // Get the eleve
         this._elevesService.eleve$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -201,10 +208,5 @@ export class ElevesListComponent implements OnInit, OnDestroy
     });
   }
 
-    paymentMode(){
-
-            this._elevesService.paymentMode$.next(true);
-
-    }
 
 }

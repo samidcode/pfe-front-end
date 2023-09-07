@@ -11,6 +11,7 @@ export interface Eleve
     classe:any;
     image:string;
     imageType:string;
+    statue:boolean;
 }
 
 export interface PaginatedData<T>
