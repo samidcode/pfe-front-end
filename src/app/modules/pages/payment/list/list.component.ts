@@ -6,48 +6,50 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Eleve, PaginatedData } from '../eleves.types';
-import { ElevesService } from '../eleves.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
 import { PaymentsService } from '../../payment/payment.service';
+import { PaginatedData, Payment } from '../payment.types';
 
 
 @Component({
-    selector       : 'eleves-list',
+    selector       : 'payments-list',
     templateUrl    : './list.component.html',
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ElevesListComponent implements OnInit, OnDestroy
+export class PaymentsListComponent implements OnInit, OnDestroy
 {
     @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
     @ViewChild(MatPaginator) paginator: MatPaginator;
-    dataSource = new MatTableDataSource<Eleve>();
+    dataSource = new MatTableDataSource<Payment>();
 
-    eleves$: Observable<Eleve[]>;
+    payments$: Observable<Payment[]>;
 
-    elevesCount: number = 0;
+    paymentsCount: number = 0;
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
-    selectedEleve: Eleve;
+    selectedPayment: Payment;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     recentTransactionsTableColumns: string[] = [
-        'image',
-        'amount',
-        'date',
-        'name',
-        'status',
-        'action',
+        'Eleve',
+        'Mois',
+        'Année',
+        'Montant',
+        'Type',
+        'CIN',
+        "date",
+        "action",
     ];
-    eleves: Eleve[];
+    payments: Payment[];
     /**
      * Constructor
      */
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _elevesService: ElevesService,
+        private _paymentsService: PaymentsService,
         private _paymentService: PaymentsService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
@@ -67,16 +69,17 @@ export class ElevesListComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         this.loadData(0,10);
-        // Get the eleves
-        this.eleves$ = this._elevesService.eleves$;
-        this._elevesService.eleves$
+        // Get the payments
+        this.payments$ = this._paymentsService.payments$;
+        this._paymentsService.payments$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((eleves: Eleve[]) => {
+            .subscribe((payments: Payment[]) => {
 
                 // Update the counts
-                this.elevesCount = eleves.length;
-                    this.eleves = eleves;
-
+                this.paymentsCount = payments.length;
+                    this.payments = payments;
+                        console.log("payment",this.payments);
+                        
                     
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -86,12 +89,12 @@ export class ElevesListComponent implements OnInit, OnDestroy
             // Connect the paginator to the data source
             this.dataSource.paginator = this.paginator;
             this.loadData(0,10);
-        // Get the eleve
-        this._elevesService.eleve$
+        // Get the payment
+        this._paymentsService.payment$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((eleve: Eleve) => {
-                // Update the selected eleve
-                this.selectedEleve = eleve;
+            .subscribe((payment: Payment) => {
+                // Update the selected payment
+                this.selectedPayment = payment;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -104,7 +107,7 @@ export class ElevesListComponent implements OnInit, OnDestroy
                 switchMap(query =>
 
                     // Search
-                    this._elevesService.searchEleves(query)
+                    this._paymentsService.searchPayments(query)
                 )
             )
             .subscribe();
@@ -113,8 +116,8 @@ export class ElevesListComponent implements OnInit, OnDestroy
         this.matDrawer.openedChange.subscribe((opened) => {
             if ( !opened )
             {
-                // Remove the selected eleve when drawer closed
-                this.selectedEleve = null;
+                // Remove the selected payment when drawer closed
+                this.selectedPayment = null;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -131,7 +134,7 @@ export class ElevesListComponent implements OnInit, OnDestroy
                 )
             )
             .subscribe(() => {
-                this.createEleve();
+                this.createPayment();
             });
     }
 
@@ -163,15 +166,15 @@ export class ElevesListComponent implements OnInit, OnDestroy
     }
 
     /**
-     * Create eleve
+     * Create payment
      */
-    createEleve(): void
+    createPayment(): void
     {
-        // Create the eleve
+        // Create the payment
                    
 
-            // Go to the new eleve
-            this._router.navigate(['./', "NewEleve"], {relativeTo: this._activatedRoute});
+            // Go to the new payment
+            this._router.navigate(['./', "NewPayment"], {relativeTo: this._activatedRoute});
 
             // Mark for check
         
@@ -188,7 +191,7 @@ export class ElevesListComponent implements OnInit, OnDestroy
         return item.id || index;
     }
 
-    pEleve;
+    pPayment;
       
       
       
@@ -197,9 +200,9 @@ export class ElevesListComponent implements OnInit, OnDestroy
   }
 
   loadData(pageIndex: number, pageSize: number) {
-    this._elevesService.elevePagination(pageIndex, pageSize).subscribe((elevesPagination:PaginatedData<Eleve>)=>{
+    this._paymentsService.paymentPagination(pageIndex, pageSize).subscribe((paymentsPagination:PaginatedData<Payment>)=>{
 
-            this.pEleve = elevesPagination.totalElements ; 
+            this.pPayment = paymentsPagination.totalElements ; 
             
 
 

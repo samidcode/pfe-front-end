@@ -21,17 +21,30 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import moment from 'moment';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import { PaymentDetailsComponent } from './details/details.component';
+import { PaymentStatusComponent } from './payment-status/status.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { PaymentsListComponent } from './list/list.component';
+import { paymentsRoutes } from './payment.routing';
+import { PaymentsDetailsComponent } from './details/details.component';
+import { PaymentsComponent } from './payment.component';
+import { LOCALE_ID} from '@angular/core';
+import { ModernModule } from '../invoice/modern.module';
+import { ModernComponent } from '../invoice/modern.component';
 
 
 
 @NgModule({
     declarations: [
-        PaymentDetailsComponent,
+        PaymentStatusComponent,
+        PaymentsListComponent,
+        PaymentsDetailsComponent,
+        PaymentsComponent,
+       ModernComponent
     ],
     imports     : [
+        RouterModule.forChild(paymentsRoutes),
+
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -53,7 +66,6 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatAutocompleteModule,
         MatPaginatorModule,
         MatDialogModule,
-
     ],
     providers   : []
 })

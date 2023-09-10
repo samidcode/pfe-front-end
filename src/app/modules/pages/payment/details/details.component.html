@@ -1,124 +1,351 @@
+<div class="flex flex-col w-full">
 
+    <!-- View mode -->
+    <ng-container *ngIf="!editMode">
 
-
-          <div class="card">
-            <div class="banner">
-      
-
-
-              <img
-              
-              [src]="eleve.image">
-              
-            </div>
-            <div class="menu">
-            </div>
-           
-
-            <h2 class="mt-4 name text-xl">{{eleve.nom}} {{eleve.prenom}}</h2>
-            <h2 class="name text-sm">{{eleve.idMassar}}</h2>
-            <div class="actions">
-              <ng-container *ngIf="!paymentMode; else temletpayment " >
-
-              <div class="calenda">
-                <div class="year-header">
-                  <button   (click)="changeYear(-1)" mat-icon-button><mat-icon svgIcon="heroicons_outline:chevron-left"></mat-icon>
-                  </button>
-                  <h1 class="text-black font-extrabold rounded-lg  text-lg">{{ currentYear }}</h1>
-                 
-                  <button (click)="changeYear(1)" mat-icon-button>
-                    <mat-icon [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
-                </button>
-                </div>
-                <div class="months">
-                  <div *ngFor="let month of months; let i = index" class="calendar-month" >
-                   
-                    <button mat-raised-button  (click)="paymentMode=!paymentMode"
-                    [matTooltip]="getDate(currentYear, i + 1)| date: 'dd/MM/yyyy'" matTooltipPosition="above" data-toggle="tooltip" data-placement="top"  type="button" class="w-full h-full" [ngClass]="isMonthPaid(currentYear, i + 1)? 'outline-none text-white bg-green-700 hover:bg-green-800 ring-4 ring-green-300 font-medium rounded-lg text-base	 px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800':'text-white bg-[#24292F]/50 hover:bg-[#4285F4]/55  focus:outline-none focus:ring-[#4285F4]/55 font-medium rounded-lg  dark:focus:ring-[#4285F4]/55 font-medium  text-base	 px-5 py-2.5 mr-2 mb-2'">{{ month }}
-    
-    
-                    
-    
-                    </button>
-        
-        
-        
-                  </div>
-                </div>
-              </div>
+        <!-- Header -->
+        <div class="relative w-full h-30 sm:h-30 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700">
+            <!-- Background -->
+            <ng-container >
+                <img
+                    class="absolute inset-0 object-cover w-full h-full"
+                    src="\assets\images\background.jpg">
             </ng-container>
+            <!-- Close button -->
+            <div class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6">
+                <button
+                (click)="closeDrawer()"
+                    mat-icon-button
+                    [matTooltip]="'Close'"
+                    [routerLink]="['../']">
+                    <mat-icon
+                        class="text-black"
+                        [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                </button>
+            </div>
+        </div>
 
-            <ng-template #temletpayment>
-              <form class="w-full max-w-lg">
-                <div class="flex flex-wrap -mx-3 mb-6 mt-3">
-                  <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                      Montant
-                    </label>
-                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="montant" type="text" placeholder="Montant">
-                    <p class="text-red-500 text-xs italic">Please fill out this field.</p>
-                  </div>
-                  <div class="w-full md:w-1/2 px-3">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-                      Objet
-                    </label>
-                    <select [(ngModel)]="selectedPaymentObject" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                      <option [value]="PaymentObject.MONTHLY">Mensuel </option>
-                      <option [value]="PaymentObject.REGISTRATION">Inscription</option>
-                      <option [value]="PaymentObject.TRANSPORTATION">Transport  </option>
-                    </select>
+        <!-- Eleve -->
+        <div class="relative flex flex-col flex-auto items-center p-6 pt-0 sm:p-12 sm:pt-0">
+            <div class="w-full max-w-3xl">
+
+                <!-- Avatar and actions -->
+                <div class="flex flex-auto items-end -mt-5">
+                    <!-- Avatar -->
                  
-                 
-                  </div>
+                    <!-- Actions -->
+                    <div class="flex items-center ml-auto mb-1">
+                        <button
+                            mat-stroked-button
+                            (click)="toggleEditMode(true)">
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+                            <span class="ml-2">Edit</span>
+                        </button>
+                   
+                        <button
+                        mat-stroked-button
+                        class="ml-2"
+                        (click)="makePayment()">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+                        <span class="ml-2">pay</span>
+                    </button>
                 </div>
-                <div class="flex flex-wrap -mx-3 mb-6">
-                  <div class="w-full px-3">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-                      Password
-                    </label>
-                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="password" placeholder="******************">
-                    <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
-                  </div>
+
                 </div>
-                <div class="flex flex-wrap -mx-3 mb-2">
-                  <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
-                      City
-                    </label>
-                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" placeholder="Albuquerque">
-                  </div>
-                  <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
-                      State
-                    </label>
-                    <div class="relative">
-                      <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                        <option>New Mexico</option>
-                        <option>Missouri</option>
-                        <option>Texas</option>
-                      </select>
-                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                      </div>
+
+   
+                    <div class="flex flex-col mt-4 pt-6 border-t space-y-8" >
+          
+
+                        <!-- id de payment -->
+                                <div class="relative">
+            
+                                     <input disabled  [value]="payment.id" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                                    <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >id de payment</label>
+            
+                                </div>
+                            <!-- Eleve nom et prenom -->
+                                <div class="relative">
+            
+                                    <input disabled  value="{{payment.eleve.nom }}{{payment.eleve.prenom }}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                                   <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Nom de l'eleve</label>
+            
+                               </div>
+                               <!-- Date de payment -->
+                                <div class="relative">
+            
+                                    <input disabled  value="{{payment.date| date: 'MM/dd/yyyy'}}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                                   <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Date de payment</label>
+            
+                               </div>
+                          <!-- mois de payment -->
+                          <div class="relative">
+            
+                            <input disabled  value="{{payment.moisP}}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                           <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Mois</label>
+            
+                       </div>
+            
+                        </div>
+
+              
+
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- Edit mode -->
+    <ng-container *ngIf="editMode">
+
+        <!-- Header -->
+        <div class="relative w-full h-40 sm:h-30 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700">
+            <!-- Background -->
+            <ng-container >
+                <img
+                    class="absolute inset-0 object-cover w-full h-full"
+                    src="\assets\images\background.jpg">
+            </ng-container>
+            <!-- Close button -->
+            <div class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6">
+                <button
+                (click)="closeDrawer()"
+                    mat-icon-button
+                    [matTooltip]="'Close'"
+                    [routerLink]="['../']">
+                    <mat-icon
+                        class="text-black"
+                        [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <!-- Eleve form -->
+        <div class="relative flex flex-col flex-auto items-center px-6 sm:px-12">
+            <div class="w-full max-w-3xl">
+                <form [formGroup]="eleveForm">
+
+                    <!-- Avatar -->
+                    <div class="flex flex-auto items-end -mt-16">
+                        <div class="relative flex items-center justify-center w-32 h-32 rounded-full overflow-hidden ring-4 ring-bg-card">
+                            <!-- Upload / Remove avatar -->
+                            <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+                            <div class="absolute inset-0 flex items-center justify-center z-20">
+                                <div>
+                                    <input
+                                        id="avatar-file-input"
+                                        class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
+                                        type="file"
+                                        [multiple]="false"
+                                        [accept]="'image/jpeg, image/png'"
+                                        (change)="uploadAvatar($event)"
+                                        >
+                                    <label
+                                        class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
+                                        for="avatar-file-input"
+                                        matRipple>
+                                        <mat-icon
+                                            class="text-white"
+                                            [svgIcon]="'heroicons_outline:camera'"></mat-icon>
+                                    </label>
+                                </div>
+                                <div>
+                                    <button
+                                    (click)="removeAvatar()"
+                                    type="button"
+                                       >
+                                        <mat-icon
+                                            class="text-white"
+                                            [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Image/Letter -->
+                          
+                            <img
+                                class="object-cover w-full h-full"
+                                *ngIf="eleve?.image "
+                                [src]= "eleve.image"
+                                > 
+                                
+                          
+                            <div
+                                class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                                *ngIf="!eleve.image">
+                                {{eleve.nom?eleve.nom.charAt(0):"N"}}
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">
-                      Zip
-                    </label>
-                    <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-zip" type="text" placeholder="90210">
-                  </div>
-                </div>
-              </form>
-    
-        </ng-template>
 
-          </div>
+                    <!-- Name -->
+                    <div class="mt-8">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label id="floating_filled">nom</mat-label>
+                            <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                            <input
+                            for="floating_filled"
+                                matInput
+                                [formControlName]="'nom'"
+                                [placeholder]="'Nom'"
+                                [spellcheck]="false">
+                        </mat-form-field>
+                    </div>
 
 
+                    
 
 
+                  
+
+                    <div class="flex">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Prenom</mat-label>
+                            <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:location-marker'"></mat-icon>
+                            <input
+                                matInput
+                                [formControlName]="'prenom'"
+                                [placeholder]="'Prenom'">
+                        </mat-form-field>
+                    </div>
+
+                  
+                    <div class="flex">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>dateNaissance</mat-label>
+                            <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:cake'"></mat-icon>
+                            <input
+                                matInput
+                                [matDatepicker]="birthdayDatepicker"
+                                [formControlName]="'dateNaissance'"
+                                [placeholder]="'Date de naissance'">
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="birthdayDatepicker">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #birthdayDatepicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex">
+                        <mat-form-field class="fuse-mat-no-subscript w-full">
+                            <mat-label>Code Massare</mat-label>
+                            <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_outline:newspaper'"></mat-icon>
+                            <input
+                                matInput
+                                [formControlName]="'idMassar'"
+                                [placeholder]="'Code Massare'">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex">
+                        <mat-form-field
+                            [ngClass]="formFieldHelpers"
+                            class="fuse-mat-no-subscript w-full">
+                            <mat-label>CIN du payeur</mat-label>
+                            <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                svgIcon="heroicons_outline:academic-cap"></mat-icon>
+                            <input type="text"
+                            [formControlName]="'payeur'"
+                            placeholder="CIN du payeur"
+                            matInput
+                            (input)="payeurChange($event.target.value)"
+                            [matAutocomplete]="payeur">
+                     <mat-autocomplete  #payeur="matAutocomplete" [displayWith]="displayP.bind(this)">
+                       <mat-option *ngFor="let option of payeurOptions " [value]="option">
+                         {{option.nom}}&nbsp;{{option.prenom}}
+                       </mat-option>
+                     </mat-autocomplete>
+                           
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex">
+                        <mat-form-field
+                            [ngClass]="formFieldHelpers"
+                            class="flex-auto">
+                            <input type="text"
+                            [formControlName]="'classe'"
+                            placeholder="classe"
+                            (input)="classChange($event.target.value)"
+                            matInput
+                            [matAutocomplete]="class">
+                            <mat-label>Classe</mat-label>
+                            <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                svgIcon="heroicons_outline:academic-cap"></mat-icon>
+                     <mat-autocomplete autoActiveFirstOption #class="matAutocomplete" [displayWith]="displayC.bind(this)">
+                       <mat-option *ngFor="let option of classOptions " [value]="option">
+                         {{option.nom}}
+                       </mat-option>
+                     </mat-autocomplete>
+                           
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
+                        <!-- Delete -->
+                        <button
+                            mat-button
+                            [color]="'warn'"
+                            [matTooltip]="'Delete'"
+                            (click)="deleteEleve()">
+                            <mat-icon style="color: #f4585e;" class="hoverable-icon icon-size-5" svgIcon="heroicons_outline:trash"></mat-icon>
+
+                        </button>
+
+                     
+                        <!-- Cancel -->
+                        <button
+                            class="ml-auto"
+                            mat-button
+                            [matTooltip]="'Cancel'"
+                            (click)="closeDrawer()">
+                            Cancel
+                        </button>
+                        <!-- Save -->
+                        <button
+                            class="ml-2"
+                            mat-flat-button
+                            [color]="'primary'"
+                            [disabled]="eleveForm.invalid"
+                            [matTooltip]="'Save'"
+                            (click)="addOrupdate()">
+                            Save
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </ng-container>
+</div>
 
 
-  
-      
+<ng-template #paymentMatTab>
+
+
+   
+
+    <payment-details [eleve]="eleve"></payment-details>
+   
+   
+   </ng-template>

@@ -29,6 +29,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/payeurs'
+    },
+    {
+        id   : 'payment',
+        title: 'Payment',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/payments'
     }
 ];
 export const compactNavigation: FuseNavigationItem[] = [
@@ -59,6 +66,13 @@ export const compactNavigation: FuseNavigationItem[] = [
        type : 'basic',
        icon : 'heroicons_outline:chart-pie',
        link : '/payeurs'
+   },
+   {
+       id   : 'payment',
+       title: 'Payment',
+       type : 'basic',
+       icon : 'heroicons_outline:chart-pie',
+       link : '/payments'
    }
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
@@ -89,6 +103,13 @@ export const futuristicNavigation: FuseNavigationItem[] = [
        type : 'basic',
        icon : 'heroicons_outline:chart-pie',
        link : '/payeurs'
+   },
+   {
+       id   : 'payment',
+       title: 'Payment',
+       type : 'basic',
+       icon : 'heroicons_outline:chart-pie',
+       link : '/payments'
    }
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
@@ -119,5 +140,12 @@ export const horizontalNavigation: FuseNavigationItem[] = [
        type : 'basic',
        icon : 'heroicons_outline:chart-pie',
        link : '/payeurs'
+   },
+   {
+       id   : 'payment',
+       title: 'Payment',
+       type : 'basic',
+       icon : 'heroicons_outline:chart-pie',
+       link : '/payments'
    }
 ];

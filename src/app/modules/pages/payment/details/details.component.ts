@@ -1,49 +1,44 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, Input, OnDestroy, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, Renderer2, TemplateRef, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { MatDrawer, MatDrawerToggleResult } from '@angular/material/sidenav';
+import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-
 import * as alertFunctions from 'app/config/sweet-alerts';
-import { ElevesService } from '../../eleves/eleves.service';
-import { Eleve } from '../../eleves/eleves.types';
-import { PaymentsService } from '../payment.service';
+import { MatDialog } from '@angular/material/dialog';
+import { PaymentStatusComponent } from '../../payment/payment-status/status.component';
 import { Payment } from '../payment.types';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { PaymentObject } from '../payment-object.enum';
+import { PaymentsListComponent } from '../list/list.component';
+import { PaymentsService } from '../payment.service';
+import { ModernComponent } from '../../invoice/modern.component';
 
 
 @Component({
-    selector       : 'payment-details',
+    selector       : 'payments-details',
     templateUrl    : './details.component.html',
-    styleUrls      : ['./details.component.scss'],
-
+    styles:['.backdropBackground{    backdrop-filter: blur(9px); }'],
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PaymentDetailsComponent implements OnInit, OnDestroy
+export class PaymentsDetailsComponent implements OnInit, OnDestroy
 {
+    @ViewChild('tagsPanel') private _tagsPanel: TemplateRef<any>;
+    @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
+
     editMode: boolean = false;
     tagsEditMode: boolean = false;
-    eleveForm: FormGroup;
+    payment: Payment;
+    paymentForm: FormGroup;
     payments: Payment[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     payeurOptions: Object;
     classOptions: Object;
     selectedFile: File;
     url = null;
-    paidMonths:{ year: number; months: { month: number; date: string }[] }[] = [];
-    months: string[] = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
-      ];
-    paymentMode:boolean =false;
-    selectedPaymentObject: PaymentObject;
-
+    paymentMode ;
 
     /**
      * Constructor
@@ -51,17 +46,17 @@ export class PaymentDetailsComponent implements OnInit, OnDestroy
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _elevesService: ElevesService,
-
-        private _paymentsService :PaymentsService,
+        private _paymentsListComponent: PaymentsListComponent,
+        private _invoiceCompenent : ModernComponent,
+        private _paymentsService: PaymentsService,
         private _formBuilder: FormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
         private _router: Router,
         private _overlay: Overlay,
         private _viewContainerRef: ViewContainerRef,
-        @Inject(MAT_DIALOG_DATA) public eleve: Eleve,
-
+        public dialog: MatDialog,
+        
     )
     {
     }
@@ -70,14 +65,58 @@ export class PaymentDetailsComponent implements OnInit, OnDestroy
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
 
+
     
     /**
      * On init
      */
     ngOnInit(): void
     {
-     
-       this.getpayment(this.eleve.id);
+        
+        // Open the drawer
+        this._paymentsListComponent.matDrawer.open();
+         //   this.paymentMode = this._paymentsService.payment$.getValue();
+        // Create the payment form
+        this.paymentForm = this._formBuilder.group({
+            id          : [''],
+            image      : [null],
+            nom        : ['', [Validators.required]],
+            prenom       : ['', [Validators.required]],
+            idMassar     : ['', [Validators.required]],
+            dateNaissance:[null, [Validators.required]],
+            payeur : [null, [Validators.required]],
+            classe : [null, [Validators.required]]
+
+        });
+
+    
+
+        // Get the payment
+        this._paymentsService.payment$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((payment: Payment) => {
+
+                // Open the drawer in case it is closed
+                this._paymentsListComponent.matDrawer.open();
+
+                // Get the payment
+                this.payment = payment;
+                // Patch values to the form
+                this.paymentForm.patchValue(payment);
+
+
+             
+
+                // Toggle the edit mode on creat payment
+            
+                
+                
+                this.toggleEditMode(  this.payment?.id === "NewPayment");
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
     }
 
     /**
@@ -87,29 +126,128 @@ export class PaymentDetailsComponent implements OnInit, OnDestroy
     {
         // Unsubscribe from all subscriptions
        // this._unsubscribeAll.next();
+    //   this._paymentsService.paymentMode$.next(false);
+
         this._unsubscribeAll.complete();
 
         // Dispose the overlays if they are still on the DOM
      
     }
-    
-getpayment(id){
-    
-    this._paymentsService.getPaymentByEleve(id).subscribe(
-        (payments:Payment[])=>{
 
-             this.payments = payments;   
-            this.paidMonths =this._paymentsService.transformData(payments)
-           this._changeDetectorRef.markForCheck();
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
 
-        }, error => {
-            console.error('Error:', error);
+    /**
+     * Close the drawer
+     */
+    closeDrawer(): Promise<MatDrawerToggleResult>
+    {
+    
+        return this._paymentsListComponent.matDrawer.close();
+    }
+
+    /**
+     * Toggle edit mode
+     *
+     * @param editMode
+     */
+    toggleEditMode(editMode: boolean | null = null): void
+    {
+        if ( editMode === null  )
+        {
+            this.editMode = !this.editMode;
         }
-    )
+        else
+        {
+            this.editMode = editMode;
+        }
 
-}
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+    }
 
-   
+    /**
+     * Update the payment
+     */
+    addOrupdate(): void
+    {
+        // Get the payment object
+        const payment = this.paymentForm.getRawValue();
+       // payment.image = this.payment.image;
+        // Update the payment on the server
+        this._paymentsService.updatePayment(payment.id, payment,this.selectedFile).subscribe((newPayment:Payment) => {
+
+         
+
+            this._router.navigate(['../', newPayment.id], {relativeTo: this._activatedRoute});
+
+            // Toggle the edit mode off
+            this.toggleEditMode(false);
+
+            this._changeDetectorRef.markForCheck();
+
+        });
+
+    }
+
+    /**
+     * Delete the payment
+     */
+    deletePayment(): void
+    {
+        const id = this.payment.id;
+        // Open the confirmation dialog
+        alertFunctions.confirmText().then((result) => {
+            if (result['isConfirmed']) {
+
+
+                // Get the current payment's id
+                 const id = this.payment.id;
+                 // Get the next/previous payment's id
+
+              
+                this._paymentsService.deletePayment(id)
+                .subscribe((isDeleted) => {
+
+
+                    const currentPaymentIndex = this.payments.findIndex(item => item.id == id);
+                    const nextPaymentIndex = currentPaymentIndex + ((currentPaymentIndex === (this.payments.length - 1)) ? -1 : 1);
+                    const nextPaymentId = (this.payments.length === 1 && this.payments[0].id === id) ? null : this.payments[nextPaymentIndex].id;
+
+                    // Return if the payment wasn't deleted...
+                
+                    // Navigate to the next payment if available
+                    
+                    if ( nextPaymentId )
+                    {
+
+                        this._router.navigate(['../', nextPaymentId], {relativeTo: this._activatedRoute});
+                    }
+                    // Otherwise, navigate to the parent
+                    else
+                    {
+                        this._router.navigate(['../'], {relativeTo: this._activatedRoute});
+                      
+                    }
+
+                    // Toggle the edit mode off
+                    this.toggleEditMode(false);
+                });
+
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    });
+
+    }
+
+
+
+
+
+  
+
 
     trackByFn(index: number, item: any): any
     {
@@ -118,7 +256,7 @@ getpayment(id){
 
     public payeurChange(value: string) {
                 
-        this._elevesService.payeurAutoComplet(value).subscribe(data=>{
+        this._paymentsService.paymentAutoComplet(value).subscribe(data=>{
             
             this.payeurOptions = data;
         });
@@ -126,7 +264,7 @@ getpayment(id){
 
 public classChange(value: string) {
 
-this._elevesService.classAutoComplet(value).subscribe(data=>{
+this._paymentsService.classAutoComplet(value).subscribe(data=>{
     
     this.classOptions = data;
 });
@@ -141,44 +279,15 @@ displayP(option) {
   }
 
 
+  makePayment(){
 
-
-  
- 
- 
-  currentYear: number = new Date().getFullYear();
-
-  changeYear(change: number): void {
-    this.currentYear += change;
-  }
-
-  isMonthPaid(year: number, monthNumber: number): boolean {
- 
-
-    return this._paymentsService.isMonthPaid(year,monthNumber,this.paidMonths);
+ /*     this.dialog.open(ModernComponent, {
+        width:'1000px',   // Set width to 600px
+  height:'100%',  // Set height to 530px
+        data:this.payment,
+        backdropClass: 'backdropBackground',
+      }); */
+       // this._paymentsService.paymentMode$.next(true);
+            this._invoiceCompenent.printInvoice(this.payment)
 }
-
-getDate (year: number, monthNumber: number) : string | null {
-    const paidYear = this.paidMonths.find(paid => paid.year === year);
-
-    if (paidYear) {
-        const monthEntry = paidYear.months.find(p => p.month === monthNumber);
-        if (monthEntry) {
-            return monthEntry.date;
-        }
-    }
-
-    return null;
 }
-
-
-
-
-
-
-}
-  
-
-  
-  
-

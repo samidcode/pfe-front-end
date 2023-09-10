@@ -26,7 +26,6 @@ import { ElevesComponent } from './eleves.component';
 import { ElevesListComponent } from './list/list.component';
 import { ElevesDetailsComponent } from './details/details.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import { PaymentDetailsComponent } from '../payment/details/details.component';
 
 
 @NgModule({

@@ -14,7 +14,7 @@ import * as alertFunctions from 'app/config/sweet-alerts';
 import { Eleve } from 'app/model/eleve';
 import { ElevesService } from '../../eleves/eleves.service';
 import { MatDialog } from '@angular/material/dialog';
-import { PaymentDetailsComponent } from '../../payment/details/details.component';
+import { PaymentStatusComponent } from '../../payment/payment-status/status.component';
 
 
 @Component({
@@ -293,7 +293,7 @@ displayP(option) {
   etatDePayment(eleve){
 
     //this._elevesService.paymentMode$.next(true);
-    this.dialog.open(PaymentDetailsComponent, {
+    this.dialog.open(PaymentStatusComponent, {
       
         data:eleve,
         backdropClass: 'backdropBackground',

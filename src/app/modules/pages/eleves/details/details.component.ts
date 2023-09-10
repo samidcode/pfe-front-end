@@ -12,7 +12,7 @@ import { ElevesListComponent } from '../list/list.component';
 import { ElevesService } from '../eleves.service';
 import * as alertFunctions from 'app/config/sweet-alerts';
 import { MatDialog } from '@angular/material/dialog';
-import { PaymentDetailsComponent } from '../../payment/details/details.component';
+import { PaymentStatusComponent } from '../../payment/payment-status/status.component';
 
 
 @Component({
@@ -313,7 +313,7 @@ displayP(option) {
 
   makePayment(){
 
-     this.dialog.open(PaymentDetailsComponent, {
+     this.dialog.open(PaymentStatusComponent, {
       
         data:this.eleve,
         backdropClass: 'backdropBackground',
