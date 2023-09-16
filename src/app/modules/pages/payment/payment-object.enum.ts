@@ -1,6 +1,6 @@
 
 export enum PaymentObject {
-    MONTHLY = 'MONTHLY',
-    REGISTRATION = 'REGISTRATION',
-    TRANSPORTATION = 'TRANSPORTATION',
+    MONTHLY = 'Mensuel',
+    REGISTRATION = 'Inscription',
+    TRANSPORTATION = 'Transport',
   }

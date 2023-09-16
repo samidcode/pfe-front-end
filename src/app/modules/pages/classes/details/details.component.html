@@ -25,14 +25,27 @@
             </div>
         </div>
 
-        <!-- Eleve -->
+        <!-- Classe -->
+        
         <div class="relative flex flex-col flex-auto items-center p-6 pt-0 sm:p-12 sm:pt-0">
             <div class="w-full max-w-3xl">
 
                 <!-- Avatar and actions -->
-                <div class="flex flex-auto items-end -mt-5">
+                <div class="flex flex-auto items-end -mt-16">
                     <!-- Avatar -->
-                 
+                    <div class="flex items-center justify-center w-32 h-32 rounded-full overflow-hidden ring-4 ring-bg-card">
+                        
+                        <img
+                            class="object-cover w-full h-full"
+                            *ngIf="classe.image"
+                            [src]= "classe.image"
+                            >
+                        <div
+                            class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                            *ngIf="!classe.image">
+                            {{classe.nom.charAt(0)}}
+                        </div>
+                    </div>
                     <!-- Actions -->
                     <div class="flex items-center ml-auto mb-1">
                         <button
@@ -51,48 +64,49 @@
                         <mat-icon
                             class="icon-size-5"
                             [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
-                        <span class="ml-2">Facture</span>
+                        <span class="ml-2">pay</span>
                     </button>
                 </div>
 
                 </div>
 
-   
-                    <div class="flex flex-col mt-4 pt-6 border-t space-y-8" >
+                <!-- Name -->
+                <div class="mt-2 text-4xl 	 font-bold truncate" [ngClass]="paymentMode?'text-center':''">{{classe.prenom |titlecase}} {{classe.nom}}</div>
+
+       
+                <div class="flex flex-col mt-4 pt-6 border-t space-y-8"*ngIf="!paymentMode else paymentMatTab" >
           
 
-                        <!-- id de payment -->
-                                <div class="relative">
-            
-                                     <input disabled  [value]="payment.id" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
-                                    <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >id de payment</label>
-            
-                                </div>
-                            <!-- Eleve nom et prenom -->
-                                <div class="relative">
-            
-                                    <input disabled  value="{{payment.eleve.nom }}{{payment.eleve.prenom }}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
-                                   <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Nom de l'eleve</label>
-            
-                               </div>
-                               <!-- Date de payment -->
-                                <div class="relative">
-            
-                                    <input disabled  value="{{payment.date| date: 'MM/dd/yyyy'}}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
-                                   <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Date de payment</label>
-            
-                               </div>
-                          <!-- mois de payment -->
-                          <div class="relative">
-            
-                            <input disabled  value="{{payment.moisP}}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
-                           <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Mois</label>
-            
-                       </div>
-            
-                        </div>
+                <!-- Code massare -->
+                        <div class="relative">
 
-              
+                             <input disabled  [value]="classe.idMassar" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                            <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Code Massare</label>
+
+                        </div>
+                    <!-- Payeur Cin -->
+                        <div class="relative">
+
+                            <input disabled  value="{{classe.payeur.cin }}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                           <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Payeur CIN</label>
+
+                       </div>
+                       <!-- Date de naissance -->
+                        <div class="relative">
+
+                            <input disabled  value="{{classe.dateNaissance| date: 'MM/dd/yyyy'}}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                           <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Date de naissance</label>
+
+                       </div>
+                  <!-- Classe -->
+                  <div class="relative">
+
+                    <input disabled  value="{{classe.classe.nom}}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                   <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Classe</label>
+
+               </div>
+
+                </div>
 
             </div>
         </div>
@@ -123,10 +137,10 @@
             </div>
         </div>
 
-        <!-- Eleve form -->
+        <!-- Classe form -->
         <div class="relative flex flex-col flex-auto items-center px-6 sm:px-12">
             <div class="w-full max-w-3xl">
-                <form [formGroup]="eleveForm">
+                <form [formGroup]="classeForm">
 
                     <!-- Avatar -->
                     <div class="flex flex-auto items-end -mt-16">
@@ -167,15 +181,15 @@
                           
                             <img
                                 class="object-cover w-full h-full"
-                                *ngIf="eleve?.image "
-                                [src]= "eleve.image"
+                                *ngIf="classe?.image "
+                                [src]= "classe.image"
                                 > 
                                 
                           
                             <div
                                 class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
-                                *ngIf="!eleve.image">
-                                {{eleve.nom?eleve.nom.charAt(0):"N"}}
+                                *ngIf="!classe.image">
+                                {{classe.nom?classe.nom.charAt(0):"N"}}
                             </div>
                         </div>
                     </div>
@@ -300,6 +314,25 @@
                         </mat-form-field>
                     </div>
 
+
+                   
+                    <div class="flex flex-wrap -mx-3 mb-2">
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="city">
+                            Frais d'inscription
+                        </label>
+                        <input  [formControlName]="'inscriptionFrais'"  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          id="mois" name="mois"  type="text" placeholder="Albuquerque">
+                      </div>
+                     
+                      <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="zip">
+                          l'annee d'inscription
+                        </label>
+                        <input  [formControlName]="'inscriptionAnnee'"  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                          id="zip" name="zip" type="text" placeholder="90210">
+                      </div>
+                    </div>
                     <!-- Actions -->
                     <div class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
                         <!-- Delete -->
@@ -307,7 +340,7 @@
                             mat-button
                             [color]="'warn'"
                             [matTooltip]="'Delete'"
-                            (click)="deleteEleve()">
+                            (click)="deleteClasse()">
                             <mat-icon style="color: #f4585e;" class="hoverable-icon icon-size-5" svgIcon="heroicons_outline:trash"></mat-icon>
 
                         </button>
@@ -326,7 +359,7 @@
                             class="ml-2"
                             mat-flat-button
                             [color]="'primary'"
-                            [disabled]="eleveForm.invalid"
+                            [disabled]="classeForm.invalid"
                             [matTooltip]="'Save'"
                             (click)="addOrupdate()">
                             Save
@@ -345,7 +378,7 @@
 
    
 
-    <payment-details [eleve]="eleve"></payment-details>
+    <payment-details [classe]="classe"></payment-details>
    
    
    </ng-template>

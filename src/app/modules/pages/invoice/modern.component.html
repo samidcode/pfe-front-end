@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html id="demo" class="no-js" lang="en">
+<html id="demo" class="no-js " lang="en">
 
 <head>
   <!-- Meta Tags -->
@@ -10,39 +10,27 @@
   <meta name="author" content="Laralink">
   <!-- Site Title -->
 
-  <title>General Purpose Invoice-2</title>
+  <title>Facture &nbsp; {{payment.eleve.nom}}&nbsp;{{payment.eleve.prenom}}</title>
  
 </head>
 
 <body>
-  <div class="tm_container">
-    <div class="tm_invoice_wrap">
+    <div class="tm_container">
+        <div style="left: 0; margin-top: 15px;position: fixed;" class="tm_invoice_btns tm_hide_print">
+            <button  (click)="printInvoice('demo')" class="tm_invoice_btn tm_color1">
+              <span class="tm_btn_icon">
+                <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M384 368h24a40.12 40.12 0 0040-40V168a40.12 40.12 0 00-40-40H104a40.12 40.12 0 00-40 40v160a40.12 40.12 0 0040 40h24" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><rect x="128" y="240" width="256" height="208" rx="24.32" ry="24.32" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M384 128v-24a40.12 40.12 0 00-40-40H168a40.12 40.12 0 00-40 40v24" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><circle cx="392" cy="184" r="24" fill='currentColor'/></svg>
+              </span>
+              <span class="tm_btn_text">Print</span>
+            </button>
+        
+          </div>
+
+    <div class="tm_invoice_wrap hide">
       <div class="tm_invoice tm_style2" id="tm_download_section">
         <div class="tm_invoice_in">
-          <div class="tm_invoice_head tm_top_head tm_mb20">
-            <div class="tm_invoice_left">
-              <div class="tm_logo"><img src="assets/img/logo.svg" alt="Logo"></div>
-            </div>
-            <div class="tm_invoice_right">
-              <div class="tm_grid_row tm_col_3">
-                <div>
-                  <b class="tm_primary_color">Email</b> <br>
-                  support@gmail.com <br>
-                  career@gmail.com
-                </div>
-                <div>
-                  <b class="tm_primary_color">Phone</b> <br>
-                  +99-131-124-567 <br>
-                  Monday to Friday
-                </div>
-                <div>
-                  <b class="tm_primary_color">Address</b> <br>
-                  9 Paul Street, London <br>
-                  England EC2A 4NE
-                </div>
-              </div>
-            </div>
-          </div>
+            <div class="tm_ternary_color tm_f50 tm_text_uppercase tm_text_center tm_invoice_title tm_mb15 tm_mobile_hide">Facture</div>
+
           <div class="tm_invoice_info tm_mb10">
             <div class="tm_invoice_info_left">
               <p class="tm_mb2"><b>Facture à</b></p>
@@ -54,8 +42,7 @@
               </p>
             </div>
             <div class="tm_invoice_info_right">
-              <div class="tm_ternary_color tm_f50 tm_text_uppercase tm_text_center tm_invoice_title tm_mb15 tm_mobile_hide">Invoice</div>
-              <div class="tm_grid_row tm_col_3 tm_invoice_info_in tm_accent_bg">
+              <div class=" mt-5 tm_grid_row tm_col_3 tm_invoice_info_in tm_accent_bg">
                 <div>
                   <span class="tm_white_color_60">Totale:</span> <br>
                   <b class="tm_f16 tm_white_color">{{payment.montant}}&nbsp;DH</b>
@@ -71,7 +58,7 @@
               </div>
             </div>
           </div>
-          <div style="margin-top: 50px;"  class="tm_table tm_style1">
+          <div style="margin-top: 15px;"  class="tm_table tm_style1">
             <div class="tm_round_border">
               <div class="tm_table_responsive">
                 <table>
@@ -86,12 +73,13 @@
                   <tbody>
                     <tr class="tm_gray_bg">
                       <td class="tm_width_7">
-                        <p class="tm_m0 tm_f16 tm_primary_color">Transport Scolaire ({{payment.moisP}})</p>
-                        Six web page designs and three times revision
+                        <p  class="tm_m0 tm_f16 tm_primary_color">{{title}} ({{payment.moisP}})</p>
+             
+
                       </td>
-                      <td class="tm_width_2">$350</td>
+                      <td class="tm_width_2">{{payment.montant}} DH</td>
                       <td class="tm_width_1">1</td>
-                      <td class="tm_width_2 tm_text_right">$350</td>
+                      <td class="tm_width_2 tm_text_right">{{payment.montant}} DH</td>
                     </tr>
                  
                   </tbody>
@@ -100,60 +88,30 @@
             </div>
             <div style="margin-top: 5px;" class="tm_invoice_footer tm_mb15 tm_m0_md">
               <div class="tm_left_footer">
-                <div class="tm_card_note tm_ternary_bg tm_white_color"><b>Payment info: </b>Credit Card - 236***********928</div>
+                <div class="tm_card_note tm_ternary_bg tm_white_color"><b>Élève bénéficiaire:&nbsp; {{payment.eleve.nom}}&nbsp;{{payment.eleve.prenom}} </b> </div>
                 <p class="tm_mb2"><b class="tm_primary_color">Important Note:</b></p>
-                <p class="tm_m0">Pour toute question ou préoccupation concernant cette facture,<br> veuillez contacter notre service clientèle au numéro suivant : <br> [Numéro de Contact] ou par courrier électronique à l'adresse [Adresse E-mail du Service Clientèle].<br></p>
+                <p class="tm_m0">Pour toute question ou préoccupation concernant cette facture, veuillez contacter notre service clientèle .</p>
               </div>
               <div class="tm_right_footer">
-                <table class="tm_mb15">
+                <table class="tm_mb15 mt-4">
                   <tbody>
                     <tr>
-                      <td class="tm_width_3 tm_primary_color tm_border_none tm_bold">Subtoal</td>
-                      <td class="tm_width_3 tm_primary_color tm_text_right tm_border_none tm_bold">$1650</td>
-                    </tr>
-                    <tr>
-                      <td class="tm_width_3 tm_danger_color tm_border_none tm_pt0">Discount 10%</td>
-                      <td class="tm_width_3 tm_danger_color tm_text_right tm_border_none tm_pt0">+$164</td>
-                    </tr>
-                    <tr>
-                      <td class="tm_width_3 tm_primary_color tm_border_none tm_pt0">Tax 5%</td>
-                      <td class="tm_width_3 tm_primary_color tm_text_right tm_border_none tm_pt0">+$82</td>
-                    </tr>
-                    <tr>
-                      <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_white_color tm_accent_bg tm_radius_6_0_0_6">Grand Total	</td>
-                      <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color tm_text_right tm_white_color tm_accent_bg tm_radius_0_6_6_0">$1732</td>
+                      <td class="tm_width_3 tm_border_top_0  tm_bold tm_f16 tm_white_color tm_accent_bg tm_radius_6_0_0_6">Grand Total	</td>
+                      <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color tm_text_right tm_white_color tm_accent_bg tm_radius_0_6_6_0">{{payment.montant}} DH</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-            <div class="tm_invoice_footer tm_type1">
-              <div class="tm_left_footer"></div>
-              <div class="tm_right_footer">
-                <div class="tm_sign tm_text_center">
-                  <img src="assets/img/sign.svg" alt="Sign">
-                  <p class="tm_m0 tm_ternary_color">Jhon Donate</p>
-                  <p class="tm_m0 tm_f16 tm_primary_color">Accounts Manager</p>
-                </div>
-              </div>
-            </div>
+           
           </div>
           <div class="tm_note tm_font_style_normal tm_text_center">
             <hr class="tm_mb15">
-            <p class="tm_m0">Pour toute question ou préoccupation concernant cette facture, veuillez contacter notre service.
-                <br>Nous vous remercions pour votre confiance dans nos services.</p>
+            <p class="tm_m0">Nous vous remercions pour votre confiance dans nos services de transport scolaire.
           </div><!-- .tm_note -->
         </div>
       </div>
-      <div class="tm_invoice_btns tm_hide_print">
-        <button (click)=" printInvoice('demo')" class="tm_invoice_btn tm_color1">
-          <span class="tm_btn_icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M384 368h24a40.12 40.12 0 0040-40V168a40.12 40.12 0 00-40-40H104a40.12 40.12 0 00-40 40v160a40.12 40.12 0 0040 40h24" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><rect x="128" y="240" width="256" height="208" rx="24.32" ry="24.32" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M384 128v-24a40.12 40.12 0 00-40-40H168a40.12 40.12 0 00-40 40v24" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><circle cx="392" cy="184" r="24" fill='currentColor'/></svg>
-          </span>
-          <span class="tm_btn_text">Print</span>
-        </button>
     
-      </div>
     </div>
   </div>
   <script src="assets/js/jquery.min.js"></script>
@@ -180,6 +138,11 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+@media screen and (max-width: 768px) {
+  .hide {
+    display: none;
+  }
+}
 /* Sections
    ========================================================================== */
 /**

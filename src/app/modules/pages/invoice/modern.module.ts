@@ -18,12 +18,10 @@ import { NgxPrintModule } from 'ngx-print';
         ModernComponent
     ],
     imports     : [
-        RouterModule.forChild(modernRoutes),
         SharedModule,
         CommonModule,
         BrowserModule,
-        NgxPrintModule
-    
+        NgxPrintModule,
 
     ]
 })

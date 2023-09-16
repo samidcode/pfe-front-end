@@ -10,8 +10,9 @@ import { ElevesService } from '../../eleves/eleves.service';
 import { Eleve } from '../../eleves/eleves.types';
 import { PaymentsService } from '../payment.service';
 import { Payment } from '../payment.types';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { PaymentObject } from '../payment-object.enum';
+import { ModernComponent } from '../../invoice/modern.component';
 
 
 @Component({
@@ -26,20 +27,25 @@ export class PaymentStatusComponent implements OnInit, OnDestroy
 {
     editMode: boolean = false;
     tagsEditMode: boolean = false;
-    eleveForm: FormGroup;
     payments: Payment[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     payeurOptions: Object;
     classOptions: Object;
-    selectedFile: File;
+    selectedMonth: String;
     url = null;
     paidMonths:{ year: number; months: { month: number; date: string }[] }[] = [];
     months: string[] = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
+        'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+        'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
       ];
     paymentMode:boolean =false;
-    selectedPaymentObject: PaymentObject;
+    selectedPaymentObject= PaymentObject;
+    mPayment: Payment;
+    tPayment: Payment;
+
+    tPaymentForm: FormGroup;
+    mPaymentForm: FormGroup;
+
 
 
     /**
@@ -58,6 +64,7 @@ export class PaymentStatusComponent implements OnInit, OnDestroy
         private _overlay: Overlay,
         private _viewContainerRef: ViewContainerRef,
         @Inject(MAT_DIALOG_DATA) public eleve: Eleve,
+        public dialog: MatDialog,
 
     )
     {
@@ -75,6 +82,10 @@ export class PaymentStatusComponent implements OnInit, OnDestroy
     {
      
        this.getpayment(this.eleve.id);
+
+
+
+    
     }
 
     /**
@@ -96,6 +107,7 @@ getpayment(id){
         (payments:Payment[])=>{
 
              this.payments = payments;   
+             
             this.paidMonths =this._paymentsService.transformData(payments)
            this._changeDetectorRef.markForCheck();
 
@@ -169,8 +181,85 @@ getDate (year: number, monthNumber: number) : string | null {
 }
 
 
+payMonth(month){
+
+this.selectedMonth = month;
+    this.paymentMode=!this.paymentMode;
+
+this._paymentsService.findPayment(month,this.currentYear,this.eleve.id,this.selectedPaymentObject.MONTHLY).subscribe(payment=>{
+
+ this.mPayment = payment
+    
+})
+
+this._paymentsService.findPayment(month,this.currentYear,this.eleve.id,this.selectedPaymentObject.TRANSPORTATION).subscribe(payment=>{
+
+    this.tPayment = payment
+       
+   })
+   
+
+this.mPaymentForm = this._formBuilder.group({
+      montant        : ['', [Validators.required]],
+    moisP       : [{value: this.selectedMonth, disabled: true}, [Validators.required]],
+    objet     : [{value:this.selectedPaymentObject.MONTHLY,disabled:true}],
+    payeur : [{value:this.eleve.payeur.cin ,disabled:true}, [Validators.required]],
+    yearP : [this.currentYear , [Validators.required]],
+    eleve : [this.eleve]
 
 
+});
+
+this.tPaymentForm = this._formBuilder.group({
+    montant        : ['', [Validators.required]],
+  moisP       : [{value: this.selectedMonth, disabled: true}, [Validators.required]],
+  objet     : [{value:this.selectedPaymentObject.TRANSPORTATION,disabled:true}],
+  payeur : [{value:this.eleve.payeur.cin ,disabled:true}, [Validators.required]],
+  yearP : [this.currentYear , [Validators.required]],
+  eleve : [this.eleve]
+
+
+});
+
+}
+
+savedpayment=null;
+creatPayment(type){
+
+
+if (type=="Transport") {
+
+
+    this.tPaymentForm.get('payeur').setValue(this.eleve.payeur); 
+
+
+     this.savedpayment = this.tPaymentForm.getRawValue()
+    
+} 
+ else if(type=="Mensuel") {
+
+    this.mPaymentForm.get('payeur').setValue(this.eleve.payeur); 
+
+     this.savedpayment = this.mPaymentForm.getRawValue() 
+}
+
+  
+ 
+ 
+this._paymentsService.createPayment(this.savedpayment).subscribe((payment:Payment)=>{
+    
+    this.dialog.closeAll();
+    this.dialog.open(ModernComponent, {
+        width:'1000px',   // Set width to 600px
+  height:'100%',  // Set height to 530px
+        data:payment,
+        backdropClass: 'backdropBackground',
+      });
+    
+   });
+
+
+}
 
 
 }

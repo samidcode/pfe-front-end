@@ -28,9 +28,9 @@ import { PaymentsListComponent } from './list/list.component';
 import { paymentsRoutes } from './payment.routing';
 import { PaymentsDetailsComponent } from './details/details.component';
 import { PaymentsComponent } from './payment.component';
-import { LOCALE_ID} from '@angular/core';
-import { ModernModule } from '../invoice/modern.module';
-import { ModernComponent } from '../invoice/modern.component';
+import {MatBadgeModule} from '@angular/material/badge';
+
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 
@@ -40,7 +40,6 @@ import { ModernComponent } from '../invoice/modern.component';
         PaymentsListComponent,
         PaymentsDetailsComponent,
         PaymentsComponent,
-       ModernComponent
     ],
     imports     : [
         RouterModule.forChild(paymentsRoutes),
@@ -66,6 +65,8 @@ import { ModernComponent } from '../invoice/modern.component';
         MatAutocompleteModule,
         MatPaginatorModule,
         MatDialogModule,
+        MatTabsModule,
+        MatBadgeModule
     ],
     providers   : []
 })

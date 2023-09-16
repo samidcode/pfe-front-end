@@ -160,8 +160,9 @@ export class PaymentsListComponent implements OnInit, OnDestroy
         
         // Go back to the list
         this._router.navigate(['./'], {relativeTo: this._activatedRoute});
-            
         // Mark for check
+        console.log("backdrop");
+        
         this._changeDetectorRef.markForCheck();
     }
 

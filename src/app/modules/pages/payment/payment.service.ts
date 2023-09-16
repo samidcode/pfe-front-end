@@ -1,21 +1,24 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { Payment } from './payment.types';
 import { PaginatedData } from '../payeurs/payeurs.types';
+import { PaymentObject } from './payment-object.enum';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PaymentsService
 {
+    
    
   payment : Payment ;
     private baseUrl = 'http://localhost:8080/api/'; 
     // Private
     private _payment: BehaviorSubject<Payment | null> = new BehaviorSubject(null);
     private _payments: BehaviorSubject<Payment[] | null> = new BehaviorSubject(null);
+    paymentMode$: any;
 
 
     /**
@@ -94,22 +97,20 @@ export class PaymentsService
     /**
      * Create payment
      */
-    createPayment(): Observable<Payment>
+    createPayment(payment): Observable<Payment>
     {
-        return this.payments$.pipe(
-            take(1),
-            switchMap(payments => this._httpClient.post<Payment>('api/apps/payments/payment', {}).pipe(
+
+        
+        return  this._httpClient.post<Payment>(this.baseUrl+'payments', payment).pipe(
                 map((newPayment: Payment) => {
-                 
-                    payments.push(newPayment);
                     // Update the payments with the new payment
-                    this._payments.next(payments);
+                    this._payments.next(payment);
 
                     // Return the new payment
                     return newPayment;
                 })
-            ))
-        );
+            )
+      
     }
 
     /**
@@ -215,7 +216,10 @@ export class PaymentsService
       
         inputData.forEach(payment => {
           const year = parseInt(payment.yearP);
-          const month = new Date(`${payment.moisP} 1, ${year}`).getMonth() + 1;
+
+          const englishMonthStr = this.getEnglishMonth(payment.moisP);
+
+          const month = new Date(`${englishMonthStr} 1, ${year}`).getMonth() + 1;
       
           if (!transformedData[year]) {
             transformedData[year] = {};
@@ -232,11 +236,17 @@ export class PaymentsService
           })),
         }));
       }
-
+      
 
 
       isMonthPaid(year: number, monthNumber: number, paidMonths): boolean {
+
+        console.log("paidmonth",paidMonths);
+
+        
         const paidYear = paidMonths.find(paid => paid.year === year);
+        console.log(paidYear);
+        
     
         if (paidYear) {
             const isMonthIncluded = paidYear.months.some(p => p.month === monthNumber);
@@ -301,5 +311,35 @@ export class PaymentsService
         );
     }
 
+    findPayment(month: any, currentYear: number, id: string, MONTHLY: PaymentObject) {
+       
+        let params = new HttpParams()
+        .set('moisP', month)
+        .set('yearP', currentYear.toString())
+        .set('eleveId', id)
+        .set('objet', MONTHLY); 
+  
+      return this._httpClient.get<Payment>(`${this.baseUrl}payments/find`, { params });
+    }
 
+
+    getEnglishMonth(monthStr) {
+        // Define a mapping between French and English month names
+        const monthMap = {
+          janvier: 'January',
+          février: 'February',
+          mars: 'March',
+          avril: 'April',
+          mai: 'May',
+          juin: 'June',
+          juillet: 'July',
+          août: 'August',
+          septembre: 'September',
+          octobre: 'October',
+          novembre: 'November',
+          décembre: 'December',
+        };
+        return monthMap[monthStr.toLowerCase()] || null;
+}
+    
 }

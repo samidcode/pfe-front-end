@@ -47,7 +47,6 @@ export class PaymentsDetailsComponent implements OnInit, OnDestroy
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private _paymentsListComponent: PaymentsListComponent,
-        private _invoiceCompenent : ModernComponent,
         private _paymentsService: PaymentsService,
         private _formBuilder: FormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
@@ -281,13 +280,13 @@ displayP(option) {
 
   makePayment(){
 
- /*     this.dialog.open(ModernComponent, {
+     this.dialog.open(ModernComponent, {
         width:'1000px',   // Set width to 600px
   height:'100%',  // Set height to 530px
         data:this.payment,
         backdropClass: 'backdropBackground',
-      }); */
+      });
        // this._paymentsService.paymentMode$.next(true);
-            this._invoiceCompenent.printInvoice(this.payment)
+
 }
 }

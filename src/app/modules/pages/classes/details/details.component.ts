@@ -7,9 +7,9 @@ import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Eleve} from '../eleves.types';
-import { ElevesListComponent } from '../list/list.component';
-import { ElevesService } from '../eleves.service';
+import { Classe} from '../classes.types';
+import { ClassesListComponent } from '../list/list.component';
+import { ClassesService } from '../classes.service';
 import * as alertFunctions from 'app/config/sweet-alerts';
 import { MatDialog } from '@angular/material/dialog';
 import { PaymentStatusComponent } from '../../payment/payment-status/status.component';
@@ -20,22 +20,22 @@ import { PaymentObject } from '../../payment/payment-object.enum';
 
 
 @Component({
-    selector       : 'eleves-details',
+    selector       : 'classes-details',
     templateUrl    : './details.component.html',
     styles:['.backdropBackground{    backdrop-filter: blur(9px); }'],
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ElevesDetailsComponent implements OnInit, OnDestroy
+export class ClassesDetailsComponent implements OnInit, OnDestroy
 {
     @ViewChild('tagsPanel') private _tagsPanel: TemplateRef<any>;
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
 
     editMode: boolean = false;
     tagsEditMode: boolean = false;
-    eleve: Eleve;
-    eleveForm: FormGroup;
-    eleves: Eleve[];
+    classe: Classe;
+    classeForm: FormGroup;
+    classes: Classe[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     payeurOptions: Object;
     classOptions: Object;
@@ -51,8 +51,8 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _elevesListComponent: ElevesListComponent,
-        private _elevesService: ElevesService,
+        private _classesListComponent: ClassesListComponent,
+        private _classesService: ClassesService,
         private _paymentService:PaymentsService,
         private _formBuilder: FormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
@@ -79,10 +79,10 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
     {
         
         // Open the drawer
-        this._elevesListComponent.matDrawer.open();
-            this.paymentMode = this._elevesService.paymentMode$.getValue();
-        // Create the eleve form
-        this.eleveForm = this._formBuilder.group({
+        this._classesListComponent.matDrawer.open();
+            this.paymentMode = this._classesService.paymentMode$.getValue();
+        // Create the classe form
+        this.classeForm = this._formBuilder.group({
             id          : [''],
             image      : [null],
             nom        : ['', [Validators.required]],
@@ -97,27 +97,27 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
 
     
 
-        // Get the eleve
-        this._elevesService.eleve$
+        // Get the classe
+        this._classesService.classe$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((eleve: Eleve) => {
+            .subscribe((classe: Classe) => {
 
                 // Open the drawer in case it is closed
-                this._elevesListComponent.matDrawer.open();
+                this._classesListComponent.matDrawer.open();
 
-                // Get the eleve
-                this.eleve = eleve;
+                // Get the classe
+                this.classe = classe;
                 // Patch values to the form
-                this.eleveForm.patchValue(eleve);
+                this.classeForm.patchValue(classe);
 
 
              
 
-                // Toggle the edit mode on creat eleve
+                // Toggle the edit mode on creat classe
             
                 
                 
-                this.toggleEditMode(  this.eleve?.id === "NewEleve");
+                this.toggleEditMode(  this.classe?.id === "NewClasse");
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -132,7 +132,7 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
     {
         // Unsubscribe from all subscriptions
        // this._unsubscribeAll.next();
-       this._elevesService.paymentMode$.next(false);
+       this._classesService.paymentMode$.next(false);
 
         this._unsubscribeAll.complete();
 
@@ -150,7 +150,7 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
     closeDrawer(): Promise<MatDrawerToggleResult>
     {
     
-        return this._elevesListComponent.matDrawer.close();
+        return this._classesListComponent.matDrawer.close();
     }
 
     /**
@@ -174,33 +174,34 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
     }
 
     /**
-     * Update the eleve
+     * Update the classe
      */
     addOrupdate(): void
     {
-        // Get the eleve object
-        const eleve = this.eleveForm.getRawValue();
-        eleve.image = this.eleve.image;
+        // Get the classe object
+        const classe = this.classeForm.getRawValue();
+      
 
-        const params = { inscriptionFrais: eleve.inscriptionFrais,inscriptionAnnee:eleve.inscriptionAnnee };
+        const params = { inscriptionFrais: classe.inscriptionFrais,inscriptionAnnee:classe.inscriptionAnnee };
         
-        // Update the eleve on the server
-        this._elevesService.updateEleve(eleve.id, eleve,this.selectedFile,params).subscribe((newEleve) => {
+        // Update the classe on the server
+        this._classesService.updateClasse(classe.id, classe,this.selectedFile,params).subscribe((newClasse) => {
 
          
 
-            this._router.navigate(['../', newEleve['eleve'].id], {relativeTo: this._activatedRoute});
+            this._router.navigate(['../', newClasse['classe'].id], {relativeTo: this._activatedRoute});
                     
 
-console.log("new",newEleve);
+console.log("new",newClasse);
 
 
+    // Code to be executed after a 5-second delay
    
         
 this.dialog.open(ModernComponent, {
 width:'1000px',   // Set width to 600px
 height:'100%',  // Set height to 530px
-data:newEleve['payment'],
+data:newClasse['payment'],
 backdropClass: 'backdropBackground',
 });
 
@@ -220,37 +221,37 @@ backdropClass: 'backdropBackground',
     }
 
     /**
-     * Delete the eleve
+     * Delete the classe
      */
-    deleteEleve(): void
+    deleteClasse(): void
     {
-        const id = this.eleve.id;
+        const id = this.classe.id;
         // Open the confirmation dialog
         alertFunctions.confirmText().then((result) => {
             if (result['isConfirmed']) {
 
 
-                // Get the current eleve's id
-                 const id = this.eleve.id;
-                 // Get the next/previous eleve's id
+                // Get the current classe's id
+                 const id = this.classe.id;
+                 // Get the next/previous classe's id
 
               
-                this._elevesService.deleteEleve(id)
+                this._classesService.deleteClasse(id)
                 .subscribe((isDeleted) => {
 
 
-                    const currentEleveIndex = this.eleves.findIndex(item => item.id == id);
-                    const nextEleveIndex = currentEleveIndex + ((currentEleveIndex === (this.eleves.length - 1)) ? -1 : 1);
-                    const nextEleveId = (this.eleves.length === 1 && this.eleves[0].id === id) ? null : this.eleves[nextEleveIndex].id;
+                    const currentClasseIndex = this.classes.findIndex(item => item.id == id);
+                    const nextClasseIndex = currentClasseIndex + ((currentClasseIndex === (this.classes.length - 1)) ? -1 : 1);
+                    const nextClasseId = (this.classes.length === 1 && this.classes[0].id === id) ? null : this.classes[nextClasseIndex].id;
 
-                    // Return if the eleve wasn't deleted...
+                    // Return if the classe wasn't deleted...
                 
-                    // Navigate to the next eleve if available
+                    // Navigate to the next classe if available
                     
-                    if ( nextEleveId )
+                    if ( nextClasseId )
                     {
 
-                        this._router.navigate(['../', nextEleveId], {relativeTo: this._activatedRoute});
+                        this._router.navigate(['../', nextClasseId], {relativeTo: this._activatedRoute});
                     }
                     // Otherwise, navigate to the parent
                     else
@@ -273,42 +274,7 @@ backdropClass: 'backdropBackground',
 
 
 
-    /**
-     * Upload avatar
-     *
-     * @param fileList
-     */
-    uploadAvatar(event): void {
-        if (event.target.files && event.target.files[0]) {
-            var reader = new FileReader();
-            this.selectedFile = event.target.files[0];
-            this.eleve.imageType =  this.selectedFile.type;
-
-            reader.onload = (event: any) => { // Move the onload assignment before readAsDataURL
-                this.eleve.image = event.target.result;
-
-               
-                
-                this._changeDetectorRef.markForCheck();
-            };
-            reader.readAsDataURL(event.target.files[0]); // read file as data URL
-            
-    
-           
-        }
-    }
-
-    /**
-     * Remove the avatar
-     */
-    removeAvatar(): void
-    {
-        this.eleve.image = null ;
-        this.url = null ;
-      
-    }
-
-  
+ 
 
 
     trackByFn(index: number, item: any): any
@@ -316,39 +282,19 @@ backdropClass: 'backdropBackground',
         return item.id || index;
     }
 
-    public payeurChange(value: string) {
-                
-        this._elevesService.payeurAutoComplet(value).subscribe(data=>{
-            
-            this.payeurOptions = data;
-        });
-}
 
-public classChange(value: string) {
 
-this._elevesService.classAutoComplet(value).subscribe(data=>{
-    
-    this.classOptions = data;
-});
-}
 
-displayP(option) {
-    return option ? `${option.nom} ${option.prenom}` : '';
-  }
-
-  displayC(option) {
-    return option ? `${option.nom}` : '';
-  }
 
 
   makePayment(){
 
      this.dialog.open(PaymentStatusComponent, {
       
-        data:this.eleve,
+        data:this.classe,
         backdropClass: 'backdropBackground',
       });
-       // this._elevesService.paymentMode$.next(true);
+       // this._classesService.paymentMode$.next(true);
 
 }
 }

@@ -18,25 +18,25 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
 
-import { elevesRoutes } from './eleves.routing';
+import { classesRoutes } from './classes.routing';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import moment from 'moment';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { ElevesComponent } from './eleves.component';
-import { ElevesListComponent } from './list/list.component';
-import { ElevesDetailsComponent } from './details/details.component';
+import { ClassesComponent } from './classes.component';
+import { ClassesListComponent } from './list/list.component';
+import { ClassesDetailsComponent } from './details/details.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
     declarations: [
-        ElevesComponent,
-        ElevesListComponent,
-        ElevesDetailsComponent,
+        ClassesComponent,
+        ClassesListComponent,
+        ClassesDetailsComponent,
     ],
     imports     : [
-        RouterModule.forChild(elevesRoutes),
+        RouterModule.forChild(classesRoutes),
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -76,6 +76,6 @@ import { FormsModule } from '@angular/forms';
         }
     ]
 })
-export class ElevesModule
+export class ClassesModule
 {
 }

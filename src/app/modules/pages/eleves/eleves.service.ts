@@ -140,14 +140,15 @@ export class ElevesService
      * @param id
      * @param eleve
      */
-    updateEleve(id: string, eleve: Eleve,image)
+    updateEleve(id: string, eleve: Eleve,image,inscription)
     {
         if (eleve.id == "NewEleve") {
             eleve.id = null ;
         }
         
+
       const url = `${this.baseUrl}eleves`; 
-      return this._httpClient.post(url,eleve).pipe(
+      return this._httpClient.post(url,eleve, { params: inscription }).pipe(
         tap((newEleve:Eleve) => {
 
             let eleves = this._eleves.getValue()
@@ -159,20 +160,20 @@ export class ElevesService
                    const index = eleves.findIndex(item => item.id === id);
 
                    // Update the eleve
-                   eleves[index] = newEleve;
+                   eleves[index] = newEleve['eleve'];
                    this._eleves.next(eleves);
                    // Update the eleves
                 
             }else{
                 console.log("newEleve",newEleve);
                 
-                this._eleves.next([newEleve, ...eleves]);
+                this._eleves.next([newEleve['eleve'], ...eleves]);
 
 
             }
-            this._eleve.next(newEleve);
+            this._eleve.next(newEleve['eleve']);
 
-              return newEleve;
+              return newEleve['eleve'];
         })
     );
     }

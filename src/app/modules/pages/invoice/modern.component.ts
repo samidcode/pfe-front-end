@@ -4,6 +4,7 @@ import { Eleve } from '../eleves/eleves.types';
 import { Payment } from '../payment/payment.types';
 import { extend } from 'lodash';
 import { DatePipe } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector       : 'modern',
@@ -16,6 +17,7 @@ export class ModernComponent implements OnInit, OnDestroy
 {
     payment: Payment;
     currentDate: Date;
+  title: string;
 
     /**
      * Constructor
@@ -28,9 +30,20 @@ export class ModernComponent implements OnInit, OnDestroy
 
     }
     ngOnInit(): void {
+      this.payment = this.payments
 
+        if (this.payment.objet=="Mensuel") {
+          this.title = "Paiement transport scolaire " ;
+        } else if (this.payment.objet=="Transport") {
 
-       
+                    this.title = "Paiement mensuel ";
+
+        }else if(this.payment.objet=="Inscription"){
+
+          this.title = "Paiement inscription ";
+
+        }
+
         let pipe = new DatePipe('en-US');
             this.payment.date =  pipe.transform(this.payment.date, 'MM /dd /yyyy');
 
@@ -38,11 +51,8 @@ export class ModernComponent implements OnInit, OnDestroy
     ngOnDestroy(): void {
     }
 
-    printInvoice(payment) {
-
-
-        this.payment = payment;
-        const printContents = document.getElementById("demo")?.outerHTML;
+    printInvoice(sectionId) {
+        const printContents = document.getElementById(sectionId)?.outerHTML;
         const printWindow = window.open('', '_blank');
         printWindow.document.open();
       

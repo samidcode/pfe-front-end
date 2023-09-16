@@ -6,48 +6,47 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Eleve, PaginatedData } from '../eleves.types';
-import { ElevesService } from '../eleves.service';
+import { Classe, PaginatedData } from '../classes.types';
+import { ClassesService } from '../classes.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { PaymentsService } from '../../payment/payment.service';
 
 
 @Component({
-    selector       : 'eleves-list',
+    selector       : 'classes-list',
     templateUrl    : './list.component.html',
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ElevesListComponent implements OnInit, OnDestroy
+export class ClassesListComponent implements OnInit, OnDestroy
 {
     @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
     @ViewChild(MatPaginator) paginator: MatPaginator;
-    dataSource = new MatTableDataSource<Eleve>();
+    dataSource = new MatTableDataSource<Classe>();
 
-    eleves$: Observable<Eleve[]>;
+    classes$: Observable<Classe[]>;
 
-    elevesCount: number = 0;
+    classesCount: number = 0;
     drawerMode: 'side' | 'over';
     searchInputControl: FormControl = new FormControl();
-    selectedEleve: Eleve;
+    selectedClasse: Classe;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     recentTransactionsTableColumns: string[] = [
-        'image',
-        'amount',
-        'date',
-        'name',
-        'status',
+        'id',
+        'nom',
+        'niveau',
+        'dateDeCreation',
         'action',
     ];
-    eleves: Eleve[];
+    classes: Classe[];
     /**
      * Constructor
      */
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _elevesService: ElevesService,
+        private _classesService: ClassesService,
         private _paymentService: PaymentsService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
@@ -67,16 +66,16 @@ export class ElevesListComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         this.loadData(0,10);
-        // Get the eleves
-        this.eleves$ = this._elevesService.eleves$;
-        this._elevesService.eleves$
+        // Get the classes
+        this.classes$ = this._classesService.classes$;
+        this._classesService.classes$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((eleves: Eleve[]) => {
+            .subscribe((classes: Classe[]) => {
 
                 // Update the counts
-                this.elevesCount = eleves.length;
-                    this.eleves = eleves;
-                        console.log(this.eleves);
+                this.classesCount = classes.length;
+                    this.classes = classes;
+                        console.log(this.classes);
                         
                     
                 // Mark for check
@@ -87,12 +86,12 @@ export class ElevesListComponent implements OnInit, OnDestroy
             // Connect the paginator to the data source
             this.dataSource.paginator = this.paginator;
             this.loadData(0,10);
-        // Get the eleve
-        this._elevesService.eleve$
+        // Get the classe
+        this._classesService.classe$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((eleve: Eleve) => {
-                // Update the selected eleve
-                this.selectedEleve = eleve;
+            .subscribe((classe: Classe) => {
+                // Update the selected classe
+                this.selectedClasse = classe;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -105,7 +104,7 @@ export class ElevesListComponent implements OnInit, OnDestroy
                 switchMap(query =>
 
                     // Search
-                    this._elevesService.searchEleves(query)
+                    this._classesService.searchClasses(query)
                 )
             )
             .subscribe();
@@ -114,8 +113,8 @@ export class ElevesListComponent implements OnInit, OnDestroy
         this.matDrawer.openedChange.subscribe((opened) => {
             if ( !opened )
             {
-                // Remove the selected eleve when drawer closed
-                this.selectedEleve = null;
+                // Remove the selected classe when drawer closed
+                this.selectedClasse = null;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -132,7 +131,7 @@ export class ElevesListComponent implements OnInit, OnDestroy
                 )
             )
             .subscribe(() => {
-                this.createEleve();
+                this.createClasse();
             });
     }
 
@@ -164,15 +163,15 @@ export class ElevesListComponent implements OnInit, OnDestroy
     }
 
     /**
-     * Create eleve
+     * Create classe
      */
-    createEleve(): void
+    createClasse(): void
     {
-        // Create the eleve
+        // Create the classe
                    
 
-            // Go to the new eleve
-            this._router.navigate(['./', "NewEleve"], {relativeTo: this._activatedRoute});
+            // Go to the new classe
+            this._router.navigate(['./', "NewClasse"], {relativeTo: this._activatedRoute});
 
             // Mark for check
         
@@ -189,7 +188,7 @@ export class ElevesListComponent implements OnInit, OnDestroy
         return item.id || index;
     }
 
-    pEleve;
+    pClasse;
       
       
       
@@ -198,14 +197,20 @@ export class ElevesListComponent implements OnInit, OnDestroy
   }
 
   loadData(pageIndex: number, pageSize: number) {
-    this._elevesService.elevePagination(pageIndex, pageSize).subscribe((elevesPagination:PaginatedData<Eleve>)=>{
+    this._classesService.classePagination(pageIndex, pageSize).subscribe((classesPagination:PaginatedData<Classe>)=>{
 
-            this.pEleve = elevesPagination.totalElements ; 
+            this.pClasse = classesPagination.totalElements ; 
             
 
 
     });
   }
+  exportToExcel(classeId){
 
+this._classesService.exportToExcel(classeId);
+
+
+
+  }
 
 }

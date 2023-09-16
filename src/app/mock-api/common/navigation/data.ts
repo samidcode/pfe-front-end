@@ -6,72 +6,72 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id   : 'example',
         title: 'Example',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
+        icon : 'heroicons_outline:briefcase',
         link : '/example'
     },
     {
-        id   : 'class',
-        title: 'class',
+        id   : 'classes',
+        title: 'Classes',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
-        link : '/eleve'
+        link : '/classes'
     },
     {
         id   : 'eleve',
         title: 'Élèves',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/eleves'
-    },
-     {
-        id   : 'payeurs',
-        title: 'Payeurs',
-        type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/payeurs'
-    },
-    {
-        id   : 'payment',
-        title: 'Payment',
-        type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/payments'
-    }
-];
-export const compactNavigation: FuseNavigationItem[] = [
-    {
-        id   : 'example',
-        title: 'Example',
-        type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/example'
-    },
-    {
-        id   : 'eleve',
-        title: 'Élève',
-        type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/eleve'
-    },
-    {
-        id   : 'eleve',
-        title: 'Élèves',
-        type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
+        icon : 'heroicons_outline:academic-cap',
         link : '/eleves'
     },
     {
        id   : 'payeurs',
        title: 'Payeurs',
        type : 'basic',
-       icon : 'heroicons_outline:chart-pie',
+       icon : 'heroicons_outline:user-group',
        link : '/payeurs'
    },
    {
        id   : 'payment',
        title: 'Payment',
        type : 'basic',
-       icon : 'heroicons_outline:chart-pie',
+       icon : 'heroicons_outline:document',
+       link : '/payments'
+   }
+];
+export const compactNavigation: FuseNavigationItem[] = [
+    {
+        id   : 'example',
+        title: 'Example',
+        type : 'basic',
+        icon : 'heroicons_outline:briefcase',
+        link : '/example'
+    },
+    {
+        id   : 'classes',
+        title: 'Classes',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/classes'
+    },
+    {
+        id   : 'eleve',
+        title: 'Élèves',
+        type : 'basic',
+        icon : 'heroicons_outline:academic-cap',
+        link : '/eleves'
+    },
+    {
+       id   : 'payeurs',
+       title: 'Payeurs',
+       type : 'basic',
+       icon : 'heroicons_outline:user-group',
+       link : '/payeurs'
+   },
+   {
+       id   : 'payment',
+       title: 'Payment',
+       type : 'basic',
+       icon : 'heroicons_outline:clipboard-document-list',
        link : '/payments'
    }
 ];
@@ -80,35 +80,35 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         id   : 'example',
         title: 'Example',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
+        icon : 'heroicons_outline:briefcase',
         link : '/example'
     },
     {
-        id   : 'eleve',
-        title: 'Élève',
+        id   : 'classes',
+        title: 'Classes',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
-        link : '/eleve'
+        link : '/classes'
     },
     {
         id   : 'eleve',
         title: 'Élèves',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
+        icon : 'heroicons_outline:academic-cap',
         link : '/eleves'
     },
     {
        id   : 'payeurs',
        title: 'Payeurs',
        type : 'basic',
-       icon : 'heroicons_outline:chart-pie',
+       icon : 'heroicons_outline:user-group',
        link : '/payeurs'
    },
    {
        id   : 'payment',
        title: 'Payment',
        type : 'basic',
-       icon : 'heroicons_outline:chart-pie',
+       icon : 'heroicons_outline:clipboard-document-list',
        link : '/payments'
    }
 ];
@@ -117,35 +117,35 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         id   : 'example',
         title: 'Example',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
+        icon : 'heroicons_outline:briefcase',
         link : '/example'
     },
     {
-        id   : 'eleve',
-        title: 'Élève',
+        id   : 'classes',
+        title: 'Classes',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
-        link : '/eleve'
+        link : '/classes'
     },
     {
         id   : 'eleve',
         title: 'Élèves',
         type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
+        icon : 'heroicons_outline:academic-cap',
         link : '/eleves'
     },
     {
        id   : 'payeurs',
        title: 'Payeurs',
        type : 'basic',
-       icon : 'heroicons_outline:chart-pie',
+       icon : 'heroicons_outline:user-group',
        link : '/payeurs'
    },
    {
        id   : 'payment',
        title: 'Payment',
        type : 'basic',
-       icon : 'heroicons_outline:chart-pie',
+       icon : 'heroicons_outline:clipboard-document-list',
        link : '/payments'
    }
 ];
