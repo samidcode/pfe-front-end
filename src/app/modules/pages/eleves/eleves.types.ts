@@ -12,6 +12,8 @@ export interface Eleve
     image:string;
     imageType:string;
     statue:boolean;
+    dateDeCreation:string;
+
 }
 
 export interface PaginatedData<T>

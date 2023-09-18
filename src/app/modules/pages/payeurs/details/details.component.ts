@@ -91,6 +91,8 @@ export class PayeursDetailsComponent implements OnInit, OnDestroy
             mail     : ['', [Validators.required]],
             tele:[null, [Validators.required]],
             adresse : [null, [Validators.required]],
+            dateDeCreation:[{value: null, disabled: true},, [Validators.required]],
+
 
         });
 
@@ -184,7 +186,7 @@ export class PayeursDetailsComponent implements OnInit, OnDestroy
         // Get the payeur object
         const payeur = this.payeurForm.getRawValue();
         // Update the payeur on the server
-        this._payeursService.updatePayeur(payeur.id, payeur,this.selectedFile).subscribe((newPayeur:Payeur) => {
+        this._payeursService.updatePayeur(payeur.id, payeur).subscribe((newPayeur:Payeur) => {
 
          
 

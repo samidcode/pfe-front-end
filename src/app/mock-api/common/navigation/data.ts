@@ -3,11 +3,11 @@ import { FuseNavigationItem } from '@fuse/components/navigation';
 
 export const defaultNavigation: FuseNavigationItem[] = [
     {
-        id   : 'example',
-        title: 'Example',
+        id   : 'dashboard',
+        title: 'Tableau de bord',
         type : 'basic',
         icon : 'heroicons_outline:briefcase',
-        link : '/example'
+        link : '/dashboard'
     },
     {
         id   : 'classes',
@@ -40,11 +40,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
 ];
 export const compactNavigation: FuseNavigationItem[] = [
     {
-        id   : 'example',
-        title: 'Example',
+        id   : 'dashboard',
+        title: 'Tableau de bord',
         type : 'basic',
         icon : 'heroicons_outline:briefcase',
-        link : '/example'
+        link : '/dashboard'
     },
     {
         id   : 'classes',
@@ -77,11 +77,11 @@ export const compactNavigation: FuseNavigationItem[] = [
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
     {
-        id   : 'example',
-        title: 'Example',
+        id   : 'dashboard',
+        title: 'Tableau de bord',
         type : 'basic',
         icon : 'heroicons_outline:briefcase',
-        link : '/example'
+        link : '/dashboard'
     },
     {
         id   : 'classes',
@@ -114,11 +114,11 @@ export const futuristicNavigation: FuseNavigationItem[] = [
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
     {
-        id   : 'example',
-        title: 'Example',
+        id   : 'dashboard',
+        title: 'Tableau de bord',
         type : 'basic',
         icon : 'heroicons_outline:briefcase',
-        link : '/example'
+        link : '/dashboard'
     },
     {
         id   : 'classes',

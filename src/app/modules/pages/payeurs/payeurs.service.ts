@@ -121,6 +121,8 @@ export class PayeursService
                         mail:null,
                         adresse:null,
                         payments:null,
+                        dateDeCreation:null,
+
     
                     } ;
                 } else {
@@ -177,7 +179,7 @@ export class PayeursService
      * @param id
      * @param payeur
      */
-    updatePayeur(id: string, payeur: Payeur,image)
+    updatePayeur(id: string, payeur: Payeur)
     {
         if (payeur.id == "NewPayeur") {
             payeur.id = null ;

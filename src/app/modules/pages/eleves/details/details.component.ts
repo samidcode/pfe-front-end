@@ -92,7 +92,9 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
             payeur : [null, [Validators.required]],
             classe : [null, [Validators.required]],
             inscriptionAnnee: ['', [Validators.required]],
-            inscriptionFrais: ['', [Validators.required]]
+            inscriptionFrais: ['', [Validators.required]],
+            dateDeCreation:[{value: null, disabled: true},, [Validators.required]],
+
         });
 
     

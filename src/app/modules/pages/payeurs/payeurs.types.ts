@@ -10,6 +10,8 @@ export interface Payeur
     mail:string;
     adresse:string;
     payments :Payment;
+    dateDeCreation:string;
+    
 }
 
 export interface PaginatedData<T>

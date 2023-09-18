@@ -84,15 +84,10 @@ export class ClassesDetailsComponent implements OnInit, OnDestroy
         // Create the classe form
         this.classeForm = this._formBuilder.group({
             id          : [''],
-            image      : [null],
             nom        : ['', [Validators.required]],
-            prenom       : ['', [Validators.required]],
-            idMassar     : ['', [Validators.required]],
-            dateNaissance:[null, [Validators.required]],
-            payeur : [null, [Validators.required]],
-            classe : [null, [Validators.required]],
-            inscriptionAnnee: ['', [Validators.required]],
-            inscriptionFrais: ['', [Validators.required]]
+            niveau       : ['', [Validators.required]],
+            dateDeCreation:[{value: null, disabled: true},, [Validators.required]],
+         
         });
 
     
@@ -181,35 +176,13 @@ export class ClassesDetailsComponent implements OnInit, OnDestroy
         // Get the classe object
         const classe = this.classeForm.getRawValue();
       
-
-        const params = { inscriptionFrais: classe.inscriptionFrais,inscriptionAnnee:classe.inscriptionAnnee };
         
         // Update the classe on the server
-        this._classesService.updateClasse(classe.id, classe,this.selectedFile,params).subscribe((newClasse) => {
+        this._classesService.updateClasse( classe).subscribe((newClasse) => {
 
          
 
-            this._router.navigate(['../', newClasse['classe'].id], {relativeTo: this._activatedRoute});
-                    
-
-console.log("new",newClasse);
-
-
-    // Code to be executed after a 5-second delay
-   
-        
-this.dialog.open(ModernComponent, {
-width:'1000px',   // Set width to 600px
-height:'100%',  // Set height to 530px
-data:newClasse['payment'],
-backdropClass: 'backdropBackground',
-});
-
-
-
-   
-
-            
+            this._router.navigate(['../', newClasse.id], {relativeTo: this._activatedRoute});
 
             // Toggle the edit mode off
             this.toggleEditMode(false);

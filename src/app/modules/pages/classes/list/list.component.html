@@ -157,7 +157,7 @@
                             mat-cell
                             *matCellDef="let classes">
                             <span class="pr-6 font-medium whitespace-nowrap">
-                                {{classes.dateDeCreation }}
+                                {{classes.dateDeCreation | date: 'MM/dd/yyyy'}}
                             </span>
                         </td>
                     </ng-container>
@@ -180,7 +180,7 @@
         <a [routerLink]="['./', classes.id]" class="info p-0 " data-original-title="" title="" style="margin: 0 8px 0 0;">
             <mat-icon   class="hoverable-icon icon-size-7"  svgIcon="heroicons_outline:eye"></mat-icon>
         </a>
-        <a  [routerLink]="['./']" (click)="exportToExcel(classes.id)">           <mat-icon>archive</mat-icon>
+        <a  [routerLink]="['./']" (click)="exportToExcel(classes.id,classes.nom)">           <mat-icon>archive</mat-icon>
 
 
         </a>

@@ -205,9 +205,9 @@ export class ClassesListComponent implements OnInit, OnDestroy
 
     });
   }
-  exportToExcel(classeId){
+  exportToExcel(classeId,classeName){
 
-this._classesService.exportToExcel(classeId);
+this._classesService.exportToExcel(classeId,classeName);
 
 
 

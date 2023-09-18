@@ -134,7 +134,7 @@ export class ClassesService
      * @param id
      * @param classe
      */
-    updateClasse(id: string, classe: Classe,image,inscription)
+    updateClasse( classe: Classe)
     {
         if (classe.id == "NewClasse") {
             classe.id = null ;
@@ -142,7 +142,7 @@ export class ClassesService
         
 
       const url = `${this.baseUrl}classes`; 
-      return this._httpClient.post(url,classe, { params: inscription }).pipe(
+      return this._httpClient.post(url,classe).pipe(
         tap((newClasse:Classe) => {
 
             let classes = this._classes.getValue()
@@ -151,23 +151,22 @@ export class ClassesService
                 let classes = this._classes.getValue()
 
                 // Find the index of the updated classe
-                   const index = classes.findIndex(item => item.id === id);
+                   const index = classes.findIndex(item => item.id === classe.id);
 
                    // Update the classe
-                   classes[index] = newClasse['classe'];
+                   classes[index] = newClasse;
                    this._classes.next(classes);
                    // Update the classes
                 
             }else{
-                console.log("newClasse",newClasse);
                 
-                this._classes.next([newClasse['classe'], ...classes]);
+                this._classes.next([newClasse, ...classes]);
 
 
             }
-            this._classe.next(newClasse['classe']);
+            this._classe.next(newClasse);
 
-              return newClasse['classe'];
+              return newClasse;
         })
     );
     }
@@ -209,21 +208,21 @@ export class ClassesService
 
 
 
-    exportToExcel(classeId) {
+    exportToExcel(classeId,classeName) {
          
 
         const url = `${this.baseUrl}classes/export/${classeId}`; 
         this._httpClient.get(url, { responseType: 'blob' }).subscribe((response) => {
-          this.downloadFile(response);
+          this.downloadFile(response,classeName);
         });
       }
     
-      private downloadFile(data: any) {
+      private downloadFile(data: any,classeName) {
         const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'eleves.xlsx';
+        a.download = classeName+'.xlsx';
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);

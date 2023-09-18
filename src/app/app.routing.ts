@@ -10,14 +10,14 @@ import { InitialDataResolver } from 'app/app.resolvers';
 export const appRoutes: Route[] = [
 
     // Redirect empty path to '/example'
-    {path: '', pathMatch : 'full', redirectTo: 'example'},
+    {path: '', pathMatch : 'full', redirectTo: 'dashboard'},
 
     // Redirect signed-in user to the '/example'
     //
     // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
-    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'example'},
+    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'dashboard'},
 
     // Auth routes for guests
     {
@@ -71,7 +71,7 @@ export const appRoutes: Route[] = [
             initialData: InitialDataResolver,
         },
         children: [
-            {path: 'example', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
+            {path: 'dashboard', loadChildren: () => import('app/modules/pages/project/project.module').then(m => m.ProjectModule)},
             {path: 'eleves', loadChildren: () => import('app/modules/pages/eleves/eleves.module').then(m => m.ElevesModule)},
             {path: 'payeurs', loadChildren: () => import('app/modules/pages/payeurs/payeurs.module').then(m => m.PayeursModule)},
             {path: 'payments', loadChildren: () => import('app/modules/pages/payment/payment.module').then(m => m.PaymentModule)},

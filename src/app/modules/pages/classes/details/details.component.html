@@ -35,16 +35,7 @@
                     <!-- Avatar -->
                     <div class="flex items-center justify-center w-32 h-32 rounded-full overflow-hidden ring-4 ring-bg-card">
                         
-                        <img
-                            class="object-cover w-full h-full"
-                            *ngIf="classe.image"
-                            [src]= "classe.image"
-                            >
-                        <div
-                            class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
-                            *ngIf="!classe.image">
-                            {{classe.nom.charAt(0)}}
-                        </div>
+                  
                     </div>
                     <!-- Actions -->
                     <div class="flex items-center ml-auto mb-1">
@@ -56,55 +47,38 @@
                                 [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
                             <span class="ml-2">Edit</span>
                         </button>
-                   
-                        <button
-                        mat-stroked-button
-                        class="ml-2"
-                        (click)="makePayment()">
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
-                        <span class="ml-2">pay</span>
-                    </button>
                 </div>
 
                 </div>
 
                 <!-- Name -->
-                <div class="mt-2 text-4xl 	 font-bold truncate" [ngClass]="paymentMode?'text-center':''">{{classe.prenom |titlecase}} {{classe.nom}}</div>
 
        
-                <div class="flex flex-col mt-4 pt-6 border-t space-y-8"*ngIf="!paymentMode else paymentMatTab" >
+                <div class="flex flex-col mt-4 pt-6 border-t space-y-8" >
           
 
                 <!-- Code massare -->
                         <div class="relative">
 
-                             <input disabled  [value]="classe.idMassar" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
-                            <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Code Massare</label>
+                             <input disabled  [value]="classe.nom" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                            <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Nom</label>
 
                         </div>
                     <!-- Payeur Cin -->
                         <div class="relative">
 
-                            <input disabled  value="{{classe.payeur.cin }}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
-                           <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Payeur CIN</label>
+                            <input disabled  value="{{classe.niveau }}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                           <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Niveau</label>
 
                        </div>
-                       <!-- Date de naissance -->
+                       <!-- Date De Creation -->
                         <div class="relative">
 
-                            <input disabled  value="{{classe.dateNaissance| date: 'MM/dd/yyyy'}}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
-                           <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Date de naissance</label>
+                            <input disabled  value="{{classe.dateDeCreation| date: 'MM/dd/yyyy'}}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
+                           <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Date de creation</label>
 
                        </div>
-                  <!-- Classe -->
-                  <div class="relative">
-
-                    <input disabled  value="{{classe.classe.nom}}" type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-lg text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" style="margin-top: 10px;" />
-                   <label for="floating_filled" class="absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-90 top-4 z-10 origin-[0] left1 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4" >Classe</label>
-
-               </div>
+              
 
                 </div>
 
@@ -142,57 +116,7 @@
             <div class="w-full max-w-3xl">
                 <form [formGroup]="classeForm">
 
-                    <!-- Avatar -->
-                    <div class="flex flex-auto items-end -mt-16">
-                        <div class="relative flex items-center justify-center w-32 h-32 rounded-full overflow-hidden ring-4 ring-bg-card">
-                            <!-- Upload / Remove avatar -->
-                            <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
-                            <div class="absolute inset-0 flex items-center justify-center z-20">
-                                <div>
-                                    <input
-                                        id="avatar-file-input"
-                                        class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
-                                        type="file"
-                                        [multiple]="false"
-                                        [accept]="'image/jpeg, image/png'"
-                                        (change)="uploadAvatar($event)"
-                                        >
-                                    <label
-                                        class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
-                                        for="avatar-file-input"
-                                        matRipple>
-                                        <mat-icon
-                                            class="text-white"
-                                            [svgIcon]="'heroicons_outline:camera'"></mat-icon>
-                                    </label>
-                                </div>
-                                <div>
-                                    <button
-                                    (click)="removeAvatar()"
-                                    type="button"
-                                       >
-                                        <mat-icon
-                                            class="text-white"
-                                            [svgIcon]="'heroicons_outline:trash'"></mat-icon>
-                                    </button>
-                                </div>
-                            </div>
-                            <!-- Image/Letter -->
-                          
-                            <img
-                                class="object-cover w-full h-full"
-                                *ngIf="classe?.image "
-                                [src]= "classe.image"
-                                > 
-                                
-                          
-                            <div
-                                class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
-                                *ngIf="!classe.image">
-                                {{classe.nom?classe.nom.charAt(0):"N"}}
-                            </div>
-                        </div>
-                    </div>
+                 
 
                     <!-- Name -->
                     <div class="mt-8">
@@ -219,120 +143,46 @@
 
                     <div class="flex">
                         <mat-form-field class="fuse-mat-no-subscript w-full">
-                            <mat-label>Prenom</mat-label>
+                            <mat-label>Niveau</mat-label>
                             <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
                                 [svgIcon]="'heroicons_solid:location-marker'"></mat-icon>
                             <input
                                 matInput
-                                [formControlName]="'prenom'"
-                                [placeholder]="'Prenom'">
+                                [formControlName]="'niveau'"
+                                [placeholder]="'niveau'">
                         </mat-form-field>
                     </div>
 
                   
-                    <div class="flex">
+                    <div class="flex" *ngIf="classe.id !='NewClasse'">
                         <mat-form-field class="fuse-mat-no-subscript w-full">
-                            <mat-label>dateNaissance</mat-label>
+                            <mat-label>Date de creation</mat-label>
                             <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
                                 [svgIcon]="'heroicons_solid:cake'"></mat-icon>
                             <input
                                 matInput
-                                [matDatepicker]="birthdayDatepicker"
-                                [formControlName]="'dateNaissance'"
-                                [placeholder]="'Date de naissance'">
+                                [matDatepicker]="dateDeCreation"
+                                [formControlName]="'dateDeCreation'"
+                                [placeholder]="'Date de creation'"
+                                disabled>
                             <mat-datepicker-toggle
                                 matSuffix
-                                [for]="birthdayDatepicker">
+                                [for]="dateDeCreation">
                             </mat-datepicker-toggle>
-                            <mat-datepicker #birthdayDatepicker></mat-datepicker>
+                            <mat-datepicker #dateDeCreation></mat-datepicker>
                         </mat-form-field>
                     </div>
-
-                    <div class="flex">
-                        <mat-form-field class="fuse-mat-no-subscript w-full">
-                            <mat-label>Code Massare</mat-label>
-                            <mat-icon
-                                matPrefix
-                                class="hidden sm:flex icon-size-5"
-                                [svgIcon]="'heroicons_outline:newspaper'"></mat-icon>
-                            <input
-                                matInput
-                                [formControlName]="'idMassar'"
-                                [placeholder]="'Code Massare'">
-                        </mat-form-field>
-                    </div>
-
-                    <div class="flex">
-                        <mat-form-field
-                            [ngClass]="formFieldHelpers"
-                            class="fuse-mat-no-subscript w-full">
-                            <mat-label>CIN du payeur</mat-label>
-                            <mat-icon
-                                matPrefix
-                                class="hidden sm:flex icon-size-5"
-                                svgIcon="heroicons_outline:academic-cap"></mat-icon>
-                            <input type="text"
-                            [formControlName]="'payeur'"
-                            placeholder="CIN du payeur"
-                            matInput
-                            (input)="payeurChange($event.target.value)"
-                            [matAutocomplete]="payeur">
-                     <mat-autocomplete  #payeur="matAutocomplete" [displayWith]="displayP.bind(this)">
-                       <mat-option *ngFor="let option of payeurOptions " [value]="option">
-                         {{option.nom}}&nbsp;{{option.prenom}}
-                       </mat-option>
-                     </mat-autocomplete>
-                           
-                        </mat-form-field>
-                    </div>
-
-                    <div class="flex">
-                        <mat-form-field
-                            [ngClass]="formFieldHelpers"
-                            class="flex-auto">
-                            <input type="text"
-                            [formControlName]="'classe'"
-                            placeholder="classe"
-                            (input)="classChange($event.target.value)"
-                            matInput
-                            [matAutocomplete]="class">
-                            <mat-label>Classe</mat-label>
-                            <mat-icon
-                                matPrefix
-                                class="hidden sm:flex icon-size-5"
-                                svgIcon="heroicons_outline:academic-cap"></mat-icon>
-                     <mat-autocomplete autoActiveFirstOption #class="matAutocomplete" [displayWith]="displayC.bind(this)">
-                       <mat-option *ngFor="let option of classOptions " [value]="option">
-                         {{option.nom}}
-                       </mat-option>
-                     </mat-autocomplete>
-                           
-                        </mat-form-field>
-                    </div>
-
 
                    
-                    <div class="flex flex-wrap -mx-3 mb-2">
-                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="city">
-                            Frais d'inscription
-                        </label>
-                        <input  [formControlName]="'inscriptionFrais'"  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                          id="mois" name="mois"  type="text" placeholder="Albuquerque">
-                      </div>
-                     
-                      <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="zip">
-                          l'annee d'inscription
-                        </label>
-                        <input  [formControlName]="'inscriptionAnnee'"  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                          id="zip" name="zip" type="text" placeholder="90210">
-                      </div>
-                    </div>
+
+                   
+
+
+              
                     <!-- Actions -->
                     <div class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
                         <!-- Delete -->
@@ -373,12 +223,3 @@
 </div>
 
 
-<ng-template #paymentMatTab>
-
-
-   
-
-    <payment-details [classe]="classe"></payment-details>
-   
-   
-   </ng-template>

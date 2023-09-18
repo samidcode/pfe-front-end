@@ -105,6 +105,8 @@ export class ElevesService
                         image:null,
                         imageType:null,
                         statue:null,
+                        dateDeCreation:null,
+
     
                     } ;
                 } else {
