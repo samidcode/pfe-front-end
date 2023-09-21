@@ -185,6 +185,7 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
         eleve.image = this.eleve.image;
 
         const params = { inscriptionFrais: eleve.inscriptionFrais,inscriptionAnnee:eleve.inscriptionAnnee };
+        console.log("wierd",eleve);
         
         // Update the eleve on the server
         this._elevesService.updateEleve(eleve.id, eleve,this.selectedFile,params).subscribe((newEleve) => {

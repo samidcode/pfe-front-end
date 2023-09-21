@@ -45,7 +45,7 @@ export class ModernComponent implements OnInit, OnDestroy
         }
 
         let pipe = new DatePipe('en-US');
-            this.payment.date =  pipe.transform(this.payment.date, 'MM /dd /yyyy');
+            this.payment.dateDeCreation =  pipe.transform(this.payment.dateDeCreation, 'MM /dd /yyyy');
 
     }
     ngOnDestroy(): void {

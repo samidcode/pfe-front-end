@@ -185,11 +185,11 @@ export class PayeursService
             payeur.id = null ;
         }
         
-        const formData = new FormData() ;
-        formData.append('payeur', JSON.stringify(payeur));
+
+
         
       const url = `${this.baseUrl}payeurs`; 
-      return this._httpClient.post(url,formData).pipe(
+      return this._httpClient.post(url,payeur).pipe(
         tap((newPayeur:Payeur) => {
 
             let payeurs = this._payeurs.getValue()

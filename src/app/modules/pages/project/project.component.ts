@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { ApexOptions } from 'ng-apexcharts';
 import { ProjectService } from './project.service';
+import { PaymentStatistics } from './project.types';
 
 @Component({
     selector       : 'project',
@@ -21,6 +22,10 @@ export class ProjectComponent implements OnInit, OnDestroy
     data: any;
     selectedProject: string = 'ACME Corp. Backend App';
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    statistics: any;
+    tTime="today";
+    sTime="today";
+    eTime="today";
 
     /**
      * Constructor
@@ -48,12 +53,10 @@ export class ProjectComponent implements OnInit, OnDestroy
 
                 // Store the data
                 this.data = data;
-
                 // Prepare the chart data
                 this._prepareChartData();
             });
 
-        // Attach SVG fill fixer to all ApexCharts
         window['Apex'] = {
             chart: {
                 events: {
@@ -66,6 +69,18 @@ export class ProjectComponent implements OnInit, OnDestroy
                 }
             }
         };
+
+
+            this._projectService.getStatistics().subscribe((statistics:PaymentStatistics)=>{
+
+
+                        this.statistics=statistics;
+console.log(this.statistics);
+
+
+            })
+
+        
     }
 
     /**
@@ -138,7 +153,7 @@ export class ProjectComponent implements OnInit, OnDestroy
                 height    : '100%',
                 type      : 'line',
                 toolbar   : {
-                    show: false
+                    show: true
                 },
                 zoom      : {
                     enabled: false
@@ -155,7 +170,7 @@ export class ProjectComponent implements OnInit, OnDestroy
             grid       : {
                 borderColor: 'var(--fuse-border)'
             },
-            labels     : this.data.githubIssues.labels,
+            labels     : this.data.labels,
             legend     : {
                 show: false
             },
@@ -164,7 +179,7 @@ export class ProjectComponent implements OnInit, OnDestroy
                     columnWidth: '50%'
                 }
             },
-            series     : this.data.githubIssues.series,
+            series     : this.data.series,
             states     : {
                 hover: {
                     filter: {
@@ -206,228 +221,11 @@ export class ProjectComponent implements OnInit, OnDestroy
             }
         };
 
-        // Task distribution
-        this.chartTaskDistribution = {
-            chart      : {
-                fontFamily: 'inherit',
-                foreColor : 'inherit',
-                height    : '100%',
-                type      : 'polarArea',
-                toolbar   : {
-                    show: false
-                },
-                zoom      : {
-                    enabled: false
-                }
-            },
-            labels     : this.data.taskDistribution.labels,
-            legend     : {
-                position: 'bottom'
-            },
-            plotOptions: {
-                polarArea: {
-                    spokes: {
-                        connectorColors: 'var(--fuse-border)'
-                    },
-                    rings : {
-                        strokeColor: 'var(--fuse-border)'
-                    }
-                }
-            },
-            series     : this.data.taskDistribution.series,
-            states     : {
-                hover: {
-                    filter: {
-                        type : 'darken',
-                        value: 0.75
-                    }
-                }
-            },
-            stroke     : {
-                width: 2
-            },
-            theme      : {
-                monochrome: {
-                    enabled       : true,
-                    color         : '#93C5FD',
-                    shadeIntensity: 0.75,
-                    shadeTo       : 'dark'
-                }
-            },
-            tooltip    : {
-                followCursor: true,
-                theme       : 'dark'
-            },
-            yaxis      : {
-                labels: {
-                    style: {
-                        colors: 'var(--fuse-text-secondary)'
-                    }
-                }
-            }
-        };
 
-        // Budget distribution
-        this.chartBudgetDistribution = {
-            chart      : {
-                fontFamily: 'inherit',
-                foreColor : 'inherit',
-                height    : '100%',
-                type      : 'radar',
-                sparkline : {
-                    enabled: true
-                }
-            },
-            colors     : ['#818CF8'],
-            dataLabels : {
-                enabled   : true,
-                formatter : (val: number): string | number => `${val}%`,
-                textAnchor: 'start',
-                style     : {
-                    fontSize  : '13px',
-                    fontWeight: 500
-                },
-                background: {
-                    borderWidth: 0,
-                    padding    : 4
-                },
-                offsetY   : -15
-            },
-            markers    : {
-                strokeColors: '#818CF8',
-                strokeWidth : 4
-            },
-            plotOptions: {
-                radar: {
-                    polygons: {
-                        strokeColors   : 'var(--fuse-border)',
-                        connectorColors: 'var(--fuse-border)'
-                    }
-                }
-            },
-            series     : this.data.budgetDistribution.series,
-            stroke     : {
-                width: 2
-            },
-            tooltip    : {
-                theme: 'dark',
-                y    : {
-                    formatter: (val: number): string => `${val}%`
-                }
-            },
-            xaxis      : {
-                labels    : {
-                    show : true,
-                    style: {
-                        fontSize  : '12px',
-                        fontWeight: '500'
-                    }
-                },
-                categories: this.data.budgetDistribution.categories
-            },
-            yaxis      : {
-                max       : (max: number): number => parseInt((max + 10).toFixed(0), 10),
-                tickAmount: 7
-            }
-        };
+    }
 
-        // Weekly expenses
-        this.chartWeeklyExpenses = {
-            chart  : {
-                animations: {
-                    enabled: false
-                },
-                fontFamily: 'inherit',
-                foreColor : 'inherit',
-                height    : '100%',
-                type      : 'line',
-                sparkline : {
-                    enabled: true
-                }
-            },
-            colors : ['#22D3EE'],
-            series : this.data.weeklyExpenses.series,
-            stroke : {
-                curve: 'smooth'
-            },
-            tooltip: {
-                theme: 'dark'
-            },
-            xaxis  : {
-                type      : 'category',
-                categories: this.data.weeklyExpenses.labels
-            },
-            yaxis  : {
-                labels: {
-                    formatter: (val): string => `$${val}`
-                }
-            }
-        };
+    getTime(time){
 
-        // Monthly expenses
-        this.chartMonthlyExpenses = {
-            chart  : {
-                animations: {
-                    enabled: false
-                },
-                fontFamily: 'inherit',
-                foreColor : 'inherit',
-                height    : '100%',
-                type      : 'line',
-                sparkline : {
-                    enabled: true
-                }
-            },
-            colors : ['#4ADE80'],
-            series : this.data.monthlyExpenses.series,
-            stroke : {
-                curve: 'smooth'
-            },
-            tooltip: {
-                theme: 'dark'
-            },
-            xaxis  : {
-                type      : 'category',
-                categories: this.data.monthlyExpenses.labels
-            },
-            yaxis  : {
-                labels: {
-                    formatter: (val): string => `$${val}`
-                }
-            }
-        };
-
-        // Yearly expenses
-        this.chartYearlyExpenses = {
-            chart  : {
-                animations: {
-                    enabled: false
-                },
-                fontFamily: 'inherit',
-                foreColor : 'inherit',
-                height    : '100%',
-                type      : 'line',
-                sparkline : {
-                    enabled: true
-                }
-            },
-            colors : ['#FB7185'],
-            series : this.data.yearlyExpenses.series,
-            stroke : {
-                curve: 'smooth'
-            },
-            tooltip: {
-                theme: 'dark'
-            },
-            xaxis  : {
-                type      : 'category',
-                categories: this.data.yearlyExpenses.labels
-            },
-            yaxis  : {
-                labels: {
-                    formatter: (val): string => `$${val}`
-                }
-            }
-        };
+        this.eTime=time
     }
 }

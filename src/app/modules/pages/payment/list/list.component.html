@@ -55,15 +55,7 @@
                             </mat-form-field>
                         </div>
                         <!-- Add payment button -->
-                        <button
-                        style="    margin-bottom: 21px;"
-                            class="ml-4"
-                            mat-flat-button
-                            [color]="'primary'"
-                            (click)="createPayment()">
-                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                            <span class="ml-2 mr-1">Add</span>
-                        </button>
+               
                     </div>
                 </div>
 
@@ -210,7 +202,7 @@
                             *matCellDef="let payments">
                
                              <span class="pr-6 font-medium whitespace-nowrap">
-                                {{payments.date | date: 'dd/MM/yyyy'}}
+                                {{payments.dateDeCreation | date: 'dd/MM/yyyy'}}
                             </span>
                             
                         </td>

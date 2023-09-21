@@ -41,10 +41,21 @@ export class ProjectService
     {
         const url = `${this.baseUrl}charts`; 
 
-        return this._httpClient.get('api/dashboards/project').pipe(
+        return this._httpClient.get(url).pipe(
             tap((response: any) => {
+
                 this._data.next(response);
             })
         );
+    }
+
+
+    getStatistics(){
+
+
+        const url = `${this.baseUrl}charts/getstatistics`; 
+
+        return this._httpClient.get(url);
+
     }
 }

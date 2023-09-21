@@ -1,13 +1,14 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
-
+import '../../../../assets/login-animation.js'
 @Component({
     selector     : 'auth-sign-in',
     templateUrl  : './sign-in.component.html',
+    styleUrls:['./sign-in.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations
 })
@@ -43,6 +44,7 @@ export class AuthSignInComponent implements OnInit
      */
     ngOnInit(): void
     {
+
         // Create the form
         this.signInForm = this._formBuilder.group({
             username     : ['', Validators.required],
@@ -53,7 +55,9 @@ export class AuthSignInComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
-
+    ngAfterViewInit() {
+        (window as any).initialize();
+      }
     /**
      * Sign in
      */
@@ -105,4 +109,5 @@ export class AuthSignInComponent implements OnInit
                 }
             );
     }
+
 }
