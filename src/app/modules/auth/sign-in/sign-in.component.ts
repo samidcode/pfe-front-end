@@ -9,17 +9,13 @@ import '../../../../assets/login-animation.js'
     selector     : 'auth-sign-in',
     templateUrl  : './sign-in.component.html',
     styleUrls:['./sign-in.component.scss'],
-    encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations
 })
 export class AuthSignInComponent implements OnInit
 {
     @ViewChild('signInNgForm') signInNgForm: NgForm;
 
-    alert: { type: FuseAlertType; message: string } = {
-        type   : 'success',
-        message: ''
-    };
+    alert=null;
     signInForm: UntypedFormGroup;
     showAlert: boolean = false;
 
@@ -99,10 +95,7 @@ export class AuthSignInComponent implements OnInit
                     this.signInNgForm.resetForm();
 
                     // Set the alert
-                    this.alert = {
-                        type   : 'error',
-                        message: 'Wrong email or password'
-                    };
+                    this.alert=response
 
                     // Show the alert
                     this.showAlert = true;
