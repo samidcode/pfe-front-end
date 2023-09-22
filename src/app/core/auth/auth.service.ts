@@ -1,20 +1,28 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
+import { User } from '../user/user.types';
+import { Users } from 'app/modules/pages/settings/users.types';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
 export class AuthService
 {
+  
+    private baseUrl = 'http://localhost:8080/api/'; 
+
     private _authenticated: boolean = false;
+    userEmail: any;
 
     /**
      * Constructor
      */
     constructor(
         private _httpClient: HttpClient,
-        private _userService: UserService
+        private _userService: UserService,
+
     )
     {
     }
@@ -193,4 +201,33 @@ export class AuthService
         // If the access token exists and it didn't expire, sign in using it
         return this.signInUsingToken();
     }
+
+
+
+    getUser(email: string) {
+        
+        {
+            return this._httpClient.get<Users>(this.baseUrl+'users', {
+                params: {email}
+            })
+        
+    }
+}
+updateUser(user) {
+
+    return this._httpClient.post(this.baseUrl+'users', user)
+
+
+}
+
+updatePassword (currentPassword: string, newPassword: string, email: string): Observable<any> {
+    const url = `${this.baseUrl}users/password`;
+    const params = new HttpParams()
+      .set('currentpassword', currentPassword)
+      .set('newpassword', newPassword)
+      .set('email', email);
+    return this._httpClient.post(url, {}, { params });
+  }
+
+
 }

@@ -55,6 +55,7 @@ export class ElevesListComponent implements OnInit, OnDestroy
    
     )
     {
+        this.loadData(0,10);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -66,7 +67,7 @@ export class ElevesListComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        this.loadData(0,10);
+        
         // Get the eleves
         this.eleves$ = this._elevesService.eleves$;
         this._elevesService.eleves$
@@ -203,7 +204,7 @@ export class ElevesListComponent implements OnInit, OnDestroy
             this.pEleve = elevesPagination.totalElements ; 
             
 
-
+            this._changeDetectorRef.markForCheck();
     });
   }
 

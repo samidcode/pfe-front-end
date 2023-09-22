@@ -76,6 +76,7 @@ export const appRoutes: Route[] = [
             {path: 'payeurs', loadChildren: () => import('app/modules/pages/payeurs/payeurs.module').then(m => m.PayeursModule)},
             {path: 'payments', loadChildren: () => import('app/modules/pages/payment/payment.module').then(m => m.PaymentModule)},
             {path: 'classes', loadChildren: () => import('app/modules/pages/classes/classes.module').then(m => m.ClassesModule)},
+            {path: 'settings', loadChildren: () => import('app/modules/pages/settings/settings.module').then(m => m.SettingsModule)},
 
 
 

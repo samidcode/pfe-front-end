@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { ApexOptions } from 'ng-apexcharts';
@@ -32,7 +32,9 @@ export class ProjectComponent implements OnInit, OnDestroy
      */
     constructor(
         private _projectService: ProjectService,
-        private _router: Router
+        private _router: Router,
+        private _changeDetectorRef: ChangeDetectorRef,
+
     )
     {
     }
@@ -75,8 +77,8 @@ export class ProjectComponent implements OnInit, OnDestroy
 
 
                         this.statistics=statistics;
-console.log(this.statistics);
 
+                        this._changeDetectorRef.markForCheck();
 
             })
 
@@ -221,6 +223,7 @@ console.log(this.statistics);
             }
         };
 
+        this._changeDetectorRef.markForCheck();
 
     }
 

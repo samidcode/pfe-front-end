@@ -1,0 +1,69 @@
+<div class="w-full max-w-3xl">
+
+    <!-- Form -->
+    <form [formGroup]="securityForm">
+
+        <!-- Section -->
+        <div class="w-full">
+            <div class="text-xl">changez votre mot de passe</div>
+        </div>
+        <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+            <!-- Current password -->
+            <div class="sm:col-span-4">
+                <mat-form-field
+                    class="w-full"
+                    [subscriptSizing]="'dynamic'">
+                    <mat-label>Mot de passe actuel</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:key'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'currentPassword'"
+                        type="password"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <!-- New password -->
+            <div class="sm:col-span-4">
+                <mat-form-field
+                    class="w-full"
+                    [subscriptSizing]="'dynamic'">
+                    <mat-label>Nouveau mot de passe</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:key'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'newPassword'"
+                        type="password"
+                        matInput>
+                </mat-form-field>
+                <div class="mt-1 text-md text-hint">Minimum 8 caractères. Doit inclure des chiffres, des lettres et des caractères spéciaux.</div>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="my-5 border-t"></div>
+
+        
+        <ng-container  *ngIf="alert">
+            <div   [@shake]="state"  style="width: 102%;" class=" mb-5 p-2 bg-green-400 items-center text-indigo-100 leading-none rounded-full flex lg:inline-flex" role="alert">
+              <span class="flex rounded-full bg-green-700 uppercase px-2 py-1 text-xs font-bold mr-3">Alerte</span>
+              <span class="font-light	 mr-2 text-left flex-auto">l'utilisateur a mis à jour avec succès</span>
+            </div>
+          </ng-container>
+        <!-- Actions -->
+        <div class="flex items-center justify-end">
+    
+            <button
+            (click)="updatePassword()"
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                [color]="'primary'">Save
+            </button>
+        </div>
+    </form>
+
+</div>

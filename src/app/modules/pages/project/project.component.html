@@ -33,9 +33,9 @@
                                                 </div>
                                             </div>
                                             <div class="flex flex-col items-center mt-2">
-                                                <div *ngIf="eTime=='today'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{statistics.today.elevePayentToday}}</div>
-                                                <div *ngIf="eTime=='yestrday'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{statistics.yesterday.elevePayentYestrday}}</div>
-                                                <div *ngIf="eTime=='dayago'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{statistics.DayAgo.elevePayentDayAgo}}</div>
+                                                <div *ngIf="eTime=='today'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{statistics?.today.elevePayentToday}}</div>
+                                                <div *ngIf="eTime=='yestrday'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{statistics?.yesterday.elevePayentYestrday}}</div>
+                                                <div *ngIf="eTime=='dayago'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{statistics?.DayAgo.elevePayentDayAgo}}</div>
 
 
                                                 <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Élève</div>
@@ -64,9 +64,9 @@
                                                 </div>
                                             </div>
                                             <div class="flex flex-col items-center mt-2">
-                                                <div  *ngIf="sTime=='today'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">{{statistics.today.sizeOfPaymentToday}}</div>
-                                                <div *ngIf="sTime=='yestrday'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">{{statistics.yesterday.sizeOfPaymentYestrday}}</div>
-                                                <div *ngIf="sTime=='dayago'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">{{statistics.DayAgo.sizeOfPaymentDayAgo}}</div>
+                                                <div  *ngIf="sTime=='today'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">{{statistics?.today.sizeOfPaymentToday}}</div>
+                                                <div *ngIf="sTime=='yestrday'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">{{statistics?.yesterday.sizeOfPaymentYestrday}}</div>
+                                                <div *ngIf="sTime=='dayago'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">{{statistics?.DayAgo.sizeOfPaymentDayAgo}}</div>
                                                 <div class="text-lg font-medium text-red-600 dark:text-red-500">DH</div>
                                                 <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                                             
@@ -94,8 +94,8 @@
                                             </div>
                                             <div class="flex flex-col items-center mt-2">
                                                 <div   *ngIf="tTime=='today'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">4</div>
-                                                <div *ngIf="tTime=='yesterday'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{statistics.yesterday.totaleOfInscriptionYestrday}}</div>
-                                                <div  *ngIf="tTime=='dayago'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{statistics.DayAgo.totaleOfInscriptionDayAgo}}</div>
+                                                <div *ngIf="tTime=='yesterday'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{statistics?.yesterday.totaleOfInscriptionYestrday}}</div>
+                                                <div  *ngIf="tTime=='dayago'" class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{statistics?.DayAgo.totaleOfInscriptionDayAgo}}</div>
                                                 <div class="text-lg font-medium text-amber-600 dark:text-amber-500">Open</div>
                                                 <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                                          

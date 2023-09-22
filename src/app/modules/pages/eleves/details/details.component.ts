@@ -91,8 +91,8 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
             dateNaissance:[null, [Validators.required]],
             payeur : [null, [Validators.required]],
             classe : [null, [Validators.required]],
-            inscriptionAnnee: ['', [Validators.required]],
-            inscriptionFrais: ['', [Validators.required]],
+            inscriptionAnnee: [0, [this.requiredIfNewEleveValidator()]], // Use the custom validator here
+            inscriptionFrais: [0, [this.requiredIfNewEleveValidator()]], // Use the custom validator here
             dateDeCreation:[{value: null, disabled: true},, [Validators.required]],
 
         });
@@ -126,7 +126,30 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
             });
 
     }
-
+    requiredIfNewEleveValidator() {
+        return (group: FormGroup) => {
+          const eleveId = group.get('id')?.value;
+          const inscriptionAnneeControl = group.get('inscriptionAnnee');
+          const inscriptionFraisControl = group.get('inscriptionFrais');
+      
+          if (eleveId === 'NewEleve') {
+            if (!inscriptionAnneeControl?.value) {
+              inscriptionAnneeControl?.setErrors({ required: true });
+            } else {
+              inscriptionAnneeControl?.setErrors(null);
+            }
+      
+            if (!inscriptionFraisControl?.value) {
+              inscriptionFraisControl?.setErrors({ required: true });
+            } else {
+              inscriptionFraisControl?.setErrors(null);
+            }
+          } else {
+            inscriptionAnneeControl?.setErrors(null);
+            inscriptionFraisControl?.setErrors(null);
+          }
+        };
+      }
     /**
      * On destroy
      */
@@ -181,7 +204,7 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
     addOrupdate(): void
     {
         // Get the eleve object
-        const eleve = this.eleveForm.getRawValue();
+        let eleve = this.eleveForm.getRawValue();
         eleve.image = this.eleve.image;
 
         const params = { inscriptionFrais: eleve.inscriptionFrais,inscriptionAnnee:eleve.inscriptionAnnee };
@@ -195,19 +218,18 @@ export class ElevesDetailsComponent implements OnInit, OnDestroy
             this._router.navigate(['../', newEleve['eleve'].id], {relativeTo: this._activatedRoute});
                     
 
-console.log("new",newEleve);
 
-
-   
+if (eleve.id == null) {
+    this.dialog.open(ModernComponent, {
+        width:'1000px',   // Set width to 600px
+        height:'100%',  // Set height to 530px
+        data:newEleve['payment'],
+        backdropClass: 'backdropBackground',
+        });
         
-this.dialog.open(ModernComponent, {
-width:'1000px',   // Set width to 600px
-height:'100%',  // Set height to 530px
-data:newEleve['payment'],
-backdropClass: 'backdropBackground',
-});
-
-
+        
+    
+} 
 
    
 

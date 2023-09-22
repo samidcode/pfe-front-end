@@ -95,4 +95,10 @@ export class UserComponent implements OnInit, OnDestroy
 open.toggle();
 
     }
+
+    settings(){
+
+        this._router.navigate(['./settings']);
+
+    }
 }
