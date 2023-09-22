@@ -35,11 +35,7 @@ import { JwtModule } from '@auth0/angular-jwt';
         MatSlideToggleModule,
         FuseAlertModule,
         SharedModule,
-        JwtModule.forRoot({
-            config: {
-              // Configuration options go here
-            },
-          }),
+      
     ]
 })
 export class SettingsModule

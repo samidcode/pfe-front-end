@@ -26,7 +26,6 @@ export class SettingsAccountComponent implements OnInit
     constructor(
         private _formBuilder: UntypedFormBuilder,
         private _authService: AuthService,
-        private jwtHelper: JwtHelperService,
         private _changeDetectorRef: ChangeDetectorRef,
 
 
@@ -54,7 +53,7 @@ export class SettingsAccountComponent implements OnInit
 
             const token = this._authService.accessToken.slice(7);
             
-              const decodedToken = this.jwtHelper.decodeToken(token);
+              const decodedToken = this._authService.decodeToken(token);
               this.userEmail = decodedToken.sub;
               
               this._authService.getUser(this.userEmail).subscribe((user:Users)=>{

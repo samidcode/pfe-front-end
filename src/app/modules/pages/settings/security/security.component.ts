@@ -21,7 +21,6 @@ alert = false;
         private _formBuilder: UntypedFormBuilder,
         private _authService: AuthService,
         private _changeDetectorRef: ChangeDetectorRef,
-        private jwtHelper: JwtHelperService,
 
     )
     {
@@ -40,12 +39,12 @@ alert = false;
 
         const token = this._authService.accessToken.slice(7);
             
-        const decodedToken = this.jwtHelper.decodeToken(token);
+        const decodedToken = this._authService.decodeToken(token);
         this.userEmail = decodedToken.sub;
         // Create the form
         this.securityForm = this._formBuilder.group({
-            currentPassword  : [''],
-            newPassword      : [''],
+            currentpassword  : [''],
+            newpassword      : [''],
             email:[this.userEmail]
         });
     }
@@ -54,7 +53,7 @@ alert = false;
     updatePassword(){
 
 let password = this.securityForm.getRawValue();
-this._authService.updatePassword(password.currentPassword,password.newPassword,password.email).subscribe(()=>{
+this._authService.updatePassword(password.currentpassword,password.newpassword,password.email).subscribe(()=>{
 
             this.alert=true;
 

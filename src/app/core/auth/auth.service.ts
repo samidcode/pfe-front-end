@@ -22,6 +22,7 @@ export class AuthService
     constructor(
         private _httpClient: HttpClient,
         private _userService: UserService,
+        private jwtHelper: JwtHelperService,
 
     )
     {
@@ -88,6 +89,8 @@ export class AuthService
                 // Store the access token in the local storage
                 this.accessToken = response.headers.get('Authorization');;
 
+                const jsonString = JSON.stringify(response.user)
+                    localStorage.setItem("user",jsonString)
                 // Set the authenticated flag to true
                 this._authenticated = true;
 
@@ -193,7 +196,7 @@ export class AuthService
         }
 
         // Check the access token expire date
-        if ( AuthUtils.isTokenExpired(this.accessToken) )
+        if ( this.isTokenExpired(this.accessToken) )
         {
             return of(false);
         }
@@ -220,14 +223,25 @@ updateUser(user) {
 
 }
 
-updatePassword (currentPassword: string, newPassword: string, email: string): Observable<any> {
+updatePassword (currentpassword: string, newpassword: string, email: string): Observable<any> {
     const url = `${this.baseUrl}users/password`;
     const params = new HttpParams()
-      .set('currentpassword', currentPassword)
-      .set('newpassword', newPassword)
+      .set('currentpassword', currentpassword)
+      .set('newpassword', newpassword)
       .set('email', email);
     return this._httpClient.post(url, {}, { params });
   }
+  isTokenExpired(token){
 
+
+return this.jwtHelper.isTokenExpired(token);
+
+  }
+
+  decodeToken(token){
+
+        return this.jwtHelper.decodeToken(token);
+
+  }
 
 }

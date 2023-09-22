@@ -6,8 +6,6 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 @Component({
     selector       : 'settings',
     templateUrl    : './settings.component.html',
-    encapsulation  : ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SettingsComponent implements OnInit, OnDestroy
 {
